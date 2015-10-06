@@ -25,18 +25,6 @@ set incsearch     " do incremental searching
 set laststatus=2  " Always display the status line
 set autowrite     " Automatically :write before running commands
 
-" Get off my lawn
-nnoremap <Left> :echoe "Use h"<CR>
-nnoremap <Right> :echoe "Use l"<CR>
-nnoremap <Up> :echoe "Use k"<CR>
-nnoremap <Down> :echoe "Use j"<CR>
-
-" Softtabs, 2 spaces
-set tabstop=2
-set shiftwidth=2
-set shiftround
-set expandtab
-
 " Softtabs, 2 spaces
 set tabstop=2
 set shiftwidth=2
@@ -46,3 +34,15 @@ set expandtab
 " Treat <li> and <p> tags like the block tags they are
 let g:html_indent_tags = 'li\|p'
 syntax on
+
+filetype indent on
+
+" for python files, draw line at margin
+autocmd FileType python setlocal colorcolumn=79 | highlight ColorColumn guibg=orange
+
+" for html, javascript, css, proto use 2 space indent
+autocmd Filetype html,javascript,css,proto setlocal shiftwidth=2 | setlocal softtabstop=2
+
+" linenumbers
+set number
+set numberwidth=4
