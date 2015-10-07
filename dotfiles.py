@@ -70,6 +70,10 @@ def remove_files(top, verbose, dry):
                 print('Removing directory ', p)
             if not dry:
                 os.rmdir(os.path.join(root, name))
+    if verbose:
+        print('Removing directory ', top)
+    if not dry:
+        os.rmdir(os.path.join(top))
 
 
 def error_detected(ignore_errors):
@@ -147,14 +151,10 @@ def copy_command(src, dst, args):
 def add_remove_commands(sub):
     add_verbose(sub)
     add_dry(sub)
-    sub.add_argument('--full', '--all', action='store_true', help='Remove everything')
 
 
 def remove_command(src, args):
-    if args.full:
-        remove_files(src, args.verbose, args.dry)
-    else:
-        clean_interesting(src, args.verbose, args.dry)
+    clean_interesting(src, args.verbose, args.dry)
 
 
 def file_info(path, verbose):
