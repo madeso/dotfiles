@@ -240,6 +240,7 @@ def main():
     args = parser.parse_args()
     if args.command_name is not None:
         args.func(args)
+        print('Done')
     else:
         parser.print_help()
 
