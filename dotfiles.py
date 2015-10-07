@@ -1,13 +1,23 @@
 #!/usr/bin/env python3
 
+########################################################################################################################
+# Imports
+
 import argparse
 import os
 import filecmp
 import subprocess
 
+
+########################################################################################################################
+# Globals
+
 home = os.path.expanduser('~')
 root = os.path.dirname(os.path.abspath(__file__))
 
+
+########################################################################################################################
+# Util functions
 
 def file_exist(file):
     return os.path.isfile(file)
@@ -15,34 +25,6 @@ def file_exist(file):
 
 def file_same(lhs, rhs):
     return filecmp.cmp(lhs, rhs)
-
-
-def handle_install(args):
-    print("Install")
-
-
-def handle_uninstall(args):
-    print("Uninstall")
-
-
-def handle_update(args):
-    print("Update")
-
-
-def file_info(path, verbose):
-    h = os.path.join(home, path)
-    s = os.path.join(root, path)
-    if verbose:
-        print('Looking at ', path)
-    if not file_exist(h):
-        print("Missing HOME", h)
-        return
-    if not file_exist(s):
-        print("Missing SRC", s)
-        return
-    if not file_same(h, s):
-        print("Different ", h, s)
-        return
 
 
 def list_files(folder):
@@ -62,10 +44,47 @@ def list_files_in_both(folder):
     return list(set(c))
 
 
+########################################################################################################################
+# Command helpers
+
+def remove_and_copy(src, dst, should_remove, should_copy):
+    pass
+
+
+def file_info(path, verbose):
+    h = os.path.join(home, path)
+    s = os.path.join(root, path)
+    if verbose:
+        print('Looking at ', path)
+    if not file_exist(h):
+        print("Missing HOME", h)
+        return
+    if not file_exist(s):
+        print("Missing SRC", s)
+        return
+    if not file_same(h, s):
+        print("Different ", h, s)
+        return
+
+
 def dir_info(folder, verbose):
     files = list_files_in_both(folder)
     for file in files:
         file_info(os.path.join(folder, file), verbose)
+
+########################################################################################################################
+# Command functions
+
+def handle_install(args):
+    print("Install")
+
+
+def handle_uninstall(args):
+    print("Uninstall")
+
+
+def handle_update(args):
+    print("Update")
 
 
 def handle_status(args):
