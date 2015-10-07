@@ -7,7 +7,7 @@ import subprocess
 
 home = os.path.expanduser('~')
 src = os.path.dirname(os.path.abspath(__file__))
-dot = "_"
+
 
 def file_exist(file):
     return os.path.isfile(file)
@@ -29,13 +29,11 @@ def handle_update(args):
     print("Update")
 
 
-def file_info(path, filename, verbose):
-    home_file = (path + dot + filename) if filename is not None else path
-    src_file = (path + '_' + filename) if filename is not None else path
-    h = os.path.join(home, home_file)
-    s = os.path.join(src, src_file)
+def file_info(path, verbose):
+    h = os.path.join(home, path)
+    s = os.path.join(src, path)
     if verbose:
-        print('Looking at ', src_file)
+        print('Looking at ', path)
     if not file_exist(h):
         print("Missing HOME", h)
         return
@@ -67,14 +65,14 @@ def list_files_in_both(folder):
 def dir_info(folder, verbose):
     files = list_files_in_both(folder)
     for file in files:
-        file_info(os.path.join(folder, file), None, verbose)
+        file_info(os.path.join(folder, file), verbose)
 
 
 def handle_status(args):
     print('HOME: ', home)
     print('SRC: ', src)
     print()
-    file_info('', 'vimrc', args.verbose)
+    file_info('_vimrc', args.verbose)
     dir_info('vimfiles', args.verbose)
 
 
