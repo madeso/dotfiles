@@ -35,10 +35,11 @@ def file_same(lhs, rhs):
     return filecmp.cmp(lhs, rhs)
 
 
-def remove_file(p, verbose):
+def remove_file(p, verbose, dry):
     if verbose:
         print('Removing file ', p)
-    os.remove(p)
+    if not dry:
+        os.remove(p)
 
 
 def list_files(folder):
@@ -58,16 +59,17 @@ def list_files_in_both(folder):
     return list(set(c))
 
 
-def remove_files(top, verbose):
+def remove_files(top, verbose, dry):
     for root, dirs, files in os.walk(top, topdown=False):
         for name in files:
             p = os.path.join(root, name)
-            remove_file(p)
+            remove_file(p, verbose, dry)
         for name in dirs:
             p = os.path.join(root, name)
             if verbose:
                 print('Removing directory ', p)
-            os.rmdir(os.path.join(root, name))
+            if not dry:
+                os.rmdir(os.path.join(root, name))
 
 
 def error_detected(ignore_errors):
@@ -78,28 +80,33 @@ def error_detected(ignore_errors):
 ########################################################################################################################
 # Command helpers
 
-def clean_interesting(src, verbose):
+def clean_interesting(src, verbose, dry):
     for file in interesting_files:
         p = os.path.join(src, file)
         if file_exist(p):
-            remove_file(p, verbose)
+            remove_file(p, verbose, dry)
     for dir in interesting_directories:
         p = os.path.join(src, dir)
-        remove_files(p, verbose)
+        remove_files(p, verbose, dry)
 
 
 def add_verbose(sub):
     sub.add_argument('--verbose', action='store_true', help='Verbose output')
 
 
+def add_dry(sub):
+    sub.add_argument('--dry-run', action='store_true', help="Don't copy or remove anything")
+
+
 def add_copy_commands(sub):
     add_verbose(sub)
+    add_dry(sub)
     sub.add_argument('--remove', action='store_true', help='Remove destination before copying')
     sub.add_argument('--force', action='store_true', help='Force copy even if the file exist')
-    sub.add_argument('--ignore-errors', action='store_true', help='stop on errors')
+    sub.add_argument('--ignore-errors', action='store_true', help="Don't stop on errors")
 
 
-def file_copy(src, dst, remove, force, verbose, ignore_errors):
+def file_copy(src, dst, remove, force, verbose, ignore_errors, dry):
     if not file_exist(src):
         print('Missing file', src)
         error_detected(ignore_errors)
@@ -112,34 +119,36 @@ def file_copy(src, dst, remove, force, verbose, ignore_errors):
                     print('File exist, ignoring (use force)', dst)
     if verbose:
         print('Copying file', src, dst)
-    shutil.copy(src, dst)
+    if not dry:
+        shutil.copy(src, dst)
 
 
 def copy_command(src, dst, args):
     if args.remove:
-        clean_interesting(dst, args.verbose)
+        clean_interesting(dst, args.verbose, args.dry)
     for file in interesting_files:
         s = os.path.join(src, file)
         d = os.path.join(dst, file)
-        file_copy(s, d, args.remove, args.force, args.verbose, args.ignore_errors)
+        file_copy(s, d, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
     for dir in interesting_directories:
         for root, dirs, files in os.walk(os.path.join(src, dir), topdown=False):
             for file in files:
                 s = os.path.join(root, file)
                 relative = os.path.relpath(s, src)
                 d = os.path.join(dst, relative)
-                file_copy(s, d, args.remove, args.force, args.verbose, args.ignore_errors)
+                file_copy(s, d, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
 
 def add_remove_commands(sub):
     add_verbose(sub)
+    add_dry(sub)
     sub.add_argument('--full', action='store_true', help='Remove everything')
 
 
 def remove_command(src, args):
     if args.full:
-        remove_files(src, args.verbose)
+        remove_files(src, args.verbose, args.dry)
     else:
-        clean_interesting(src, args.verbose)
+        clean_interesting(src, args.verbose, args.dry)
 
 
 def file_info(path, verbose):
@@ -199,29 +208,32 @@ def handle_home(args):
 
 def main():
     parser = argparse.ArgumentParser(description='Manage my dot files.')
-    parsers = parser.add_subparsers(help='sub-command help')
+    parsers = parser.add_subparsers(dest='command_name', title='Commands', help='', metavar='<command>')
 
-    sub = parsers.add_parser('install', aliases=['copy', 'in', 'co'], help='copy files to HOME')
+    sub = parsers.add_parser('install', aliases=['copy', 'in', 'co'], help='Copy files to HOME')
     add_copy_commands(sub)
     sub.set_defaults(func=handle_install)
 
-    sub = parsers.add_parser('uninstall', aliases=['remove', 're', 'un'], help='remove files from HOME')
+    sub = parsers.add_parser('uninstall', aliases=['remove', 're', 'un'], help='Remove files from HOME')
     add_remove_commands(sub)
     sub.set_defaults(func=handle_uninstall)
 
-    sub = parsers.add_parser('update', aliases=['up'], help='copy files from HOME to git')
+    sub = parsers.add_parser('update', aliases=['up'], help='Copy files from HOME to git')
     add_copy_commands(sub)
     sub.set_defaults(func=handle_update)
 
-    sub = parsers.add_parser('status', aliases=['stat'], help='list the current status')
+    sub = parsers.add_parser('status', aliases=['stat'], help='List the current status')
     add_verbose(sub)
     sub.set_defaults(func=handle_status)
 
-    sub = parsers.add_parser('home', aliases=['stat'], help='start explorer in home')
+    sub = parsers.add_parser('home', help='Start explorer in home')
     sub.set_defaults(func=handle_home)
 
     args = parser.parse_args()
-    args.func(args)
+    if args.command_name is not None:
+        args.func(args)
+    else:
+        parser.print_help()
 
 
 if __name__ == "__main__":
