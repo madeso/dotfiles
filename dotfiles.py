@@ -10,11 +10,16 @@ import subprocess
 
 
 ########################################################################################################################
+# Configs
+
+interesting_files = ['_vimrc']
+interesting_directories = ['vimfiles']
+
+########################################################################################################################
 # Globals
 
 home = os.path.expanduser('~')
 root = os.path.dirname(os.path.abspath(__file__))
-
 
 ########################################################################################################################
 # Util functions
@@ -55,7 +60,7 @@ def file_info(path, verbose):
     h = os.path.join(home, path)
     s = os.path.join(root, path)
     if verbose:
-        print('Looking at ', path)
+        print('Checking', path)
     if not file_exist(h):
         print("Missing HOME", h)
         return
@@ -91,8 +96,11 @@ def handle_status(args):
     print('HOME: ', home)
     print('SRC: ', root)
     print()
-    file_info('_vimrc', args.verbose)
-    dir_info('vimfiles', args.verbose)
+    for file in interesting_files:
+        file_info(file, args.verbose)
+
+    for ddir in interesting_directories:
+        dir_info(ddir, args.verbose)
 
 
 def handle_home(args):
