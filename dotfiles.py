@@ -6,7 +6,7 @@ import filecmp
 import subprocess
 
 home = os.path.expanduser('~')
-src = os.path.dirname(os.path.abspath(__file__))
+root = os.path.dirname(os.path.abspath(__file__))
 
 
 def file_exist(file):
@@ -31,7 +31,7 @@ def handle_update(args):
 
 def file_info(path, verbose):
     h = os.path.join(home, path)
-    s = os.path.join(src, path)
+    s = os.path.join(root, path)
     if verbose:
         print('Looking at ', path)
     if not file_exist(h):
@@ -57,7 +57,7 @@ def list_files(folder):
 
 def list_files_in_both(folder):
     h = os.path.join(home, folder)
-    s = os.path.join(src, folder)
+    s = os.path.join(root, folder)
     c = list_files(h) + list_files(s)
     return list(set(c))
 
@@ -70,7 +70,7 @@ def dir_info(folder, verbose):
 
 def handle_status(args):
     print('HOME: ', home)
-    print('SRC: ', src)
+    print('SRC: ', root)
     print()
     file_info('_vimrc', args.verbose)
     dir_info('vimfiles', args.verbose)
