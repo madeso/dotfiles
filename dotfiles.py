@@ -20,8 +20,8 @@ interesting_directories = ['vimfiles']
 ########################################################################################################################
 # Globals
 
-home = os.path.expanduser('~')
-root = os.path.dirname(os.path.abspath(__file__))
+home_folder = os.path.expanduser('~')
+source_folder = os.path.dirname(os.path.abspath(__file__))
 
 
 ########################################################################################################################
@@ -35,45 +35,46 @@ def file_same(lhs, rhs):
     return filecmp.cmp(lhs, rhs)
 
 
-def remove_file(p, verbose, dry):
+def remove_file(file_to_remove, verbose, dry_run):
     if verbose:
-        print('Removing file ', p)
-    if not dry:
-        os.remove(p)
+        print('Removing file', file_to_remove)
+    if not dry_run:
+        os.remove(file_to_remove)
 
 
 def list_files(folder):
-    ret = []
+    paths = []
     for root, dirs, files in os.walk(folder):
-        for name in files:
-            fullname = os.path.join(root, name)
-            relative = os.path.relpath(fullname, folder)
-            ret.append(relative)
-    return ret
+        for filename in files:
+            full_name = os.path.join(root, filename)
+            relative_path = os.path.relpath(full_name, folder)
+            paths.append(relative_path)
+    return paths
 
 
 def list_files_in_both(folder):
-    h = os.path.join(home, folder)
-    s = os.path.join(root, folder)
-    c = list_files(h) + list_files(s)
-    return list(set(c))
+    absolute_home = os.path.join(home_folder, folder)
+    absolute_source = os.path.join(source_folder, folder)
+    all_files = list_files(absolute_home) + list_files(absolute_source)
+    unique_files = list(set(all_files))
+    return unique_files
 
 
-def remove_files(top, verbose, dry):
-    for root, dirs, files in os.walk(top, topdown=False):
-        for name in files:
-            p = os.path.join(root, name)
-            remove_file(p, verbose, dry)
-        for name in dirs:
-            p = os.path.join(root, name)
+def remove_files(folder, verbose, dry):
+    for root, dirs, files in os.walk(folder, topdown=False):
+        for file_name in files:
+            file_path = os.path.join(root, file_name)
+            remove_file(file_path, verbose, dry)
+        for dir_name in dirs:
+            dir_path = os.path.join(root, dir_name)
             if verbose:
-                print('Removing directory ', p)
+                print('Removing directory ', dir_path)
             if not dry:
-                os.rmdir(os.path.join(root, name))
+                os.rmdir(dir_path)
     if verbose:
-        print('Removing directory ', top)
+        print('Removing directory ', folder)
     if not dry:
-        os.rmdir(os.path.join(top))
+        os.rmdir(os.path.join(folder))
 
 
 def error_detected(ignore_errors):
@@ -137,16 +138,17 @@ def copy_command(src, dst, args):
     if args.remove:
         clean_interesting(dst, args.verbose, args.dry)
     for file in interesting_files:
-        s = os.path.join(src, file)
-        d = os.path.join(dst, file)
-        file_copy(s, d, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
-    for dir in interesting_directories:
-        for root, dirs, files in os.walk(os.path.join(src, dir), topdown=False):
+        src_path = os.path.join(src, file)
+        dst_path = os.path.join(dst, file)
+        file_copy(src_path, dst_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
+    for directory in interesting_directories:
+        for root, dirs, files in os.walk(os.path.join(src, directory), topdown=False):
             for file in files:
-                s = os.path.join(root, file)
-                relative = os.path.relpath(s, src)
-                d = os.path.join(dst, relative)
-                file_copy(s, d, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
+                src_path = os.path.join(root, file)
+                relative_path = os.path.relpath(src_path, src)
+                dst_path = os.path.join(dst, relative_path)
+                file_copy(src_path, dst_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
+
 
 def add_remove_commands(sub):
     add_verbose(sub)
@@ -157,19 +159,19 @@ def remove_command(src, args):
     clean_interesting(src, args.verbose, args.dry)
 
 
-def file_info(path, verbose):
-    h = os.path.join(home, path)
-    s = os.path.join(root, path)
+def file_info(relative_file, verbose):
+    absolute_home = os.path.join(home_folder, relative_file)
+    absolute_source = os.path.join(source_folder, relative_file)
     if verbose:
-        print('Checking', path)
-    if not file_exist(h):
-        print("Missing in HOME", h)
+        print('Checking', relative_file)
+    if not file_exist(absolute_home):
+        print("Missing in HOME", absolute_home)
         return
-    if not file_exist(s):
-        print("Missing in SRC", s)
+    if not file_exist(absolute_source):
+        print("Missing in SRC", absolute_source)
         return
-    if not file_same(h, s):
-        print("Different ", h, s)
+    if not file_same(absolute_home, absolute_source):
+        print("Different ", absolute_home, absolute_source)
         return
 
 
@@ -183,30 +185,30 @@ def dir_info(folder, verbose):
 # Command functions
 
 def handle_install(args):
-    copy_command(root, home, args)
+    copy_command(source_folder, home_folder, args)
 
 
 def handle_uninstall(args):
-    remove_command(home, args)
+    remove_command(home_folder, args)
 
 
 def handle_update(args):
-    copy_command(home, root, args)
+    copy_command(home_folder, source_folder, args)
 
 
 def handle_status(args):
-    print('HOME: ', home)
-    print('SRC: ', root)
+    print('HOME: ', home_folder)
+    print('SRC: ', source_folder)
     print()
     for file in interesting_files:
         file_info(file, args.verbose)
 
-    for ddir in interesting_directories:
-        dir_info(ddir, args.verbose)
+    for directory in interesting_directories:
+        dir_info(directory, args.verbose)
 
 
 def handle_home(args):
-    subprocess.call(['explorer', home])
+    subprocess.call(['explorer', home_folder])
 
 
 ########################################################################################################################
@@ -214,25 +216,25 @@ def handle_home(args):
 
 def main():
     parser = argparse.ArgumentParser(description='Manage my dot files.')
-    parsers = parser.add_subparsers(dest='command_name', title='Commands', help='', metavar='<command>')
+    sub_parsers = parser.add_subparsers(dest='command_name', title='Commands', help='', metavar='<command>')
 
-    sub = parsers.add_parser('install', aliases=['copy', 'in', 'co'], help='Copy files to HOME')
+    sub = sub_parsers.add_parser('install', aliases=['copy', 'in', 'co'], help='Copy files to HOME')
     add_copy_commands(sub)
     sub.set_defaults(func=handle_install)
 
-    sub = parsers.add_parser('uninstall', aliases=['remove', 're', 'un'], help='Remove files from HOME')
+    sub = sub_parsers.add_parser('uninstall', aliases=['remove', 're', 'un'], help='Remove files from HOME')
     add_remove_commands(sub)
     sub.set_defaults(func=handle_uninstall)
 
-    sub = parsers.add_parser('update', aliases=['up'], help='Copy files from HOME to git')
+    sub = sub_parsers.add_parser('update', aliases=['up'], help='Copy files from HOME to git')
     add_copy_commands(sub)
     sub.set_defaults(func=handle_update)
 
-    sub = parsers.add_parser('status', aliases=['stat'], help='List the current status')
+    sub = sub_parsers.add_parser('status', aliases=['stat'], help='List the current status')
     add_verbose(sub)
     sub.set_defaults(func=handle_status)
 
-    sub = parsers.add_parser('home', help='Start explorer in home')
+    sub = sub_parsers.add_parser('home', help='Start explorer in home')
     sub.set_defaults(func=handle_home)
 
     args = parser.parse_args()
