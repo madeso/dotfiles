@@ -91,19 +91,19 @@ def clean_interesting(src, verbose, dry):
 
 
 def add_verbose(sub):
-    sub.add_argument('--verbose', action='store_true', help='Verbose output')
+    sub.add_argument('--verbose', '-v', dest='verbose', action='store_true', help='Verbose output')
 
 
 def add_dry(sub):
-    sub.add_argument('--dry-run', action='store_true', help="Don't copy or remove anything")
+    sub.add_argument('--dry-run', '--dry', '-0', dest='dry', action='store_true', help="Don't copy or remove anything")
 
 
 def add_copy_commands(sub):
     add_verbose(sub)
     add_dry(sub)
-    sub.add_argument('--remove', action='store_true', help='Remove destination before copying')
-    sub.add_argument('--force', action='store_true', help='Force copy even if the file exist')
-    sub.add_argument('--ignore-errors', action='store_true', help="Don't stop on errors")
+    sub.add_argument('--remove', '-r', dest='remove', action='store_true', help='Remove destination before copying')
+    sub.add_argument('--force', '-f', dest='force', action='store_true', help='Force copy even if the file exist')
+    sub.add_argument('--ignore-errors', '--continue-on-error', dest='ignore_errors', action='store_true', help="Don't stop on errors")
 
 
 def file_copy(src, dst, remove, force, verbose, ignore_errors, dry):
@@ -112,13 +112,19 @@ def file_copy(src, dst, remove, force, verbose, ignore_errors, dry):
         error_detected(ignore_errors)
     if file_exist(dst):
         if remove:
-            remove_file(dst, verbose)
-        elif file_same(src, dst):
-            if not force:
+            remove_file(dst, verbose, dry)
+        else:
+            if file_same(src, dst):
                 if verbose:
-                    print('File exist, ignoring (use force)', dst)
-    if verbose:
-        print('Copying file', src, dst)
+                    print('Files are the same', src, dst)
+                if not force:
+                    if verbose:
+                        print('File exist, ignoring (use force)', dst)
+                    return
+            else:
+                if verbose:
+                    print('Files are not the same', src, dst)
+    print('Copying file', src, dst)
     if not dry:
         shutil.copy(src, dst)
 
@@ -141,7 +147,7 @@ def copy_command(src, dst, args):
 def add_remove_commands(sub):
     add_verbose(sub)
     add_dry(sub)
-    sub.add_argument('--full', action='store_true', help='Remove everything')
+    sub.add_argument('--full', '--all', action='store_true', help='Remove everything')
 
 
 def remove_command(src, args):
