@@ -13,8 +13,8 @@ import sys
 ########################################################################################################################
 # Configs
 
-interesting_files = ['_vimrc']
-interesting_directories = ['vimfiles']
+interesting_files = [('_vimrc', '.vimrc')]
+interesting_directories = [('vimfiles', '.vim')]
 
 
 ########################################################################################################################
@@ -82,16 +82,18 @@ def error_detected(ignore_errors):
         print('Halting program because an error was detected')
         sys.exit(-42)
 
+
 ########################################################################################################################
 # Command helpers
 
+
 def clean_interesting(src, verbose, dry):
     for file in interesting_files:
-        p = os.path.join(src, file)
+        p = os.path.join(src, localfile(file))
         if file_exist(p):
             remove_file(p, verbose, dry)
-    for dir in interesting_directories:
-        p = os.path.join(src, dir)
+    for src_dir, local_dir in interesting_directories:
+        p = os.path.join(src, local_dir)
         remove_files(p, verbose, dry)
 
 
@@ -129,7 +131,7 @@ def file_copy(src, dst, remove, force, verbose, ignore_errors, dry):
             else:
                 if verbose:
                     print('Files are not the same', src, dst)
-    print('Copying file', src, dst)
+    print('Copying file', src, "to", dst)
     if not dry:
         shutil.copy(src, dst)
 
@@ -138,15 +140,15 @@ def copy_command(src, dst, args):
     if args.remove:
         clean_interesting(dst, args.verbose, args.dry)
     for file in interesting_files:
-        src_path = os.path.join(src, file)
-        dst_path = os.path.join(dst, file)
+        src_path = os.path.join(src, file[0])
+        dst_path = os.path.join(dst, file[1])
         file_copy(src_path, dst_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
-    for directory in interesting_directories:
-        for root, dirs, files in os.walk(os.path.join(src, directory), topdown=False):
+    for src_directory, dest_directory in interesting_directories:
+        for root, dirs, files in os.walk(os.path.join(src, src_directory), topdown=False):
             for file in files:
                 src_path = os.path.join(root, file)
                 relative_path = os.path.relpath(src_path, src)
-                dst_path = os.path.join(dst, relative_path)
+                dst_path = os.path.join(dst, relative_path.replace(src_directory, dest_directory))
                 file_copy(src_path, dst_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
 
 
@@ -160,7 +162,7 @@ def remove_command(src, args):
 
 
 def file_info(relative_file, verbose):
-    absolute_home = os.path.join(home_folder, relative_file)
+    absolute_home = os.path.join(home_folder, localfile(relative_file))
     absolute_source = os.path.join(source_folder, relative_file)
     if verbose:
         print('Checking', relative_file)
@@ -240,7 +242,7 @@ def main():
     args = parser.parse_args()
     if args.command_name is not None:
         args.func(args)
-        print('Done')
+        print('Done!')
     else:
         parser.print_help()
 
