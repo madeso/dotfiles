@@ -144,7 +144,10 @@ def file_copy(src, dst, remove, force, verbose, ignore_errors, dry):
         error_detected(ignore_errors)
     if file_exist(dst):
         if remove:
-            remove_file(dst, verbose, dry)
+            if dry:
+                print("Removing ", dst)
+            else:
+                remove_file(dst, verbose, dry)
         else:
             if file_same(src, dst):
                 if verbose:
@@ -158,6 +161,10 @@ def file_copy(src, dst, remove, force, verbose, ignore_errors, dry):
                     print('Files are not the same', src, dst)
     print('Copying file', src, "to", dst)
     if not dry:
+        dir = os.path.dirname(os.path.abspath(dst))
+        if not os.path.exists(dir):
+            print("Needed to create directory:", dir)
+            os.makedirs(dir)
         shutil.copy(src, dst)
 
 
