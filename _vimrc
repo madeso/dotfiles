@@ -40,9 +40,22 @@ filetype indent on
 " for python files, draw line at margin
 autocmd FileType python setlocal colorcolumn=79 | highlight ColorColumn guibg=orange
 
-" for html, javascript, css, proto use 2 space indent
-autocmd Filetype html,javascript,css,proto setlocal shiftwidth=2 | setlocal softtabstop=2
-
 " linenumbers
 set number
 set numberwidth=4
+
+" highlight current line
+" Enable CursorLine
+set cursorline
+
+" Default Colors for CursorLine
+highlight  CursorLine ctermbg=Yellow ctermfg=None
+
+" Change Color when entering Insert Mode
+autocmd InsertEnter * highlight  CursorLine ctermbg=Green ctermfg=Red
+
+" Revert Color to default when leaving Insert Mode
+autocmd InsertLeave * highlight  CursorLine ctermbg=Yellow ctermfg=None
+
+" todo: add http://jeffkreeftmeijer.com/2012/relative-line-numbers-in-vim-for-super-fast-movement/
+
