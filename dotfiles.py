@@ -38,7 +38,10 @@ def file_same(lhs, rhs):
 def remove_file(file_to_remove, verbose, dry_run):
     if verbose:
         print('Removing file', file_to_remove)
-    if not dry_run:
+    if dry_run:
+        if not verbose:
+            print('Removing file', file_to_remove)
+    else:
         os.remove(file_to_remove)
 
 
@@ -89,9 +92,14 @@ def error_detected(ignore_errors):
 
 def clean_interesting(src, verbose, dry):
     for file in interesting_files:
-        p = os.path.join(src, localfile(file))
+        p = os.path.join(src, file[1])
         if file_exist(p):
+            if verbose:
+                print("File exists ", p)
             remove_file(p, verbose, dry)
+        else:
+            if verbose:
+                print("File doesn't exists ", p)
     for src_dir, local_dir in interesting_directories:
         p = os.path.join(src, local_dir)
         remove_files(p, verbose, dry)
