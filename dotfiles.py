@@ -55,12 +55,28 @@ def list_files(folder):
     return paths
 
 
-def list_files_in_both(folder):
-    absolute_home = os.path.join(home_folder, folder)
-    absolute_source = os.path.join(source_folder, folder)
-    all_files = list_files(absolute_home) + list_files(absolute_source)
-    unique_files = list(set(all_files))
-    return unique_files
+def replace_with(l, src, dst):
+    r = []
+    for s in l:
+        if s.startswith(src):
+            s = dst + s[len(src):]
+        r.append(s)
+    return r
+
+def list_files_in_both(folder, verbose):
+    if verbose:
+        print("Checking", folder)
+    absolute_home = os.path.join(home_folder, folder[1])
+    absolute_source = os.path.join(source_folder, folder[0])
+    relative_files_in_source = list_files(absolute_source)
+    relative_files_in_home = list_files(absolute_home)
+    relative_files_in_home_as_source = replace_with(relative_files_in_home, folder[1], folder[0])
+
+    all_files = relative_files_in_home_as_source + relative_files_in_source
+    unique_source = list(set(all_files))
+    unique_dest = replace_with(unique_source, folder[0], folder[1])
+    zipped = zip(unique_source, unique_dest)
+    return zipped
 
 
 def remove_files(folder, verbose, dry):
@@ -170,8 +186,8 @@ def remove_command(src, args):
 
 
 def file_info(relative_file, verbose):
-    absolute_home = os.path.join(home_folder, localfile(relative_file))
-    absolute_source = os.path.join(source_folder, relative_file)
+    absolute_home = os.path.join(home_folder, relative_file[1])
+    absolute_source = os.path.join(source_folder, relative_file[0])
     if verbose:
         print('Checking', relative_file)
     if not file_exist(absolute_home):
@@ -181,14 +197,16 @@ def file_info(relative_file, verbose):
         print("Missing in SRC", absolute_source)
         return
     if not file_same(absolute_home, absolute_source):
-        print("Different ", absolute_home, absolute_source)
+        print("Different", absolute_home, absolute_source)
         return
+    if verbose:
+        print("Same", absolute_home, absolute_source)
 
 
 def dir_info(folder, verbose):
-    files = list_files_in_both(folder)
+    files = list_files_in_both(folder, verbose)
     for file in files:
-        file_info(os.path.join(folder, file), verbose)
+        file_info(file, verbose)
 
 
 ########################################################################################################################
