@@ -144,19 +144,19 @@ def file_copy(src, dst, remove, force, verbose, ignore_errors, dry):
         shutil.copy(src, dst)
 
 
-def copy_command(src, dst, args):
+def copy_command(src, dst, args, src_index, dst_index):
     if args.remove:
         clean_interesting(dst, args.verbose, args.dry)
     for file in interesting_files:
-        src_path = os.path.join(src, file[0])
-        dst_path = os.path.join(dst, file[1])
+        src_path = os.path.join(src, file[src_index])
+        dst_path = os.path.join(dst, file[dst_index])
         file_copy(src_path, dst_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
-    for src_directory, dest_directory in interesting_directories:
-        for root, dirs, files in os.walk(os.path.join(src, src_directory), topdown=False):
+    for dir in interesting_directories:
+        for root, dirs, files in os.walk(os.path.join(src, dir[src_index]), topdown=False):
             for file in files:
                 src_path = os.path.join(root, file)
                 relative_path = os.path.relpath(src_path, src)
-                dst_path = os.path.join(dst, relative_path.replace(src_directory, dest_directory))
+                dst_path = os.path.join(dst, relative_path.replace(dir[src_index], dir[dst_index]))
                 file_copy(src_path, dst_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
 
 
@@ -195,7 +195,7 @@ def dir_info(folder, verbose):
 # Command functions
 
 def handle_install(args):
-    copy_command(source_folder, home_folder, args)
+    copy_command(source_folder, home_folder, args, 0, 1)
 
 
 def handle_uninstall(args):
@@ -203,7 +203,7 @@ def handle_uninstall(args):
 
 
 def handle_update(args):
-    copy_command(home_folder, source_folder, args)
+    copy_command(home_folder, source_folder, args, 1, 0)
 
 
 def handle_status(args):
@@ -236,7 +236,7 @@ def main():
     add_remove_commands(sub)
     sub.set_defaults(func=handle_uninstall)
 
-    sub = sub_parsers.add_parser('update', aliases=['up'], help='Copy files from HOME to git')
+    sub = sub_parsers.add_parser('grab', aliases=['get'], help='Copy files from HOME to git')
     add_copy_commands(sub)
     sub.set_defaults(func=handle_update)
 
