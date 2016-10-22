@@ -9,6 +9,7 @@ import filecmp
 import subprocess
 import shutil
 import sys
+import platform
 
 ########################################################################################################################
 # Configs
@@ -236,7 +237,15 @@ def handle_status(args):
 
 
 def handle_home(args):
-    subprocess.call(['explorer', home_folder])
+    s = platform.system()
+    if s == 'Windows':
+        subprocess.call(['explorer', home_folder])
+    elif s == 'Linux':
+        subprocess.call(['nautilus', home_folder])
+    elif s == 'Os X':
+        subprocess.call(['explorer', home_folder])
+    else:
+        print("Unknown OS", s)
 
 
 ########################################################################################################################
