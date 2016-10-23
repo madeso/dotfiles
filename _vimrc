@@ -14,9 +14,6 @@ endif
 :set guioptions-=T  "remove toolbar
 :set guioptions-=r  "remove right-hand scroll bar
 :set guioptions-=L  "remove left-hand scroll bar
-if has('gui_running')
-  set guifont=Consolas:h10:cANSI
-endif
 
 set history=50
 set ruler         " show the cursor position all the time
@@ -49,13 +46,15 @@ set numberwidth=4
 set cursorline
 
 " Default Colors for CursorLine
-highlight  CursorLine ctermbg=Yellow ctermfg=None
+highlight CursorLine ctermbg=Yellow guibg=#e4e4e4
 
-" Change Color when entering Insert Mode
-autocmd InsertEnter * highlight  CursorLine ctermbg=Green ctermfg=Red
+" autocmd! " remove ALL autocommands
 
-" Revert Color to default when leaving Insert Mode
-autocmd InsertLeave * highlight  CursorLine ctermbg=Yellow ctermfg=None
+" Change Color when entering Insert Mode for all files
+autocmd InsertEnter * highlight  CursorLine ctermbg=Green ctermfg=Red guibg=#ffffd7
+
+" Revert Color to default when leaving Insert Mode for all files
+autocmd InsertLeave * highlight  CursorLine ctermbg=Yellow ctermfg=None guibg=#e4e4e4
 
 " todo: add http://jeffkreeftmeijer.com/2012/relative-line-numbers-in-vim-for-super-fast-movement/
 
