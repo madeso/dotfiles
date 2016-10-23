@@ -56,5 +56,27 @@ autocmd InsertEnter * highlight  CursorLine ctermbg=Green ctermfg=Red guibg=#fff
 " Revert Color to default when leaving Insert Mode for all files
 autocmd InsertLeave * highlight  CursorLine ctermbg=Yellow ctermfg=None guibg=#e4e4e4
 
-" todo: add http://jeffkreeftmeijer.com/2012/relative-line-numbers-in-vim-for-super-fast-movement/
+" Relative line numbers
+" http://jeffkreeftmeijer.com/2012/relative-line-numbers-in-vim-for-super-fast-movement/
+
+set rnu
+
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set nornu
+  else
+    set rnu
+  endif
+endfunc
+
+nnoremap <C-n> :call NumberToggle()<cr>
+
+:au FocusLost * :set nornu
+:au FocusGained * :set rnu
+
+autocmd InsertEnter * :set nornu
+autocmd InsertLeave * :set rnu
+
+
+
 
