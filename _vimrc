@@ -78,5 +78,7 @@ autocmd InsertEnter * :set nornu
 autocmd InsertLeave * :set rnu
 
 
+" fix slow escape escape
+:set timeout timeoutlen=10
 
 
