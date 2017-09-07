@@ -3,7 +3,7 @@
 	dift = difftool
 	undo = checkout HEAD~
 	stat = status
-	dupes = !"cd `pwd`/$GIT_PREFIX fi && git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40"
+	dupes = !"cd `pwd`/$GIT_PREFIX && git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40"
 	alldupes = !"git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40"
 	amend = commit --amend
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
