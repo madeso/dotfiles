@@ -3,7 +3,14 @@
 	dift = difftool
 	undo = checkout HEAD~
 	stat = status
+	dupes = !"cd $GIT_PREFIX && git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40"
+	alldupes = !"git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40"
+	amend = commit --amend
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    # stolen from https://stackoverflow.com/a/21910335/180307
+	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+    ld = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
+    ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%ad]%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
 [push]
 	default = simple
 [difftool]
