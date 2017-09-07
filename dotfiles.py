@@ -14,6 +14,7 @@ import platform
 ########################################################################################################################
 # Configs
 
+# dont add gitconfig here, link in a external gitconfig instead as noted in the readme
 interesting_files = [('_vimrc', '.vimrc')]
 interesting_directories = [('vimfiles', '.vim')]
 
