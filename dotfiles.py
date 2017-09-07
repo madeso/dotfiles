@@ -250,10 +250,33 @@ def handle_home(args):
     elif s == 'Linux':
         subprocess.call(['nautilus', home_folder])
     elif s == 'Os X':
-        subprocess.call(['explorer', home_folder])
+        subprocess.call(['dont know', home_folder])
     else:
         print("Unknown OS", s)
 
+
+def call_diff_app(left, right):
+    s = platform.system()
+    if s == 'Windows':
+        subprocess.call(['WinMergeU.exe', '/e', '/x', '/u', '/maximize', left, right])
+    elif s == 'Linux':
+        subprocess.call(['dont know'])
+    elif s == 'Os X':
+        subprocess.call(['dont know'])
+    else:
+        print("Unknown OS", s)
+
+
+def diff_single_file(relative_file):
+    absolute_home = os.path.join(home_folder, relative_file[1])
+    absolute_source = os.path.join(source_folder, relative_file[0])
+    call_diff_app(absolute_home, absolute_source)
+
+def handle_diff(args):
+    if args.file is not None:
+        for file in interesting_files:
+            if file[0] == args.file or file[1] == args.file:
+                diff_single_file(file)
 
 ########################################################################################################################
 # Main
@@ -273,6 +296,10 @@ def main():
     sub = sub_parsers.add_parser('grab', aliases=['get'], help='Copy files from HOME to git')
     add_copy_commands(sub)
     sub.set_defaults(func=handle_update)
+
+    diff = sub_parsers.add_parser('diff', help='Diff files and stuff')
+    diff.add_argument('--file', help='File to diff')
+    diff.set_defaults(func=handle_diff)
 
     sub = sub_parsers.add_parser('status', aliases=['stat'], help='List the current status')
     add_verbose(sub)
