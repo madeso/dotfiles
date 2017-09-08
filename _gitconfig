@@ -3,6 +3,7 @@
 	dift = difftool
 	undo = checkout HEAD~
 	stat = status
+	wordcloud = log --no-decorate --pretty=format:%s
   # https://stackoverflow.com/a/8408640/180307
 	dupes = !"cd `pwd`/$GIT_PREFIX && git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40"
 	alldupes = !"git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40"
