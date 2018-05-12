@@ -11,23 +11,40 @@ import typing
 
 
 class Path:
-  def __init__(self, src: str, home: str):
-    self.home = home
-    self.src = src
+    def __init__(self, src: str, home: str):
+        self.home = home
+        self.src = src
 
+
+class Dir:
+    def __init__(self, src: str, home: str):
+        self.files = []
+        self.home = home
+        self.src = src
+
+    def file(self, path: str):
+        self.files.append(Path(
+            os.path.join(self.src, path),
+            os.path.join(self.home, path)
+        ))
+        return self
 
 class Data:
-  def __init__(self, interesting_files: typing.List[Path], interesting_directories: typing.List[Path]):
-    self.interesting_files = interesting_files
-    self.interesting_directories = interesting_directories
+    def __init__(self, interesting_files: typing.List[Path], interesting_directories: typing.List[Path]):
+        self.interesting_files = interesting_files
+        self.interesting_directories = interesting_directories
+
+    def add_dir(self, dir: Dir):
+        for f in dir.files:
+            self.interesting_files.append(f)
 
 
 def get_home_folder() -> str:
-  return os.path.expanduser('~')
+    return os.path.expanduser('~')
 
 
 def get_src_folder() -> str:
-  return os.path.dirname(os.path.abspath(__file__))
+    return os.path.dirname(os.path.abspath(__file__))
 
 
 def file_exist(file: str) -> bool:
@@ -35,7 +52,10 @@ def file_exist(file: str) -> bool:
 
 
 def file_same(lhs: str, rhs: str) -> bool:
-    return filecmp.cmp(lhs, rhs)
+    if file_exist(lhs) and file_exist(rhs):
+        return filecmp.cmp(lhs, rhs)
+    else:
+        return False
 
 
 def remove_file(file_to_remove: str, verbose: bool, dry_run: bool):
