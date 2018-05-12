@@ -21,12 +21,23 @@ class Dir:
         self.files = []
         self.home = home
         self.src = src
+        self.dir = None
 
-    def file(self, path: str):
-        self.files.append(Path(
-            os.path.join(self.src, path),
-            os.path.join(self.home, path)
-        ))
+    def set_dir(self, dir: str) -> 'Dir':
+        self.dir = dir
+        return self
+
+    def file(self, path: str) -> 'Dir':
+        if self.dir is None:
+            self.files.append(Path(
+                os.path.join(self.src, path),
+                os.path.join(self.home, path)
+            ))
+        else:
+            self.files.append(Path(
+                os.path.join(self.src, self.dir, path),
+                os.path.join(self.home, self.dir, path)
+            ))
         return self
 
 class Data:
