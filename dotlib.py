@@ -129,8 +129,8 @@ def clean_interesting(src: str, verbose: bool, dry: bool, data: Data):
         else:
             if verbose:
                 print("File doesn't exists ", p)
-    for src_dir, local_dir in data.interesting_directories:
-        p = os.path.join(src, local_dir)
+    for dir in data.interesting_directories:
+        p = os.path.join(src, dir.home)
         remove_files(p, verbose, dry)
 
 
