@@ -110,8 +110,12 @@ class Dir:
 
 
 class Data:
+    @staticmethod
+    def _empty_files() -> typing.List[Path]:
+        return []
+    
     def __init__(self):
-        self.interesting_files: typing.List[Path] = []
+        self.interesting_files = Data._empty_files()
 
     def add_file(self, src: str, home: str):
         file = Path(src, VarPath(None, home, None, PathType.USER))
