@@ -18,8 +18,25 @@ def get_src_folder() -> str:
     return os.path.dirname(os.path.abspath(__file__))
 
 
+class VarPath:
+    def __init__(self, base: typing.Optional[str], path: str, subdir: typing.Optional[str]):
+        if base is None:
+            if subdir is None:
+                self.path = path
+            else:
+                self.path = os.path.join(subdir, path)
+        else:
+            if subdir is None:
+                self.path = os.path.join(base, path)
+            else:
+                self.path = os.path.join(base, subdir, path)
+
+    def get_abs_path(self) -> str:
+        return os.path.join(get_home_folder(), self.path)
+
+
 class Path:
-    def __init__(self, src: str, home: str):
+    def __init__(self, src: str, home: VarPath):
         self.home = home
         self.src = src
 
@@ -39,12 +56,12 @@ class Dir:
         if self.subdir is None:
             self.files.append(Path(
                 os.path.join(self.src, path),
-                os.path.join(self.home, path)
+                VarPath(self.home, path, None)
             ))
         else:
             self.files.append(Path(
                 os.path.join(self.src, self.subdir, path),
-                os.path.join(self.home, self.subdir, path)
+                VarPath(self.home, path, self.subdir)
             ))
         return self
 
@@ -85,9 +102,9 @@ def error_detected(ignore_errors: bool):
         sys.exit(-42)
 
 
-def clean_interesting(src: str, verbose: bool, dry: bool, data: Data):
+def clean_interesting(use_home: bool, verbose: bool, dry: bool, data: Data):
     for file in data.interesting_files:
-        p = os.path.join(src, file.home)
+        p = file.home.get_abs_path() if use_home else os.path.join(get_src_folder(), file.src)
         if file_exist(p):
             if verbose:
                 print("File exists ", p)
@@ -144,17 +161,15 @@ def file_copy(src: str, dst: str, remove: bool, force: bool, verbose: bool, igno
         shutil.copy(src, dst)
 
 
-def copy_command(args, data: Data, install: bool, home: str, local: str):
-    src = local if install else home
-    dst = home if install else local
+def copy_command(args, data: Data, install: bool):
     if args.remove:
-        clean_interesting(dst, args.verbose, args.dry, data)
+        clean_interesting(install, args.verbose, args.dry, data)
     for file in data.interesting_files:
-        home_path = os.path.join(home, file.home)
-        local_path = os.path.join(local, file.src)
-        src_path = local_path if install else home_path
-        dst_path = home_path if install else local_path
-        file_copy(src_path, dst_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
+        home_path = file.home.get_abs_path()
+        src_path = os.path.join(get_src_folder(), file.src)
+        from_path = src_path if install else home_path
+        to_path = home_path if install else src_path
+        file_copy(from_path, to_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
 
 
 def add_remove_commands(sub):
@@ -162,12 +177,12 @@ def add_remove_commands(sub):
     add_dry(sub)
 
 
-def remove_command(src: str, args, data: Data):
-    clean_interesting(src, args.verbose, args.dry, data)
+def remove_command(use_home: bool, args, data: Data):
+    clean_interesting(use_home, args.verbose, args.dry, data)
 
 
 def file_info(relative_file: Path, verbose: bool):
-    absolute_home = os.path.join(get_home_folder(), relative_file.home)
+    absolute_home = relative_file.home.get_abs_path()
     absolute_source = os.path.join(get_src_folder(), relative_file.src)
     if verbose:
         print('Checking', relative_file)
@@ -197,7 +212,7 @@ def call_diff_app(left: str, right: str):
 
 
 def diff_single_file(relative_file: Path):
-    absolute_home = os.path.join(get_home_folder(), relative_file.home)
+    absolute_home = relative_file.home.get_abs_path()
     absolute_source = os.path.join(get_src_folder(), relative_file.src)
     call_diff_app(absolute_home, absolute_source)
 
@@ -206,15 +221,15 @@ def diff_single_file(relative_file: Path):
 # Command functions
 
 def handle_install(args, data: Data):
-    copy_command(args, data, True, get_home_folder(), get_src_folder())
+    copy_command(args, data, True)
 
 
 def handle_uninstall(args, data: Data):
-    remove_command(get_home_folder(), args, data)
+    remove_command(True, args, data)
 
 
 def handle_update(args, data: Data):
-    copy_command(args, data, False, get_home_folder(), get_src_folder())
+    copy_command(args, data, False)
 
 
 def handle_status(args, data: Data):

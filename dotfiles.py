@@ -4,7 +4,7 @@ import dotlib
 
 
 def get_data():
-    data = dotlib.Data(interesting_files=[dotlib.Path('_vimrc', '.vimrc')])
+    data = dotlib.Data(interesting_files=[dotlib.Path('_vimrc', dotlib.VarPath(None, '.vimrc', None))])
     data.add_dir(
         dotlib.Dir("vs_code", ".config/Code/User")
         .file('keybindings.json')
