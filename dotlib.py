@@ -40,13 +40,14 @@ class Dir:
             ))
         return self
 
+
 class Data:
     def __init__(self, interesting_files: typing.List[Path], interesting_directories: typing.List[Path]):
         self.interesting_files = interesting_files
         self.interesting_directories = interesting_directories
 
-    def add_dir(self, dir: Dir):
-        for f in dir.files:
+    def add_dir(self, subdir: Dir):
+        for f in subdir.files:
             self.interesting_files.append(f)
 
 
@@ -109,8 +110,8 @@ def list_files_in_both(folder: Path, verbose: bool) -> typing.List[Path]:
 
     all_files = relative_files_in_home_as_source + relative_files_in_source
     unique_source = list(set(all_files))
-    unique_dest = replace_with(unique_source, folder.src, folder.home)
-    zipped = zip(unique_source, unique_dest)
+    unique_destination = replace_with(unique_source, folder.src, folder.home)
+    zipped = zip(unique_source, unique_destination)
     paths = []
     for z in zipped:
         src = z[0]
@@ -160,8 +161,8 @@ def clean_interesting(src: str, verbose: bool, dry: bool, data: Data):
         else:
             if verbose:
                 print("File doesn't exists ", p)
-    for dir in data.interesting_directories:
-        p = os.path.join(src, dir.home)
+    for subdir in data.interesting_directories:
+        p = os.path.join(src, subdir.home)
         remove_files(p, verbose, dry)
 
 
@@ -178,7 +179,8 @@ def add_copy_commands(sub):
     add_dry(sub)
     sub.add_argument('--remove', '-r', dest='remove', action='store_true', help='Remove destination before copying')
     sub.add_argument('--force', '-f', dest='force', action='store_true', help='Force copy even if the file exist')
-    sub.add_argument('--ignore-errors', '--continue-on-error', dest='ignore_errors', action='store_true', help="Don't stop on errors")
+    sub.add_argument('--ignore-errors', '--continue-on-error', dest='ignore_errors', action='store_true',
+                     help="Don't stop on errors")
 
 
 def file_copy(src: str, dst: str, remove: bool, force: bool, verbose: bool, ignore_errors: bool, dry: bool):
@@ -215,20 +217,20 @@ def copy_command(args, data: Data, install: bool, home: str, local: str):
     src = local if install else home
     dst = home if install else local
     if args.remove:
-        clean_interesting(dst, args.verbose, args.dry)
+        clean_interesting(dst, args.verbose, args.dry, data)
     for file in data.interesting_files:
         home_path = os.path.join(home, file.home)
         local_path = os.path.join(local, file.src)
         src_path = local_path if install else home_path
         dst_path = home_path if install else local_path
         file_copy(src_path, dst_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
-    for dir in data.interesting_directories:
-        home_dir = os.path.join(home, dir.home)
-        local_dir = os.path.join(src, dir.src)
+    for subdir in data.interesting_directories:
+        home_dir = os.path.join(home, subdir.home)
+        local_dir = os.path.join(src, subdir.src)
         src_dir = local_dir if install else home_dir
         dst_dist = home_dir if install else local_dir
-        src_rel_dir = dir.src if install else dir.home
-        dst_rel_dir = dir.home if install else dir.src
+        src_rel_dir = subdir.src if install else subdir.home
+        dst_rel_dir = subdir.home if install else subdir.src
         for root, dirs, files in os.walk(src_dir, topdown=False):
             for file in files:
                 src_path = os.path.join(root, file)
@@ -313,9 +315,9 @@ def call_diff_app(left: str, right: str):
     if s == 'Windows':
         subprocess.call(['WinMergeU.exe', '/e', '/x', '/u', '/maximize', left, right])
     elif s == 'Linux':
-        subprocess.call(['dont know'])
+        subprocess.call(['unknown'])
     elif s == 'Os X':
-        subprocess.call(['dont know'])
+        subprocess.call(['unknown'])
     else:
         print("Unknown OS", s)
 
@@ -334,6 +336,7 @@ def handle_diff(args, data: Data):
 
 ########################################################################################################################
 # Main
+
 
 def main(data: Data):
     parser = argparse.ArgumentParser(description='Manage my dot files.')
