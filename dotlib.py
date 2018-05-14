@@ -8,18 +8,39 @@ import shutil
 import sys
 import platform
 import typing
+from enum import Enum
 
 
 def get_home_folder() -> str:
     return os.path.expanduser('~')
 
 
+def get_appdata_roaming_folder() -> str:
+    return os.getenv('APPDATA')
+
+
 def get_src_folder() -> str:
     return os.path.dirname(os.path.abspath(__file__))
 
 
+def is_windows() -> bool:
+    return platform.system() == 'Windows'
+
+
+class PathType(Enum):
+    USER = 1
+    APPDATA_ROAMING = 2
+
+
+def get_folder(path: PathType) -> str:
+    if path == PathType.APPDATA_ROAMING:
+        return get_appdata_roaming_folder()
+    return get_home_folder()
+
+
 class VarPath:
-    def __init__(self, base: typing.Optional[str], path: str, subdir: typing.Optional[str]):
+    def __init__(self, base: typing.Optional[str], path: str, subdir: typing.Optional[str], win_where: PathType):
+        self.win_where = win_where
         if base is None:
             if subdir is None:
                 self.path = path
@@ -32,7 +53,8 @@ class VarPath:
                 self.path = os.path.join(base, subdir, path)
 
     def get_abs_path(self) -> str:
-        return os.path.join(get_home_folder(), self.path)
+        base_path = get_folder(self.win_where) if is_windows() else get_home_folder()
+        return os.path.join(base_path, self.path)
 
 
 class Path:
@@ -42,11 +64,12 @@ class Path:
 
 
 class Dir:
-    def __init__(self, src: str, home: str):
+    def __init__(self, src: str, home: str, win_where: PathType = PathType.USER, win_home: typing.Optional[str]=None):
         self.files = []
-        self.home = home
+        self.home = win_home if is_windows() and win_home is not None else home
         self.src = src
         self.subdir = None
+        self.win_where = win_where
 
     def set_dir(self, subdir: str) -> 'Dir':
         self.subdir = subdir
@@ -56,12 +79,12 @@ class Dir:
         if self.subdir is None:
             self.files.append(Path(
                 os.path.join(self.src, path),
-                VarPath(self.home, path, None)
+                VarPath(self.home, path, None, self.win_where)
             ))
         else:
             self.files.append(Path(
                 os.path.join(self.src, self.subdir, path),
-                VarPath(self.home, path, self.subdir)
+                VarPath(self.home, path, self.subdir, self.win_where)
             ))
         return self
 
@@ -234,6 +257,8 @@ def handle_update(args, data: Data):
 
 def handle_status(args, data: Data):
     print('HOME: ', get_home_folder())
+    if is_windows():
+        print('APPDATA ROAMING: ', get_appdata_roaming_folder())
     print('SRC: ', get_src_folder())
     print()
     for file in data.interesting_files:
