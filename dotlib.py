@@ -42,9 +42,8 @@ class Dir:
 
 
 class Data:
-    def __init__(self, interesting_files: typing.List[Path], interesting_directories: typing.List[Path]):
+    def __init__(self, interesting_files: typing.List[Path]):
         self.interesting_files = interesting_files
-        self.interesting_directories = interesting_directories
 
     def add_dir(self, subdir: Dir):
         for f in subdir.files:
@@ -161,9 +160,6 @@ def clean_interesting(src: str, verbose: bool, dry: bool, data: Data):
         else:
             if verbose:
                 print("File doesn't exists ", p)
-    for subdir in data.interesting_directories:
-        p = os.path.join(src, subdir.home)
-        remove_files(p, verbose, dry)
 
 
 def add_verbose(sub):
@@ -224,19 +220,6 @@ def copy_command(args, data: Data, install: bool, home: str, local: str):
         src_path = local_path if install else home_path
         dst_path = home_path if install else local_path
         file_copy(src_path, dst_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
-    for subdir in data.interesting_directories:
-        home_dir = os.path.join(home, subdir.home)
-        local_dir = os.path.join(src, subdir.src)
-        src_dir = local_dir if install else home_dir
-        dst_dist = home_dir if install else local_dir
-        src_rel_dir = subdir.src if install else subdir.home
-        dst_rel_dir = subdir.home if install else subdir.src
-        for root, dirs, files in os.walk(src_dir, topdown=False):
-            for file in files:
-                src_path = os.path.join(root, file)
-                relative_path = os.path.relpath(src_path, src)
-                dst_path = os.path.join(dst, relative_path.replace(src_rel_dir, dst_rel_dir))
-                file_copy(src_path, dst_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
 
 
 def add_remove_commands(sub):
@@ -266,12 +249,6 @@ def file_info(relative_file: Path, verbose: bool):
         print("Same", absolute_home, absolute_source)
 
 
-def dir_info(folder: Path, verbose: bool):
-    files = list_files_in_both(folder, verbose)
-    for file in files:
-        file_info(file, verbose)
-
-
 ########################################################################################################################
 # Command functions
 
@@ -293,9 +270,6 @@ def handle_status(args, data: Data):
     print()
     for file in data.interesting_files:
         file_info(file, args.verbose)
-
-    for directory in data.interesting_directories:
-        dir_info(directory, args.verbose)
 
 
 def handle_home(args, data: Data):
