@@ -110,8 +110,12 @@ class Dir:
 
 
 class Data:
-    def __init__(self, interesting_files: typing.List[Path]):
-        self.interesting_files = interesting_files
+    def __init__(self):
+        self.interesting_files: typing.List[Path] = []
+
+    def add_file(self, src: str, home: str):
+        file = Path(src, VarPath(None, home, None, PathType.USER))
+        self.interesting_files.append(file)
 
     def add_dir(self, subdir: Dir):
         for f in subdir.files:

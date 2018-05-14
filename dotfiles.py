@@ -4,8 +4,8 @@ import dotlib
 
 
 def get_data():
-    data = dotlib.Data(interesting_files=[dotlib.Path('_vimrc',
-                                                      dotlib.VarPath(None, '.vimrc', None, dotlib.PathType.USER))])
+    data = dotlib.Data()
+    data.add_file('_vimrc', '.vimrc')
     data.add_dir(
         dotlib.Dir("vs_code", ".config/Code/User",
                    win_where=dotlib.PathType.APPDATA_ROAMING, win_home='Code\\User')
