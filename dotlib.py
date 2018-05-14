@@ -10,6 +10,14 @@ import platform
 import typing
 
 
+def get_home_folder() -> str:
+    return os.path.expanduser('~')
+
+
+def get_src_folder() -> str:
+    return os.path.dirname(os.path.abspath(__file__))
+
+
 class Path:
     def __init__(self, src: str, home: str):
         self.home = home
@@ -50,14 +58,6 @@ class Data:
             self.interesting_files.append(f)
 
 
-def get_home_folder() -> str:
-    return os.path.expanduser('~')
-
-
-def get_src_folder() -> str:
-    return os.path.dirname(os.path.abspath(__file__))
-
-
 def file_exist(file: str) -> bool:
     return os.path.isfile(file)
 
@@ -77,67 +77,6 @@ def remove_file(file_to_remove: str, verbose: bool, dry_run: bool):
             print('Removing file', file_to_remove)
     else:
         os.remove(file_to_remove)
-
-
-def list_files(folder: str) -> typing.List[str]:
-    paths = []
-    for root, dirs, files in os.walk(folder):
-        for filename in files:
-            full_name = os.path.join(root, filename)
-            relative_path = os.path.relpath(full_name, folder)
-            paths.append(relative_path)
-    return paths
-
-
-def replace_with(l: typing.List[str], src: str, dst: str) -> typing.List[str]:
-    r = []
-    for s in l:
-        if s.startswith(src):
-            s = dst + s[len(src):]
-        r.append(s)
-    return r
-
-
-def list_files_in_both(folder: Path, verbose: bool) -> typing.List[Path]:
-    if verbose:
-        print("Checking", folder)
-    absolute_home = os.path.join(get_home_folder(), folder.home)
-    absolute_source = os.path.join(get_src_folder(), folder.src)
-    relative_files_in_source = list_files(absolute_source)
-    relative_files_in_home = list_files(absolute_home)
-    relative_files_in_home_as_source = replace_with(relative_files_in_home, folder.home, folder.src)
-
-    all_files = relative_files_in_home_as_source + relative_files_in_source
-    unique_source = list(set(all_files))
-    unique_destination = replace_with(unique_source, folder.src, folder.home)
-    zipped = zip(unique_source, unique_destination)
-    paths = []
-    for z in zipped:
-        src = z[0]
-        dst = z[1]
-        if src is not None:
-            src = os.path.join(folder.src, src)
-        if dst is not None:
-            dst = os.path.join(folder.home, dst)
-        paths.append(Path(src, dst))
-    return paths
-
-
-def remove_files(folder: str, verbose: bool, dry: bool):
-    for root, dirs, files in os.walk(folder, topdown=False):
-        for file_name in files:
-            file_path = os.path.join(root, file_name)
-            remove_file(file_path, verbose, dry)
-        for dir_name in dirs:
-            dir_path = os.path.join(root, dir_name)
-            if verbose:
-                print('Removing directory ', dir_path)
-            if not dry:
-                os.rmdir(dir_path)
-    if verbose:
-        print('Removing directory ', folder)
-    if not dry:
-        os.rmdir(os.path.join(folder))
 
 
 def error_detected(ignore_errors: bool):
