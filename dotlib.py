@@ -85,10 +85,6 @@ def error_detected(ignore_errors: bool):
         sys.exit(-42)
 
 
-########################################################################################################################
-# Command helpers
-
-
 def clean_interesting(src: str, verbose: bool, dry: bool, data: Data):
     for file in data.interesting_files:
         p = os.path.join(src, file.home)
@@ -188,6 +184,24 @@ def file_info(relative_file: Path, verbose: bool):
         print("Same", absolute_home, absolute_source)
 
 
+def call_diff_app(left: str, right: str):
+    s = platform.system()
+    if s == 'Windows':
+        subprocess.call(['WinMergeU.exe', '/e', '/x', '/u', '/maximize', left, right])
+    elif s == 'Linux':
+        subprocess.call(['unknown'])
+    elif s == 'Os X':
+        subprocess.call(['unknown'])
+    else:
+        print("Unknown OS", s)
+
+
+def diff_single_file(relative_file: Path):
+    absolute_home = os.path.join(get_home_folder(), relative_file.home)
+    absolute_source = os.path.join(get_src_folder(), relative_file.src)
+    call_diff_app(absolute_home, absolute_source)
+
+
 ########################################################################################################################
 # Command functions
 
@@ -223,33 +237,15 @@ def handle_home(args, data: Data):
         print("Unknown OS", s)
 
 
-def call_diff_app(left: str, right: str):
-    s = platform.system()
-    if s == 'Windows':
-        subprocess.call(['WinMergeU.exe', '/e', '/x', '/u', '/maximize', left, right])
-    elif s == 'Linux':
-        subprocess.call(['unknown'])
-    elif s == 'Os X':
-        subprocess.call(['unknown'])
-    else:
-        print("Unknown OS", s)
-
-
-def diff_single_file(relative_file: Path):
-    absolute_home = os.path.join(get_home_folder(), relative_file.home)
-    absolute_source = os.path.join(get_src_folder(), relative_file.src)
-    call_diff_app(absolute_home, absolute_source)
-
-
 def handle_diff(args, data: Data):
     if args.file is not None:
         for file in data.interesting_files:
             if file.src == args.file or file.home == args.file:
                 diff_single_file(file)
 
+
 ########################################################################################################################
 # Main
-
 
 def main(data: Data):
     parser = argparse.ArgumentParser(description='Manage my dot files.')
