@@ -21,22 +21,22 @@ class Dir:
         self.files = []
         self.home = home
         self.src = src
-        self.dir = None
+        self.subdir = None
 
-    def set_dir(self, dir: str) -> 'Dir':
-        self.dir = dir
+    def set_dir(self, subdir: str) -> 'Dir':
+        self.subdir = subdir
         return self
 
     def file(self, path: str) -> 'Dir':
-        if self.dir is None:
+        if self.subdir is None:
             self.files.append(Path(
                 os.path.join(self.src, path),
                 os.path.join(self.home, path)
             ))
         else:
             self.files.append(Path(
-                os.path.join(self.src, self.dir, path),
-                os.path.join(self.home, self.dir, path)
+                os.path.join(self.src, self.subdir, path),
+                os.path.join(self.home, self.subdir, path)
             ))
         return self
 
@@ -90,7 +90,7 @@ def list_files(folder: str) -> typing.List[str]:
     return paths
 
 
-def replace_with(l:typing.List[str], src: str, dst: str) -> typing.List[str]:
+def replace_with(l: typing.List[str], src: str, dst: str) -> typing.List[str]:
     r = []
     for s in l:
         if s.startswith(src):
@@ -206,10 +206,10 @@ def file_copy(src: str, dst: str, remove: bool, force: bool, verbose: bool, igno
                     print('Files are not the same', src, dst)
     print('Copying file', src, "to", dst)
     if not dry:
-        dir = os.path.dirname(os.path.abspath(dst))
-        if not os.path.exists(dir):
-            print("Needed to create directory:", dir)
-            os.makedirs(dir)
+        subdir = os.path.dirname(os.path.abspath(dst))
+        if not os.path.exists(subdir):
+            print("Needed to create directory:", subdir)
+            os.makedirs(subdir)
         shutil.copy(src, dst)
 
 
@@ -305,7 +305,7 @@ def handle_home(args, data: Data):
     elif s == 'Linux':
         subprocess.call(['nautilus', get_home_folder()])
     elif s == 'Os X':
-        subprocess.call(['dont know', get_home_folder()])
+        subprocess.call(['unknown', get_home_folder()])
     else:
         print("Unknown OS", s)
 
