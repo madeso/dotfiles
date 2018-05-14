@@ -7,7 +7,8 @@ if has('gui_running')
     set background=light
     colorscheme solarized
 else
-    colorscheme morning
+    " set background=light
+    " colorscheme solarized
 endif
 
 :set guioptions-=m  "remove menu bar
@@ -35,7 +36,7 @@ syntax on
 filetype indent on
 
 " for python files, draw line at margin
-autocmd FileType python setlocal colorcolumn=79 | highlight ColorColumn guibg=orange
+autocmd FileType python setlocal colorcolumn=79 | highlight ColorColumn ctermbg=White guibg=orange
 
 " linenumbers
 set number
@@ -46,15 +47,10 @@ set numberwidth=4
 set cursorline
 
 " Default Colors for CursorLine
-highlight CursorLine ctermbg=Yellow guibg=#e4e4e4
+highlight clear CursorLine
+highlight CursorLine ctermbg=White guibg=#e4e4e4
 
 " autocmd! " remove ALL autocommands
-
-" Change Color when entering Insert Mode for all files
-autocmd InsertEnter * highlight  CursorLine ctermbg=Green ctermfg=Red guibg=#ffffd7
-
-" Revert Color to default when leaving Insert Mode for all files
-autocmd InsertLeave * highlight  CursorLine ctermbg=Yellow ctermfg=None guibg=#e4e4e4
 
 " Relative line numbers
 " http://jeffkreeftmeijer.com/2012/relative-line-numbers-in-vim-for-super-fast-movement/
