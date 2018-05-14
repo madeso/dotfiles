@@ -11,6 +11,26 @@ import typing
 from enum import Enum
 
 
+def file_exist(file: str) -> bool:
+    return os.path.isfile(file)
+
+
+def get_default_search_paths() -> typing.List[str]:
+    if is_windows():
+        return ['C:\\Program Files (x86)',
+                'C:\\Program Files']
+    else:
+        return []
+
+
+def find_path(file: str, paths: typing.List[str], folder: str) -> typing.Optional[str]:
+    for subdir in paths:
+        p = os.path.join(subdir, folder, file)
+        if file_exist(p):
+            return p
+    return None
+
+
 def get_home_folder() -> str:
     return os.path.expanduser('~')
 
@@ -96,10 +116,6 @@ class Data:
     def add_dir(self, subdir: Dir):
         for f in subdir.files:
             self.interesting_files.append(f)
-
-
-def file_exist(file: str) -> bool:
-    return os.path.isfile(file)
 
 
 def file_same(lhs: str, rhs: str) -> bool:
@@ -226,7 +242,11 @@ def file_info(relative_file: Path, verbose: bool):
 def call_diff_app(left: str, right: str):
     s = platform.system()
     if s == 'Windows':
-        subprocess.call(['WinMergeU.exe', '/e', '/x', '/u', '/maximize', left, right])
+        winmerge = find_path('WinMergeU.exe', get_default_search_paths(), 'WinMerge')
+        if winmerge is None:
+            print('Unable to find WinMerge')
+        else:
+            subprocess.call([winmerge, '/e', '/x', '/u', '/maximize', left, right])
     elif s == 'Linux':
         subprocess.call(['unknown'])
     elif s == 'Os X':
@@ -279,10 +299,14 @@ def handle_home(args, data: Data):
 
 
 def handle_diff(args, data: Data):
+    matched = False
     if args.file is not None:
         for file in data.interesting_files:
             if file.src == args.file or file.home == args.file:
+                matched = True
                 diff_single_file(file)
+    if not matched:
+        print('No match for', args.file)
 
 
 ########################################################################################################################
