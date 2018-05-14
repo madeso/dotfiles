@@ -113,7 +113,7 @@ class Data:
     @staticmethod
     def _empty_files() -> typing.List[Path]:
         return []
-    
+
     def __init__(self):
         self.interesting_files = Data._empty_files()
 
@@ -256,7 +256,7 @@ def call_diff_app(left: str, right: str):
         else:
             subprocess.call([winmerge, '/e', '/x', '/u', '/maximize', left, right])
     elif s == 'Linux':
-        subprocess.call(['unknown'])
+        subprocess.call(['meld', left, right])
     elif s == 'Os X':
         subprocess.call(['unknown'])
     else:
