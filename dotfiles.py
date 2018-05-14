@@ -25,5 +25,6 @@ def get_data():
     )
     return data
 
+
 if __name__ == "__main__":
     dotlib.main(get_data())

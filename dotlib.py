@@ -158,6 +158,7 @@ def file_copy(src: str, dst: str, remove: bool, force: bool, verbose: bool, igno
     if not file_exist(src):
         print('Missing file', src)
         error_detected(ignore_errors)
+        return
     if file_exist(dst):
         if remove:
             if dry:
