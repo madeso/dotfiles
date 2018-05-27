@@ -1,7 +1,7 @@
 [alias]
   co = checkout
   dift = difftool
-  undo = checkout HEAD~
+  undo = reset HEAD~
   stat = status
   up = submodule update --init --recursive
   wordcloud = log --no-decorate --pretty=format:%s
