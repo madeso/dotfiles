@@ -6,6 +6,8 @@ import dotlib
 def get_data():
     data = dotlib.Data()
     data.add_file('_vimrc', '.vimrc')
+    data.add_file('_zshrc', '.zshrc')
+    data.add_file('_xresources', '.Xresources')
     data.add_file('_minttyrc', '.minttyrc')
     data.add_dir(
         dotlib.Dir("vs_code", ".config/Code/User",
