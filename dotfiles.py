@@ -14,6 +14,10 @@ def get_data():
           .file("config")
     )
     data.add_dir(
+        dotlib.Dir("custom_fonts", ".fonts")
+          .file("materialdesignicons-webfont.ttf")
+    )
+    data.add_dir(
         dotlib.Dir("vs_code", ".config/Code/User",
                    win_where=dotlib.PathType.APPDATA_ROAMING, win_home='Code\\User')
         .file('keybindings.json')
