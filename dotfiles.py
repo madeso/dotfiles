@@ -10,6 +10,10 @@ def get_data():
     data.add_file('_xresources', '.Xresources')
     data.add_file('_minttyrc', '.minttyrc')
     data.add_dir(
+        dotlib.Dir("i3", ".config/i3")
+          .file("config")
+    )
+    data.add_dir(
         dotlib.Dir("vs_code", ".config/Code/User",
                    win_where=dotlib.PathType.APPDATA_ROAMING, win_home='Code\\User')
         .file('keybindings.json')
