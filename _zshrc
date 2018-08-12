@@ -93,7 +93,7 @@ if [[ ! -d $ZSH_CACHE_DIR ]]; then
 fi
 
 source $ZSH/oh-my-zsh.sh
-export PATH=$HOME/scripts:$PATH
+export PATH=$HOME/dev/dotfiles/scripts:$PATH
 
 export EDITOR=vi
 export TERM=rxvt-unicode
