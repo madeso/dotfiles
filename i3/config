@@ -119,6 +119,7 @@ bindsym $mod+9 workspace $ws9
 bindsym $mod+0 workspace $ws10
 
 assign [class="Firefox"] $ws1
+assign [class="TelegramDesktop"] $ws10
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $ws1
@@ -133,9 +134,10 @@ bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
 
 # reload the configuration file
-bindsym $mod+Shift+c reload
+# bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+bindsym $mod+Shift+c restart
+bindsym $mod+Shift+r exec ~/dev/dotfiles/i3utils.py restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
@@ -166,6 +168,27 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+# begin config colors
+# starts section solarized
+set $bg-color            {base2}
+set $inactive-bg-color   {base3}
+set $text-color          {base01}
+set $inactive-text-color {base00}
+set $urgent-text-color   {red}
+set $urgent-bg-color     {base2}
+set $indicator           {blue}
+# ends section solarized
+
+
+# window colors
+#                       border             background         text                 indicator
+client.focused          $bg-color          $bg-color          $text-color          $indicator
+client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color $indicator
+client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color $indicator
+client.urgent           $urgent-bg-color   $urgent-bg-color   $urgent-text-color   $indicator
+client.placeholder      $inactive-bg-color $inactive-bg-color $inactive-text-color $indicator
+client.background       $bg-color
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
@@ -185,6 +208,7 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
 exec firefox
+exec telegram-desktop
 
 # apply the old background
 exec_always ~/.fehbg
