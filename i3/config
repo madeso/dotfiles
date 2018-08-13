@@ -177,6 +177,7 @@ set $inactive-text-color {base00}
 set $urgent-text-color   {red}
 set $urgent-bg-color     {base2}
 set $indicator           {blue}
+set $border              {base01}
 # ends section solarized
 
 
@@ -192,7 +193,18 @@ client.background       $bg-color
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status
+  status_command i3status
+  colors {
+    background  $bg-color
+    statusline  $text-color
+    separator   $text-color
+    
+    #                  border             background         text
+    focused_workspace  $bg-color          $bg-color          $text-color
+    active_workspace   $inactive-bg-color $inactive-bg-color $inactive-text-color
+    inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
+    urgent_workspace   $urgent-bg-color   $urgent-bg-color   $urgent-text-color
+  }
 }
 
 
