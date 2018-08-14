@@ -23,6 +23,11 @@ def get_data():
         .file('settings.json')
     )
     data.add_dir(
+        dotlib.Dir('rofi', '.config/rofi')
+        .file('config')
+        .file('solarized-light.rasi')
+    )
+    data.add_dir(
         dotlib.Dir('vimfiles', '.vim')
         .set_dir('colors')
         .file('solarized.vim')
