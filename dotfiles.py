@@ -8,6 +8,7 @@ def get_data():
     data.add_file('_vimrc', '.vimrc')
     data.add_file('_zshrc', '.zshrc')
     data.add_file('_xresources', '.Xresources')
+    data.add_file('fonts.conf', '.config/fontconfig/fonts.conf')
     data.add_file('_minttyrc', '.minttyrc')
     data.add_file('gnome2', '.gtkrc-2.0')
     data.add_file('gnome3.ini', '.config/gtk-3.0/settings.ini')
