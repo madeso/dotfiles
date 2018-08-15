@@ -10,13 +10,12 @@ URxvt.externalBorder:      0
 URxvt.highlightSelection:  true
 URxvt.loginShell: true
 URxvt*termName: rxvt-unicode-256color
+URxvt.letterSpace: 0
 
 URxvt.saveLines: 10000
 URxvt.xftAntialias: true
 
-URxvt.font: xft:Noto Sans Mono:size=8,\
-            xft:Nono Mono for Powerline:size=8,\
-            xft:PowerlineSymbols:size=8
+URxvt.font: xft:Noto Mono for Powerline:size=8
 !URxvt.font: xft:ProggyCleanTTSZ
 
 ! Solarized color scheme for the X Window System
