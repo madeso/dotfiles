@@ -174,7 +174,7 @@ def add_copy_commands(sub):
     add_dry(sub)
     sub.add_argument('--remove', '-r', dest='remove', action='store_true', help='Remove destination before copying')
     sub.add_argument('--force', '-f', dest='force', action='store_true', help='Force copy even if the file exist')
-    sub.add_argument('--ignore-errors', '--continue-on-error', dest='ignore_errors', action='store_true',
+    sub.add_argument('--ignore-errors', '--continue-on-error', '-ie', '-ce', dest='ignore_errors', action='store_true',
                      help="Don't stop on errors")
 
 
@@ -366,7 +366,7 @@ def main(data: Data):
 
     diff = sub_parsers.add_parser('diff', help='Diff files and stuff')
     diff.add_argument('file', nargs='+', help='File pattern to diff')
-    diff.add_argument('-p', '--print', action='store_const', const=True, default=False, help='Print matches if no exact match was found.')
+    diff.add_argument('-p', '--print', action='store_true', help='Print matches if no exact match was found.')
     diff.set_defaults(func=handle_diff)
 
     sub = sub_parsers.add_parser('status', aliases=['stat'], help='List the current status')
