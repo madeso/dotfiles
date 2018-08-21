@@ -263,6 +263,22 @@ def call_diff_app(left: str, right: str):
         print("Unknown OS", s)
 
 
+def levenshtein_distance(s1: str, s2: str) -> int:
+    if len(s1) > len(s2):
+        s1, s2 = s2, s1
+
+    distances = range(len(s1) + 1)
+    for i2, c2 in enumerate(s2):
+        distances_ = [i2+1]
+        for i1, c1 in enumerate(s1):
+            if c1 == c2:
+                distances_.append(distances[i1])
+            else:
+                distances_.append(1 + min((distances[i1], distances[i1 + 1], distances_[-1])))
+        distances = distances_
+    return distances[-1]
+
+
 def diff_single_file(relative_file: Path):
     absolute_home = relative_file.home.get_abs_path()
     absolute_source = os.path.join(get_src_folder(), relative_file.src)
@@ -307,14 +323,26 @@ def handle_home(args, data: Data):
 
 
 def handle_diff(args, data: Data):
-    matched = False
-    if args.file is not None:
-        for file in data.interesting_files:
-            if file.src == args.file or file.home == args.file:
-                matched = True
-                diff_single_file(file)
-    if not matched:
-        print('No match for', args.file)
+    def paths(path: Path) -> typing.List[str]:
+        return [path.src, path.home.path]
+    matches = []
+    for file in data.interesting_files:
+        for p in paths(file):
+            matched = True
+            for m in args.file:
+                if m not in p:
+                    matched = False
+            if matched:
+                matches.append(file)
+    matches = list(set(matches))
+    if len(matches) == 1:
+        diff_single_file(matches[0])
+    else:
+        print('Found {} matches'.format(len(matches)))
+        if args.print:
+            for m in matches:
+                for p in paths(m):
+                    print(p)
 
 
 ########################################################################################################################
@@ -337,7 +365,8 @@ def main(data: Data):
     sub.set_defaults(func=handle_update)
 
     diff = sub_parsers.add_parser('diff', help='Diff files and stuff')
-    diff.add_argument('--file', help='File to diff')
+    diff.add_argument('file', nargs='+', help='File pattern to diff')
+    diff.add_argument('-p', '--print', action='store_const', const=True, default=False, help='Print matches if no exact match was found.')
     diff.set_defaults(func=handle_diff)
 
     sub = sub_parsers.add_parser('status', aliases=['stat'], help='List the current status')
