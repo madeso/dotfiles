@@ -116,14 +116,55 @@ class Data:
 
     def __init__(self):
         self.interesting_files = Data._empty_files()
+        self.generated_files = Data._empty_files()
+        self.vars = GenerationData()
+
+    def set_vars(self, **kwargs):
+        for key, value in kwargs.items():
+            self.vars.set(key, value)
+
+    def set_var_alias(self, **kwargs):
+        for key, value in kwargs.items():
+            self.vars.set_alias(key, value)
 
     def add_file(self, src: str, home: str):
         file = Path(src, VarPath(None, home, None, PathType.USER))
         self.interesting_files.append(file)
 
+    def add_generated_file(self, src: str, home: str):
+        file = Path(src, VarPath(None, home, None, PathType.USER))
+        self.generated_files.append(file)
+
     def add_dir(self, subdir: Dir):
         for f in subdir.files:
             self.interesting_files.append(f)
+
+
+class GenerationData:
+    @staticmethod
+    def _empty_dictionary() -> typing.Dict[str, str]:
+        return {}
+
+    def __init__(self):
+        self.data = GenerationData._empty_dictionary()
+        self.alias = GenerationData._empty_dictionary()
+
+    def set_alias(self, name: str, val: str):
+        self.alias[name] = val
+
+    def set_raw(self, name: str, val: str):
+        self.data[name] = val
+        if val[0] == '#':
+            # also write this as rgb
+            h = val.lstrip('#')
+            rgb = tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+            self.set_raw('{}_rgb'.format(name), '{r}, {g}, {b}'.format(r=rgb[0], g=rgb[1], b=rgb[2]))
+
+    def set(self, name: str, val: str):
+        self.set_raw(name, val)
+        for (n, v) in self.alias.items():
+            if v == name:
+                self.set_raw(n, val)
 
 
 def file_same(lhs: str, rhs: str) -> bool:
@@ -149,16 +190,23 @@ def error_detected(ignore_errors: bool):
         sys.exit(-42)
 
 
+def clean_single_file(use_home: bool, verbose: bool, dry: bool, file: Path):
+    p = file.home.get_abs_path() if use_home else os.path.join(get_src_folder(), file.src)
+    if file_exist(p):
+        if verbose:
+            print("File exists ", p)
+        remove_file(p, verbose, dry)
+    else:
+        if verbose:
+            print("File doesn't exists ", p)
+
+
 def clean_interesting(use_home: bool, verbose: bool, dry: bool, data: Data):
     for file in data.interesting_files:
-        p = file.home.get_abs_path() if use_home else os.path.join(get_src_folder(), file.src)
-        if file_exist(p):
-            if verbose:
-                print("File exists ", p)
-            remove_file(p, verbose, dry)
-        else:
-            if verbose:
-                print("File doesn't exists ", p)
+        clean_single_file(use_home, verbose, dry, file)
+    if use_home:
+        for file in data.generated_files:
+            clean_single_file(use_home, verbose, dry, file)
 
 
 def add_verbose(sub):
@@ -178,7 +226,8 @@ def add_copy_commands(sub):
                      help="Don't stop on errors")
 
 
-def file_copy(src: str, dst: str, remove: bool, force: bool, verbose: bool, ignore_errors: bool, dry: bool):
+def file_base(src: str, dst: str, remove: bool, force: bool, verbose: bool, ignore_errors: bool, dry: bool,
+              file_function):
     if not file_exist(src):
         print('Missing file', src)
         error_detected(ignore_errors)
@@ -206,7 +255,23 @@ def file_copy(src: str, dst: str, remove: bool, force: bool, verbose: bool, igno
         if not os.path.exists(subdir):
             print("Needed to create directory:", subdir)
             os.makedirs(subdir)
-        shutil.copy(src, dst)
+        file_function(src, dst)
+
+
+def file_copy(src: str, dst: str, remove: bool, force: bool, verbose: bool, ignore_errors: bool, dry: bool):
+    file_base(src, dst, remove, force, verbose, ignore_errors, dry, shutil.copy)
+
+
+def file_generate(src: str, dst: str, remove: bool, force: bool, verbose: bool, ignore_errors: bool, dry: bool
+                  , gen: GenerationData):
+    file_base(src, dst, remove, force, verbose, ignore_errors, dry, lambda srcf, dstf: generate_file(srcf, dstf, gen))
+
+
+def generate_file(from_path: str, to_path: str, g: GenerationData):
+    import pystache
+    with open(from_path, 'r') as fromf:
+        with open(to_path, 'w') as tof:
+            tof.write(pystache.render(fromf.read(), g.data))
 
 
 def copy_command(args, data: Data, install: bool):
@@ -218,6 +283,14 @@ def copy_command(args, data: Data, install: bool):
         from_path = src_path if install else home_path
         to_path = home_path if install else src_path
         file_copy(from_path, to_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
+    if install:
+        for file in data.generated_files:
+            home_path = file.home.get_abs_path()
+            src_path = os.path.join(get_src_folder(), file.src)
+            from_path = src_path
+            to_path = home_path
+            file_generate(from_path, to_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry
+                          , data.vars)
 
 
 def add_remove_commands(sub):

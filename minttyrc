@@ -1,5 +1,5 @@
-ForegroundColour=101, 123, 131
-BackgroundColour=253, 246, 227
+ForegroundColour= {{primary_rgb}}
+BackgroundColour= {{background_rgb}}
 CursorColour=    220,  50,  47
 
 Black=             7,  54,  66
