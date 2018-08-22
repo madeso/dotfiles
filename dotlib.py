@@ -8,6 +8,7 @@ import shutil
 import sys
 import platform
 import typing
+import json
 from enum import Enum
 
 
@@ -56,6 +57,37 @@ def get_folder(path: PathType) -> str:
     if path == PathType.APPDATA_ROAMING:
         return get_appdata_roaming_folder()
     return get_home_folder()
+
+
+def get_config_file_name() -> str:
+    return os.path.join(get_home_folder(), '.dotlib.json')
+
+
+def get_user_data() -> typing.Dict[str, str]:
+    if file_exist(get_config_file_name()):
+        with open(get_config_file_name(), 'r') as f:
+            return json.loads(f.read())
+    else:
+        return {}
+
+
+def set_user_data(data: typing.Dict[str, str]):
+    with open(get_config_file_name(), 'w') as f:
+        print(json.dumps(data, sort_keys=True, indent=4), file=f)
+
+
+def get_computer_name() -> str:
+    data = get_user_data()
+    if 'name' in data:
+        return data['name']
+    else:
+        return ''
+
+
+def set_computer_name(name: str):
+    data = get_user_data()
+    data['name'] = name
+    set_user_data(data)
 
 
 class VarPath:
@@ -395,6 +427,13 @@ def handle_home(args, data: Data):
         print("Unknown OS", s)
 
 
+def handle_name(args, data: Data):
+    if args.name is None:
+        print(get_computer_name())
+    else:
+        set_computer_name(args.name)
+
+
 def handle_diff(args, data: Data):
     def paths(path: Path) -> typing.List[str]:
         return [path.src, path.home.path]
@@ -448,6 +487,10 @@ def main(data: Data):
 
     sub = sub_parsers.add_parser('home', help='Start explorer in home')
     sub.set_defaults(func=handle_home)
+
+    sub = sub_parsers.add_parser('name', help='Get or set the current computer name')
+    sub.add_argument('--name', help='if specified, sets the name to this')
+    sub.set_defaults(func=handle_name)
 
     args = parser.parse_args()
     if args.command_name is not None:
