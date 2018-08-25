@@ -16,6 +16,8 @@ endif
 :set guioptions-=r  "remove right-hand scroll bar
 :set guioptions-=L  "remove left-hand scroll bar
 
+:let mapleader= ","
+
 set history=50
 set ruler         " show the cursor position all the time
 set showcmd       " display incomplete commands
@@ -77,4 +79,16 @@ autocmd InsertLeave * :set rnu
 " fix slow escape escape
 :set timeout timeoutlen=10
 
+nnoremap <leader>c "_c
+nnoremap <leader>d "_d
+xnoremap <leader>d "_d
+xnoremap <leader>p "_dP
+
+" move lines or blocks up/down with alt+movment
+nnoremap <C-j> :m .+1<CR>==
+nnoremap <C-k> :m .-2<CR>==
+inoremap <C-j> <Esc>:m .+1<CR>==gi
+inoremap <C-k> <Esc>:m .-2<CR>==gi
+vnoremap <C-j> :m '>+1<CR>gv=gv
+vnoremap <C-k> :m '<-2<CR>gv=gv
 
