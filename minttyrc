@@ -1,0 +1,20 @@
+ForegroundColour= {{primary_rgb}}
+BackgroundColour= {{background_rgb}}
+CursorColour=    {{primary_rgb}}
+
+Black=           {{primary_rgb}}
+BoldBlack=       {{primary_rgb}}
+Red=             {{red_rgb}}
+BoldRed=         {{red_rgb}}
+Green=           {{green_rgb}}
+BoldGreen=       {{green_rgb}}
+Yellow=          {{yellow_rgb}}
+BoldYellow=      {{yellow_rgb}}
+Blue=            {{blue_rgb}}
+BoldBlue=        {{blue_rgb}}
+Magenta=         {{magenta_rgb}}
+BoldMagenta=     {{magenta_rgb}}
+Cyan=            {{cyan_rgb}}
+BoldCyan=        {{cyan_rgb}}
+White=           {{background_highlights_rgb}}
+BoldWhite=       {{comments_rgb}}
