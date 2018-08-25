@@ -306,7 +306,7 @@ def generate_file(from_path: str, to_path: str, g: GenerationData):
             tof.write(pystache.render(fromf.read(), g.data))
 
 
-def copy_command(args, data: Data, install: bool):
+def run_copy_command(args, data: Data, install: bool):
     if args.remove:
         clean_interesting(install, args.verbose, args.dry, data)
     for file in data.interesting_files:
@@ -323,6 +323,16 @@ def copy_command(args, data: Data, install: bool):
             to_path = home_path
             file_generate(from_path, to_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry
                           , data.vars)
+
+def copy_command(args, data: Data, install: bool):
+  try:
+    run_copy_command(args, data, install)
+  except ModuleNotFoundError as err:
+    print('Some parts of the copy command failed due to missing modules', file=sys.stderr)
+    if 'pystache' in str(err):
+      print('It looks like you are myssing pystache, "pip install pystache" should do the trick.')
+    else:
+      print(err, file=sys.stderr)
 
 
 def add_remove_commands(sub):
