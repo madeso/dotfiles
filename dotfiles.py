@@ -38,6 +38,7 @@ def get_data():
     data.add_file('_zshrc', '.zshrc')
     data.add_file('_xresources', '.Xresources')
     data.add_file('fonts.conf', '.config/fontconfig/fonts.conf')
+    data.add_generated_file('i3config', '.config/i3/config')
     data.add_generated_file('minttyrc', '.minttyrc')
     data.add_file('i3blocks-config', '.config/i3blocks/config')
     data.add_dir(

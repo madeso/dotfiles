@@ -45,11 +45,8 @@ def get_config_lines():
   return lines
 
 def write_config_lines():
-  lines = get_config_lines()
-  dst = os.path.expanduser('~/.config/i3/config') 
-  with open(dst, 'w') as out_file:
-    for line in lines:
-      print(line, file=out_file)
+  pass
+
 
 def handle_print(args):
   lines = get_config_lines()

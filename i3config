@@ -17,16 +17,15 @@ set $mod Mod4
 font pango:Noto Sans,Material Design Icons, 8
 
 # begin config colors
-# starts section solarized
-set $bg-color            {base2}
-set $inactive-bg-color   {base3}
-set $text-color          {base01}
-set $inactive-text-color {base00}
-set $urgent-text-color   {red}
-set $urgent-bg-color     {base2}
-set $indicator           {base2}
-set $border              {base01}
-# ends section solarized
+# todo: change to aliased color names instead of referencing the solarized names
+set $bg-color            {{base2}}
+set $inactive-bg-color   {{base3}}
+set $text-color          {{base01}}
+set $inactive-text-color {{base00}}
+set $urgent-text-color   {{red}}
+set $urgent-bg-color     {{base2}}
+set $indicator           {{base2}}
+set $border              {{base01}}
 
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
@@ -150,7 +149,7 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 # bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+c restart
-bindsym $mod+Shift+r exec ~/dev/dotfiles/i3utils.py restart
+bindsym $mod+Shift+r exec ~/dev/dotfiles/dotfiles.py install i3 && i3-msg restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 bindsym $mod+Shift+x exec i3lock --color "$bg-color"
