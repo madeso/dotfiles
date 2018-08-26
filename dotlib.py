@@ -311,6 +311,19 @@ def generate_file(from_path: str, to_path: str, g: GenerationData):
         tof.write( generate_file_as_str(from_path, g) )
 
 
+def generated_same(generated: str, source: str, g: GenerationData) -> bool:
+    if file_exist(generated) and file_exist(source):
+        import tempfile
+        handle, tmp = tempfile.mkstemp(text=True)
+        # handle.close()
+        generate_file(source, tmp, g)
+        r = filecmp.cmp(generated, tmp)
+        remove_file(tmp, False, False)
+        return r
+    else:
+        return False
+
+
 def matchlist_contains_file(terms: typing.List[str], path: str) -> bool:
     if len(terms) is 0:
         return True
@@ -398,27 +411,10 @@ def remove_command(use_home: bool, args, data: Data):
     clean_interesting(use_home, args.verbose, args.dry, data)
 
 
-def file_info(relative_file: Path, verbose: bool):
-    absolute_home = relative_file.home.get_abs_path()
-    absolute_source = os.path.join(get_src_folder(), relative_file.src)
-    if verbose:
-        print('Checking', relative_file)
-    if not file_exist(absolute_home):
-        print("Missing in HOME", absolute_home)
-        return
-    if not file_exist(absolute_source):
-        print("Missing in SRC", absolute_source)
-        return
-    if not file_same(absolute_home, absolute_source):
-        print("Different", absolute_home, absolute_source)
-        return
-    if verbose:
-        print("Same", absolute_home, absolute_source)
-
-
 def print_file_infos(data: Data, verbose: bool):
-    def copy_callback(absolute_home: str, absolute_source: str):
+    def file_diff(absolute_home: str, absolute_source: str, diff_callback):
         if verbose:
+            print()
             print('Checking', absolute_home)
         if not file_exist(absolute_home):
             print("Missing in HOME", absolute_home)
@@ -426,16 +422,16 @@ def print_file_infos(data: Data, verbose: bool):
         if not file_exist(absolute_source):
             print("Missing in SRC", absolute_source)
             return
-        if not file_same(absolute_home, absolute_source):
+        if not diff_callback(absolute_home, absolute_source):
             print("Different", absolute_home, absolute_source)
             return
         if verbose:
             print("Same", absolute_home, absolute_source)
 
-    def generate_callback(absolute_home: str, absolute_src: str):
-        pass
-
-    for_each_file(data, False, 'status printed', search=[], callback_copy=copy_callback, callback_generate=generate_callback)
+    for_each_file(data, True, 'status printed', search=[],
+                  callback_copy=lambda source, home: file_diff(home, source, file_same),
+                  callback_generate=lambda source, home: file_diff(home, source, lambda s, h: generated_same(s, h, data.vars))
+                  )
 
 
 def call_diff_app(left: str, right: str):
