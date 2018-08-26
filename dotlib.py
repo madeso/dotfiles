@@ -311,15 +311,26 @@ def generate_file(from_path: str, to_path: str, g: GenerationData):
         tof.write( generate_file_as_str(from_path, g) )
 
 
+class GeneratedFile:
+    def __init__(self, source_file: str, g: GenerationData):
+        import tempfile
+        self.source_file = source_file
+        self.g = g
+        handle, tmp = tempfile.mkstemp(text=True)
+        self.path_to_generated_file = tmp
+
+    def __enter__(self) -> 'GeneratedFile':
+        generate_file(self.source_file, self.path_to_generated_file, self.g)
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        remove_file(self.path_to_generated_file, False, False)
+
+
 def generated_same(generated: str, source: str, g: GenerationData) -> bool:
     if file_exist(generated) and file_exist(source):
-        import tempfile
-        handle, tmp = tempfile.mkstemp(text=True)
-        # handle.close()
-        generate_file(source, tmp, g)
-        r = filecmp.cmp(generated, tmp)
-        remove_file(tmp, False, False)
-        return r
+        with GeneratedFile(source, g) as temp:
+            return filecmp.cmp(generated, temp.path_to_generated_file)
     else:
         return False
 
@@ -443,7 +454,15 @@ def call_diff_app(left: str, right: str):
         else:
             subprocess.call([winmerge, '/e', '/x', '/u', '/maximize', left, right])
     elif s == 'Linux':
-        subprocess.call(['meld', left, right])
+        try:
+            subprocess.call(['meld', left, right])
+        except OSError as e:
+            if e.errno == os.errno.ENOENT:
+                print("Note: Meld isn't installed")
+                subprocess.call(['diff', left, right, '--color'])
+                # print(diff)
+            else:
+                raise
     elif s == 'Os X':
         subprocess.call(['unknown'])
     else:
@@ -522,7 +541,10 @@ def handle_diff(args, data: Data):
     matches = list(set(matches))
     if len(matches) == 1:
         src, home, generate = matches[0]
-        if not generate:
+        if generate:
+            with GeneratedFile(src, data.vars) as temp:
+                call_diff_app(temp.path_to_generated_file, home)
+        else:
             call_diff_app(src, home)
     else:
         if args.print:
