@@ -3,7 +3,7 @@ color=#93a1a1
 
 [arch-update]
 command=~/.config/i3blocks/scripts/arch-update.py -b "#586e75" -u "#dc322f"
-label=Updates:
+label= 
 interval=3600
 markup=pango
 
@@ -18,6 +18,6 @@ command=~/.config/i3blocks/scripts/load_average.sh
 interval=10
 
 [time]
-command=date '+%Y-%m-%d #%V %R'
+command=date '+%d-%b-%Y v%V %R'
 
 
