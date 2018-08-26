@@ -250,6 +250,7 @@ def add_dry(sub):
 
 
 def add_copy_commands(sub):
+    sub.add_argument('search', nargs='*')
     add_verbose(sub)
     add_dry(sub)
     sub.add_argument('--remove', '-r', dest='remove', action='store_true', help='Remove destination before copying')
@@ -306,23 +307,41 @@ def generate_file(from_path: str, to_path: str, g: GenerationData):
             tof.write(pystache.render(fromf.read(), g.data))
 
 
+def matchlist_contains_file(terms: typing.List[str], path: str) -> bool:
+    if len(terms) is 0:
+        return True
+    for t in terms:
+        if t in path:
+            return True
+    return False
+
+
 def run_copy_command(args, data: Data, install: bool):
     if args.remove:
         clean_interesting(install, args.verbose, args.dry, data)
+    total = 0
+    operated = 0
     for file in data.interesting_files:
+        total += 1
         home_path = file.home.get_abs_path()
         src_path = os.path.join(get_src_folder(), file.src)
         from_path = src_path if install else home_path
         to_path = home_path if install else src_path
-        file_copy(from_path, to_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
+        if matchlist_contains_file(args.search, from_path) or matchlist_contains_file(args.search, to_path):
+            operated += 1
+            file_copy(from_path, to_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
     if install:
         for file in data.generated_files:
+            total += 1
             home_path = file.home.get_abs_path()
             src_path = os.path.join(get_src_folder(), file.src)
             from_path = src_path
             to_path = home_path
-            file_generate(from_path, to_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry
+            if matchlist_contains_file(args.search, from_path) or matchlist_contains_file(args.search, to_path):
+                operated += 1
+                file_generate(from_path, to_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry
                           , data.vars)
+    print('{} of {} copied.'.format(operated, total))
 
 def copy_command(args, data: Data, install: bool):
   try:
