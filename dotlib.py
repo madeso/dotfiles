@@ -417,6 +417,29 @@ def file_info(relative_file: Path, verbose: bool):
 
 
 def print_file_infos(data: Data, verbose: bool):
+    def copy_callback(absolute_home: str, absolute_source: str):
+        if verbose:
+            print('Checking', absolute_home)
+        if not file_exist(absolute_home):
+            print("Missing in HOME", absolute_home)
+            return
+        if not file_exist(absolute_source):
+            print("Missing in SRC", absolute_source)
+            return
+        if not file_same(absolute_home, absolute_source):
+            print("Different", absolute_home, absolute_source)
+            return
+        if verbose:
+            print("Same", absolute_home, absolute_source)
+
+    def generate_callback(absolute_home: str, absolute_src: str):
+        pass
+
+    for_each_file(data, False, 'status printed', search=[], callback_copy=copy_callback, callback_generate=generate_callback)
+
+
+
+def print_file_infos_old(data: Data, verbose: bool):
     for file in data.interesting_files:
         file_info(file, verbose)
 
