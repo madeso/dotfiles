@@ -300,25 +300,27 @@ def file_generate(src: str, dst: str, remove: bool, force: bool, verbose: bool, 
     file_base(src, dst, remove, force, verbose, ignore_errors, dry, lambda srcf, dstf: generate_file(srcf, dstf, gen))
 
 
-def generate_file(from_path: str, to_path: str, g: GenerationData):
+def generate_file_as_str(from_path: str, g: GenerationData) -> str:
     import pystache
     with open(from_path, 'r') as fromf:
-        with open(to_path, 'w') as tof:
-            tof.write(pystache.render(fromf.read(), g.data))
+        return pystache.render(fromf.read(), g.data)
+
+
+def generate_file(from_path: str, to_path: str, g: GenerationData):
+    with open(to_path, 'w') as tof:
+        tof.write( generate_file_as_str(from_path, g) )
 
 
 def matchlist_contains_file(terms: typing.List[str], path: str) -> bool:
     if len(terms) is 0:
         return True
     for t in terms:
-        if t in path:
-            return True
-    return False
+        if t not in path:
+            return False
+    return True
 
 
-def run_copy_command(args, data: Data, install: bool):
-    if args.remove:
-        clean_interesting(install, args.verbose, args.dry, data)
+def for_each_file(data: Data, install: bool, verb: str, search: typing.List[str], callback_copy, callback_generate):
     total = 0
     operated = 0
     for file in data.interesting_files:
@@ -327,9 +329,9 @@ def run_copy_command(args, data: Data, install: bool):
         src_path = os.path.join(get_src_folder(), file.src)
         from_path = src_path if install else home_path
         to_path = home_path if install else src_path
-        if matchlist_contains_file(args.search, from_path) or matchlist_contains_file(args.search, to_path):
+        if matchlist_contains_file(search, from_path) or matchlist_contains_file(search, to_path):
             operated += 1
-            file_copy(from_path, to_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry)
+            callback_copy(from_path, to_path)
     if install:
         for file in data.generated_files:
             total += 1
@@ -337,22 +339,55 @@ def run_copy_command(args, data: Data, install: bool):
             src_path = os.path.join(get_src_folder(), file.src)
             from_path = src_path
             to_path = home_path
-            if matchlist_contains_file(args.search, from_path) or matchlist_contains_file(args.search, to_path):
+            if matchlist_contains_file(search, from_path) or matchlist_contains_file(search, to_path):
                 operated += 1
-                file_generate(from_path, to_path, args.remove, args.force, args.verbose, args.ignore_errors, args.dry
-                          , data.vars)
-    print('{} of {} copied.'.format(operated, total))
+                callback_generate(from_path, to_path)
+    print('{} of {} {}.'.format(operated, total, verb))
+
+
+def run_copy_command(args, data: Data, install: bool):
+    if args.remove:
+        clean_interesting(install, args.verbose, args.dry, data)
+    for_each_file(data, install, verb='copied', search=args.search,
+                  callback_copy=lambda from_path, to_path: file_copy(from_path, to_path, args.remove,
+                                                                     args.force, args.verbose, args.ignore_errors,
+                                                                     args.dry),
+                  callback_generate=lambda from_path, to_path: file_generate(from_path, to_path, args.remove,
+                                                                             args.force, args.verbose,
+                                                                             args.ignore_errors, args.dry, data.vars)
+                  )
+
+
+def handle_module_not_found(err: ModuleNotFoundError):
+    print('Some parts of the command failed due to missing modules', file=sys.stderr)
+    if 'pystache' in str(err):
+        print('It looks like you are missing pystache, "pip install pystache" should do the trick.')
+    else:
+        print(err, file=sys.stderr)
+
 
 def copy_command(args, data: Data, install: bool):
   try:
     run_copy_command(args, data, install)
   except ModuleNotFoundError as err:
-    print('Some parts of the copy command failed due to missing modules', file=sys.stderr)
-    if 'pystache' in str(err):
-      print('It looks like you are myssing pystache, "pip install pystache" should do the trick.')
-    else:
-      print(err, file=sys.stderr)
+    handle_module_not_found(err)
 
+
+def run_print_command(args, data: Data):
+    def print_copied(from_path, to_path):
+        print('Copying {} -> {}'.format(from_path, to_path))
+        print()
+
+    def print_generate(from_path, to_path):
+        print('Generate {} -> {}'.format(from_path, to_path))
+        print(generate_file_as_str(from_path, data.vars))
+        print()
+
+    try:
+        for_each_file(data, True, verb='printed', search=args.search,
+                      callback_copy=print_copied, callback_generate=print_generate)
+    except ModuleNotFoundError as err:
+        handle_module_not_found(err)
 
 def add_remove_commands(sub):
     add_verbose(sub)
@@ -424,6 +459,10 @@ def diff_single_file(relative_file: Path):
 
 def handle_install(args, data: Data):
     copy_command(args, data, True)
+
+
+def handle_print(args, data: Data):
+    run_print_command(args, data)
 
 
 def handle_uninstall(args, data: Data):
@@ -509,6 +548,10 @@ def main(data: Data):
     diff.add_argument('file', nargs='+', help='File pattern to diff')
     diff.add_argument('-p', '--print', action='store_true', help='Print matches if no exact match was found.')
     diff.set_defaults(func=handle_diff)
+
+    sub = sub_parsers.add_parser('print', aliases=['debug'], help='Print generated files')
+    sub.add_argument('search', nargs='*', help='selections of file patterns to debug')
+    sub.set_defaults(func=handle_print)
 
     sub = sub_parsers.add_parser('status', aliases=['stat'], help='List the current status')
     add_verbose(sub)
