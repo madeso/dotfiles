@@ -466,12 +466,6 @@ def levenshtein_distance(s1: str, s2: str) -> int:
     return distances[-1]
 
 
-def diff_single_file(relative_file: Path):
-    absolute_home = relative_file.home.get_abs_path()
-    absolute_source = os.path.join(get_src_folder(), relative_file.src)
-    call_diff_app(absolute_home, absolute_source)
-
-
 ########################################################################################################################
 # Command functions
 
@@ -520,26 +514,24 @@ def handle_name(args, data: Data):
 
 
 def handle_diff(args, data: Data):
-    def paths(path: Path) -> typing.List[str]:
-        return [path.src, path.home.path]
     matches = []
-    for file in data.interesting_files:
-        for p in paths(file):
-            matched = True
-            for m in args.file:
-                if m not in p:
-                    matched = False
-            if matched:
-                matches.append(file)
+    for_each_file(data, True, 'diff matches', args.file,
+                  callback_copy=lambda from_path, to_path: matches.append((from_path, to_path, False)),
+                  callback_generate=lambda from_path, to_path: matches.append((from_path, to_path, True))
+                  )
     matches = list(set(matches))
     if len(matches) == 1:
-        diff_single_file(matches[0])
+        src, home, generate = matches[0]
+        if not generate:
+            call_diff_app(src, home)
     else:
-        print('Found {} matches'.format(len(matches)))
         if args.print:
             for m in matches:
-                for p in paths(m):
-                    print(p)
+                src, home, generate = m
+                print("Generated" if generate else "Copied")
+                print('Source:', src)
+                print('Home:  ', home)
+                print('')
 
 
 ########################################################################################################################
