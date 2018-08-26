@@ -416,6 +416,11 @@ def file_info(relative_file: Path, verbose: bool):
         print("Same", absolute_home, absolute_source)
 
 
+def print_file_infos(data: Data, verbose: bool):
+    for file in data.interesting_files:
+        file_info(file, verbose)
+
+
 def call_diff_app(left: str, right: str):
     s = platform.system()
     if s == 'Windows':
@@ -479,8 +484,7 @@ def handle_status(args, data: Data):
         print('APPDATA ROAMING: ', get_appdata_roaming_folder())
     print('SRC: ', get_src_folder())
     print()
-    for file in data.interesting_files:
-        file_info(file, args.verbose)
+    print_file_infos(data, args.verbose)
 
 
 def handle_home(args, data: Data):
