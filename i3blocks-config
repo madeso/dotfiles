@@ -1,15 +1,15 @@
 interval=5
-color=#93a1a1
+color={{comments}}
 
 [arch-update]
-command=~/.config/i3blocks/scripts/arch-update.py -b "#586e75" -u "#dc322f"
+command=~/.config/i3blocks/scripts/arch-update.py -b "{{emph}}" -u "{{red}}"
 label= 
 interval=3600
 markup=pango
 
 [volume-pulseaudio]
 interval=1
-command=~/.config/i3blocks/scripts/volume-pulseaudio.sh -H "" -M "" -L "" -X "" -C "#657b83" -c "#586e75" -F 3 -f 3 -T 66 -t 33
+command=~/.config/i3blocks/scripts/volume-pulseaudio.sh -H "" -M "" -L "" -X "" -C "{{text}}" -c "{{emph}}" -F 3 -f 3 -T 66 -t 33
 
 [load_average]
 label=:
