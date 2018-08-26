@@ -438,12 +438,6 @@ def print_file_infos(data: Data, verbose: bool):
     for_each_file(data, False, 'status printed', search=[], callback_copy=copy_callback, callback_generate=generate_callback)
 
 
-
-def print_file_infos_old(data: Data, verbose: bool):
-    for file in data.interesting_files:
-        file_info(file, verbose)
-
-
 def call_diff_app(left: str, right: str):
     s = platform.system()
     if s == 'Windows':
