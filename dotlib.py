@@ -302,12 +302,12 @@ def file_generate(src: str, dst: str, remove: bool, force: bool, verbose: bool, 
 
 def generate_file_as_str(from_path: str, g: GenerationData) -> str:
     import pystache
-    with open(from_path, 'r') as fromf:
+    with open(from_path, 'r', encoding='utf-8') as fromf:
         return pystache.render(fromf.read(), g.data)
 
 
 def generate_file(from_path: str, to_path: str, g: GenerationData):
-    with open(to_path, 'w') as tof:
+    with open(to_path, 'w', encoding='utf-8') as tof:
         tof.write( generate_file_as_str(from_path, g) )
 
 
@@ -317,6 +317,7 @@ class GeneratedFile:
         self.source_file = source_file
         self.g = g
         handle, tmp = tempfile.mkstemp(text=True)
+        os.close(handle)
         self.path_to_generated_file = tmp
 
     def __enter__(self) -> 'GeneratedFile':
@@ -324,7 +325,10 @@ class GeneratedFile:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        remove_file(self.path_to_generated_file, False, False)
+        try:
+            remove_file(self.path_to_generated_file, False, False)
+        except WindowsError as e:
+            print("Could not delete temp file because {}".format(e))
 
 
 def generated_same(generated: str, source: str, g: GenerationData) -> bool:
