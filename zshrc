@@ -100,4 +100,4 @@ export TERM=rxvt-unicode
 export BROWSER=firefox
 
 alias vi='vim'
-
+source /dev/dotfiles/scripts/start-ssh-agent.sh
