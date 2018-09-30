@@ -20,7 +20,8 @@ interval=10
 [keyboard]
 label=kbd:
 command=~/.config/i3blocks/scripts/keyboard-map.sh
-interval=10
+interval=once
+signal=10 
 
 [time]
 command=date '+%d-%b-%Y v%V %R'
