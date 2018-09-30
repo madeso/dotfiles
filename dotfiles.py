@@ -47,6 +47,7 @@ def get_data():
           .file("disk_usage.sh")
           .file("load_average.sh")
           .file("volume-pulseaudio.sh")
+          .file("keyboard-map.sh")
     )
     data.add_file('gnome2', '.gtkrc-2.0')
     data.add_file('gnome3.ini', '.config/gtk-3.0/settings.ini')

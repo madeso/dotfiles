@@ -17,6 +17,11 @@ markup=pango
 command=~/.config/i3blocks/scripts/load_average.sh
 interval=10
 
+[keyboard]
+label=kbd:
+command=~/.config/i3blocks/scripts/keyboard-map.sh
+interval=10
+
 [time]
 command=date '+%d-%b-%Y v%V %R'
 
