@@ -6,7 +6,7 @@
     "editor.minimap.enabled": false,
     "editor.renderWhitespace": "none",
     "window.zoomLevel": -1,
-    "workbench.statusBar.visible": false,
+    "workbench.statusBar.visible": true,
     "explorer.openEditors.visible": 0,
     "[plaintext]": {
         "editor.wordBasedSuggestions": false,
