@@ -75,8 +75,10 @@ def get_data():
         .file('togglebg.png')
         .set_dir('autoload')
         .file('togglebg.vim')
+        .file('pathogen.vim')
         .set_dir('after/ftplugin')
         .file('proto.vim')
+        .add_dir('bundle/syntastic/')
     )
     return data
 

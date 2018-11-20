@@ -127,6 +127,13 @@ class Dir:
         self.subdir = subdir
         return self
 
+    def add_dir(self, subdir: str) -> 'Dir':
+        p = os.path.join(get_src_folder(), self.src, subdir)
+        # work in progress...
+        # todo: traverse all files in subdir and add them to self.files
+        print(p)
+        return self
+
     def file(self, path: str) -> 'Dir':
         if self.subdir is None:
             self.files.append(Path(
