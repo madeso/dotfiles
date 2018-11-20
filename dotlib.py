@@ -386,7 +386,7 @@ def run_copy_command(args, data: Data, install: bool):
                   )
 
 
-def handle_module_not_found(err: ModuleNotFoundError):
+def handle_module_not_found(err: "ModuleNotFoundError"):
     print('Some parts of the command failed due to missing modules', file=sys.stderr)
     if 'pystache' in str(err):
         print('It looks like you are missing pystache, "pip install pystache" should do the trick.')
