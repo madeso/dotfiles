@@ -128,11 +128,24 @@ class Dir:
         return self
 
     def add_dir(self, subdir: str) -> 'Dir':
+        self.add_dir_rec(subdir)
+        return self
+
+    def add_dir_rec(self, subdir: str):
         p = os.path.join(get_src_folder(), self.src, subdir)
         # work in progress...
         # todo: traverse all files in subdir and add them to self.files
-        print(p)
-        return self
+        for entry in os.listdir(p):
+            if entry == '.git':
+                pass
+            else:
+                if os.path.isfile(os.path.join(get_src_folder(), self.src, subdir, entry)):
+                    self.files.append(Path(
+                        os.path.join(self.src, subdir, entry),
+                        VarPath(self.home, entry, subdir, self.win_where)
+                    ))
+                else:
+                    self.add_dir_rec(os.path.join(subdir, entry))
 
     def file(self, path: str) -> 'Dir':
         if self.subdir is None:
