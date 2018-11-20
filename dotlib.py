@@ -386,6 +386,17 @@ def run_copy_command(args, data: Data, install: bool):
                   )
 
 
+def detect_module_not_found() -> bool:
+    try:
+        ModuleNotFoundError
+    except NameError:
+        return False
+    return True
+
+
+HAS_MODULE_NOT_FOUND = detect_module_not_found()
+
+
 def handle_module_not_found(err: "ModuleNotFoundError"):
     print('Some parts of the command failed due to missing modules', file=sys.stderr)
     if 'pystache' in str(err):
@@ -395,10 +406,13 @@ def handle_module_not_found(err: "ModuleNotFoundError"):
 
 
 def copy_command(args, data: Data, install: bool):
-  try:
-    run_copy_command(args, data, install)
-  except ModuleNotFoundError as err:
-    handle_module_not_found(err)
+    if HAS_MODULE_NOT_FOUND:
+        try:
+            run_copy_command(args, data, install)
+        except ModuleNotFoundError as err:
+            handle_module_not_found(err)
+    else:
+        run_copy_command(args, data, install)
 
 
 def run_print_command(args, data: Data):
@@ -411,11 +425,16 @@ def run_print_command(args, data: Data):
         print(generate_file_as_str(from_path, data.vars))
         print()
 
-    try:
+    if HAS_MODULE_NOT_FOUND:
+        try:
+            for_each_file(data, True, verb='printed', search=args.search,
+                          callback_copy=print_copied, callback_generate=print_generate)
+        except ModuleNotFoundError as err:
+            handle_module_not_found(err)
+    else:
         for_each_file(data, True, verb='printed', search=args.search,
                       callback_copy=print_copied, callback_generate=print_generate)
-    except ModuleNotFoundError as err:
-        handle_module_not_found(err)
+
 
 def add_remove_commands(sub):
     add_verbose(sub)
