@@ -2,10 +2,8 @@
     "window.menuBarVisibility": "default",
     "workbench.colorTheme": "Solarized Light",
     "editor.renderIndentGuides": false,
-    "workbench.activityBar.visible": false,
     "editor.minimap.enabled": false,
     "editor.renderWhitespace": "none",
-    "window.zoomLevel": -1,
     "workbench.statusBar.visible": true,
     "explorer.openEditors.visible": 0,
     "[plaintext]": {
@@ -16,5 +14,10 @@
             "strings": false
         }
     },
-    "python.linting.pylintEnabled": false
+    "python.linting.pylintEnabled": false,
+    "window.titleBarStyle": "custom",
+    "window.zoomLevel": -1,
+    "workbench.editor.highlightModifiedTabs": true,
+    "workbench.activityBar.visible": false,
+    "workbench.iconTheme": null
 }
