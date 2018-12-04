@@ -1,18 +1,14 @@
 #!/usr/bin/env python
 import sys
 
-
+# reference: https://en.wikipedia.org/wiki/ANSI_escape_code
 def main():
-    terse = "-t" in sys.argv[1:] or "--terse" in sys.argv[1:]
     write = sys.stdout.write
-    for i in range(2 if terse else 10):
-        for j in range(30, 38):
-            for k in range(40, 48):
-                if terse:
-                    write("\33[%d;%d;%dm%d;%d;%d\33[m " % (i, j, k, i, j, k))
-                else:
-                    write("%d;%d;%d: \33[%d;%d;%dm Hello, World! \33[m \n" %
-                          (i, j, k, i, j, k,))
+    NAMES = ['Black', 'Red', 'Green', 'Yellow', 'Blue', 'Magenta', 'Cyan', 'White']
+    for bold_flag in range(2):
+        for foreground_color in range(30, 38):
+            for background_color in range(40, 48):
+                write("\33[%d;%d;%dm%d;%d;%d\33[m " % (bold_flag, foreground_color, background_color, bold_flag, foreground_color, background_color))
             write("\n")
 
 
