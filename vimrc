@@ -6,9 +6,35 @@ source $VIMRUNTIME/menu.vim
 " syntastic
 execute pathogen#infect()
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+hi statusline ctermfg=9 ctermbg=15
+" Formats the statusline
+set statusline=%f                           " file name
+set statusline+=\ 
+set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
+set statusline+=%{&ff}] "file format
+set statusline+=%y      "filetype
+set statusline+=%h      "help file flag
+set statusline+=%m      "modified flag
+set statusline+=%r      "read only flag
+
+" Puts in the current git status
+" if count(g:pathogen_disabled, 'Fugitive') < 1   
+"  set statusline+=%{fugitive#statusline()}
+" endif
+
+" Puts in syntastic warnings
+"if count(g:pathogen_disabled, 'Syntastic') < 1  
+  set statusline+=%#warningmsg#
+  set statusline+=%{SyntasticStatuslineFlag()}
+  set statusline+=%*
+" endif
+
+set statusline+=\ %=                        " align left
+" set statusline+=Line:%l/%L[%p%%]            " line X of Y [percent of file]
+set statusline+=ln:%l/%L                    " line X of Y
+set statusline+=\ Col:%c                    " current column
+set statusline+=\ Buf:%n                    " Buffer number
+" set statusline+=\ [%b][0x%B]\               " ASCII and byte code under cursor
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
