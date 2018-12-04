@@ -1,16 +1,48 @@
 #!/usr/bin/env python
 import sys
 
-# reference: https://en.wikipedia.org/wiki/ANSI_escape_code
-def main():
-    write = sys.stdout.write
-    NAMES = ['Black', 'Red', 'Green', 'Yellow', 'Blue', 'Magenta', 'Cyan', 'White']
-    for bold_flag in range(2):
-        for foreground_color in range(30, 38):
-            for background_color in range(40, 48):
-                write("\33[%d;%d;%dm%d;%d;%d\33[m " % (bold_flag, foreground_color, background_color, bold_flag, foreground_color, background_color))
-            write("\n")
+def write_color_test(bold_flag, foreground_color, background_color, text):
+    ESC = '\33'
+    color_code = "[{};{};{}m".format(bold_flag, foreground_color, background_color)
+    sys.stdout.write(ESC + color_code + text + ESC + "[m ")
 
+
+def string_with_width(str, width):
+    return '{0:{width}}'.format(str, width=width)
+
+
+def string_ra(str, width):
+    return '{0:>{width}}'.format(str, width=width)
+
+
+def sample_text_width(text, sample_text, color_name):
+    return string_with_width(text, max([len(color_name), len(sample_text)]))
+
+
+# reference: https://en.wikipedia.org/wiki/ANSI_escape_code
+def write_color_table(bold_flag):
+    NAMES = ['Black', 'Red', 'Green', 'Yellow', 'Blue', 'Magenta', 'Cyan', 'White']
+    color_name_width = max([len(name) for name in NAMES])
+    sample_text = 'test'
+    sys.stdout.write(string_ra('FG\\BG ', color_name_width + 1))
+    for n in NAMES:
+        sys.stdout.write(sample_text_width(n, sample_text, n) + " ")
+    sys.stdout.write("\n")
+    for foreground_index in range(8):
+        sys.stdout.write(string_ra(NAMES[foreground_index] + ' ', color_name_width + 1))
+        for background_index in range(8):
+            foreground_color = foreground_index + 30
+            background_color = background_index + 40
+            t = sample_text_width(sample_text, sample_text, NAMES[background_index])
+            write_color_test(bold_flag, foreground_color, background_color, t)
+        sys.stdout.write("\n")
+
+
+def main():
+  print("Normal")
+  write_color_table(0)
+  print("\nBold")
+  write_color_table(1)
 
 if __name__ == "__main__":
     main()
