@@ -6,6 +6,13 @@ source $VIMRUNTIME/menu.vim
 " syntastic
 execute pathogen#infect()
 
+" ctrl n+p to switch buffers
+nnoremap <C-n> :bnext<CR>
+nnoremap <C-p> :bprevious<CR>
+
+" make find command look in current folder too
+set path+=**
+
 hi statusline ctermfg=9 ctermbg=15
 " Formats the statusline
 set statusline=%f                           " file name
