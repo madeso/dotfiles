@@ -62,7 +62,12 @@ endif
 :set guioptions-=r  "remove right-hand scroll bar
 :set guioptions-=L  "remove left-hand scroll bar
 
-:let mapleader= ","
+" mape space the leader key
+nnoremap <Space> <Nop>
+let mapleader=" "
+
+" make , reapeat the quick macro
+nnoremap , @q
 
 set history=50
 set ruler         " show the cursor position all the time
@@ -134,6 +139,7 @@ autocmd InsertLeave * :set rnu
 " fix slow escape escape
 :set timeout timeoutlen=10
 
+" https://stackoverflow.com/a/11993928/180307
 nnoremap <leader>c "_c
 nnoremap <leader>d "_d
 xnoremap <leader>d "_d
@@ -147,3 +153,9 @@ inoremap <C-k> <Esc>:m .-2<CR>==gi
 vnoremap <C-j> :m '>+1<CR>gv=gv
 vnoremap <C-k> :m '<-2<CR>gv=gv
 
+" make ctrl-y and ctrl-p copy and paste from system clipboard
+nnoremap <C-y> "+y
+nnoremap <C-p> "+p
+
+" make enter in normal enter a new line
+nmap <CR> o<Esc>
