@@ -1,7 +1,11 @@
 set langmenu=en_US
+let mapleader = " "
+nnoremap <space> <nop>
 let $LANG = 'en_US'
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
+
+nnoremap <leader>w :wa<CR>
 
 " syntastic
 execute pathogen#infect()
@@ -61,10 +65,6 @@ endif
 :set guioptions-=T  "remove toolbar
 :set guioptions-=r  "remove right-hand scroll bar
 :set guioptions-=L  "remove left-hand scroll bar
-
-" mape space the leader key
-nnoremap <Space> <Nop>
-let mapleader=" "
 
 " make , reapeat the quick macro
 nnoremap , @q
