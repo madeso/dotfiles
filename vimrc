@@ -1,5 +1,10 @@
+" ============================================================================
+" Global settings:
+" ============================================================================
+
 set langmenu=en_US
 let $LANG = 'en_US'
+set encoding=utf-8
 
 " let leader be the space
 let mapleader = " "
@@ -8,9 +13,85 @@ nnoremap <space> <nop>
 " make vim less vi compatible
 set nocompatible
 
+" make vim more secure by disabling vim commands at the start of files
+set modelines=0
+
+" ============================================================================
+" General settings:
+" ============================================================================
+
+" set spacing to 2
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+
+" except in python, cause pep says 4
+function! SetPythonSpacing()
+  setlocal tabstop=4
+  setlocal shiftwidth=4
+  setlocal softtabstop=4
+endfunction
+autocmd FileType python call SetPythonSpacing()
+
+" always insert spaces, but insert spaces according to the tab size
+set shiftround
+set expandtab
+
+" it's sane to disable the audio bell, but the visual bell in gnome terminal is really crappy
+" set visualbell
+
+" display --instert-- in insert mode
+set showmode
+
+" display current verb in status line
+set showcmd
+
+" keep atleast this ammout of lines in view around the cursor
+set scrolloff=3
+
+" sane command completion settings
+set wildmenu
+set wildmode=list:longest
+hi WildMenu ctermfg=9 ctermbg=15
+
+" highlight current line
+set cursorline
+highlight clear CursorLine
+highlight CursorLine ctermbg=7
+
+" make backspace work as in other editors in insert
+set backspace=indent,eol,start
+
+" always display the statusbar
+set laststatus=2
+
+" save the undo buffer in a seperate file so that we can undo after closing
+set undofile
+
+
+" ============================================================================
+" Search related setting:
+" ============================================================================
+
+" make searching regex behave like regular regex
+nnoremap / /\v
+vnoremap / /\v
+
+" make search case insensitive when searching lowercase and case sensitive when using one or more uppercase
+set ignorecase
+set smartcase
+
+" let tab be bracket matching
+nnoremap <tab> %
+vnoremap <tab> %
+
+
+" ============================================================================
+" Unsorted settings:
+" ============================================================================
+
 " source $VIMRUNTIME/delmenu.vim
 " source $VIMRUNTIME/menu.vim
-
 nnoremap <leader>w :wa<CR>
 
 " syntastic
@@ -76,26 +157,9 @@ endif
 nnoremap , @q
 
 set history=50
-set ruler         " show the cursor position all the time
 set showcmd       " display incomplete commands
 set incsearch     " do incremental searching
-set laststatus=2  " Always display the status line
 set autowrite     " Automatically :write before running commands
-
-" Softtabs, 2 spaces
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
-set shiftround
-set expandtab
-
-function! SetPythonSpacing()
-  setlocal tabstop=4
-  setlocal shiftwidth=4
-  setlocal softtabstop=4
-endfunction
-
-autocmd FileType python call SetPythonSpacing()
 
 " Treat <li> and <p> tags like the block tags they are
 let g:html_indent_tags = 'li\|p'
@@ -109,16 +173,6 @@ autocmd FileType python setlocal colorcolumn=79 | highlight ColorColumn ctermbg=
 " linenumbers
 set number
 set numberwidth=4
-
-" highlight current line
-" Enable CursorLine
-set cursorline
-
-" Default Colors for CursorLine
-highlight clear CursorLine
-highlight CursorLine ctermbg=7 guibg=#e4e4e4
-
-" autocmd! " remove ALL autocommands
 
 " Relative line numbers
 " http://jeffkreeftmeijer.com/2012/relative-line-numbers-in-vim-for-super-fast-movement/
