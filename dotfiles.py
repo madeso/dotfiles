@@ -6,32 +6,47 @@ import dotlib
 def get_data():
     data = dotlib.Data()
 
+    # usage aliases
     data.set_var_alias(
-        emph='base01',
-        text='base00', default='base00', body='base00', primary='base00',
-        # base 0
         comments='base1', secondary='base1',
-        background_highlights='base2',
-        background='base3'
+        background='base3',
+        body='base00', text='base00', default='base00', code='base00', primary='base00', content='base00',
+        emph='base01',
+        highlights='base2'
     )
 
+    # console color aliases
+    data.set_var_alias(
+        black='base02',
+        white='base2',
+        brblack='base03',
+        brred='orange',
+        brgreen='base01',
+        bryellow='base00',
+        brblue='base0',
+        brmagenta='violet',
+        brcyan='base1',
+        brwhite='base3'
+    )
+
+    # color names
     data.set_vars(
-        base03='#002b36',
         base02='#073642',
+        red='#dc322f',
+        green='#859900',
+        yellow='#b58900',
+        blue='#268bd2',
+        magenta='#d33682',
+        cyan='#2aa198',
+        base2='#eee8d5',
+        base03='#002b36',
+        orange='#cb4b16',
         base01='#586e75',
         base00='#657b83',
         base0='#839496',
-        base1='#93a1a1',
-        base2='#eee8d5',
-        base3='#fdf6e3',
-        yellow='#b58900',
-        orange='#cb4b16',
-        red='#dc322f',
-        magenta='#d33682',
         violet='#6c71c4',
-        blue='#268bd2',
-        cyan='#2aa198',
-        green='#859900'
+        base1='#93a1a1',
+        base3='#fdf6e3'
     )
 
     data.add_file('vimrc', '.vimrc')
