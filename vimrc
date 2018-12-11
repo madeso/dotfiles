@@ -1,9 +1,15 @@
 set langmenu=en_US
+let $LANG = 'en_US'
+
+" let leader be the space
 let mapleader = " "
 nnoremap <space> <nop>
-let $LANG = 'en_US'
-source $VIMRUNTIME/delmenu.vim
-source $VIMRUNTIME/menu.vim
+
+" make vim less vi compatible
+set nocompatible
+
+" source $VIMRUNTIME/delmenu.vim
+" source $VIMRUNTIME/menu.vim
 
 nnoremap <leader>w :wa<CR>
 
@@ -110,7 +116,7 @@ set cursorline
 
 " Default Colors for CursorLine
 highlight clear CursorLine
-highlight CursorLine ctermbg=White guibg=#e4e4e4
+highlight CursorLine ctermbg=7 guibg=#e4e4e4
 
 " autocmd! " remove ALL autocommands
 
@@ -136,8 +142,8 @@ autocmd InsertEnter * :set nornu
 autocmd InsertLeave * :set rnu
 
 
-" fix slow escape escape
-:set timeout timeoutlen=10
+" fix slow escape escape(ttimeoutlen) but keep the default(1 sec) slow reaction for leader (timeoutlen) 
+:set timeout timeoutlen=1000 ttimeoutlen=10
 
 " https://stackoverflow.com/a/11993928/180307
 nnoremap <leader>c "_c
