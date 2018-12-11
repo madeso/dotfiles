@@ -1,0 +1,24 @@
+SOLARIZED   HEX       16/8    TERMCOL  
+---------   -------   ----    -------    
+base02      #073642    0/4    black      
+red         #dc322f    1/1    red        
+green       #859900    2/2    green      
+
+yellow      #b58900    3/3    yellow     
+blue        #268bd2    4/4    blue       
+magenta     #d33682    5/5    magenta    
+
+cyan        #2aa198    6/6    cyan       
+base2       #eee8d5    7/7    white      (background highlights)
+
+
+base03      #002b36    8/4    brblack    
+orange      #cb4b16    9/3    brred      
+base01      #586e75   10/7    brgreen    (optional emphasized content)
+
+base00      #657b83   11/7    bryellow   (body text, default code, primary content)
+base0       #839496   12/6    brblue     
+violet      #6c71c4   13/5    brmagenta  
+
+base1       #93a1a1   14/4    brcyan     (comments, secondary content)
+base3       #fdf6e3   15/7    brwhite    (background)
