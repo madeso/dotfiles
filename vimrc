@@ -16,15 +16,28 @@ set nocompatible
 " make vim more secure by disabling vim commands at the start of files
 set modelines=0
 
+" remap arrow keys to resize in normal mode, disable elsewhere
+nnoremap <Left> :vertical resize -1<CR>
+nnoremap <Right> :vertical resize +1<CR>
+nnoremap <Up> :resize -1<CR>
+nnoremap <Down> :resize +1<CR>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+
 " ============================================================================
 " General settings:
 " ============================================================================
+
+" stop wordwrap, except for markdown
+set nowrap
+autocmd FileType markdown setlocal wrap
 
 " set spacing to 2
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
-
 " except in python, cause pep says 4
 function! SetPythonSpacing()
   setlocal tabstop=4
@@ -46,8 +59,9 @@ set showmode
 " display current verb in status line
 set showcmd
 
-" keep atleast this ammout of lines in view around the cursor
+" keep atleast this ammout of lines and columns in view around the cursor
 set scrolloff=3
+set sidescrolloff=5
 
 " sane command completion settings
 set wildmenu
@@ -68,6 +82,11 @@ set laststatus=2
 " save the undo buffer in a seperate file so that we can undo after closing
 set undofile
 
+" make ctrl vim arrow keys move in the windows
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
 " ============================================================================
 " Search related setting:
