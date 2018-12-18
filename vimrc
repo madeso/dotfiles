@@ -82,6 +82,9 @@ set laststatus=2
 " save the undo buffer in a seperate file so that we can undo after closing
 set undofile
 
+" reload vimrc when saved
+au BufWritePost .vimrc so ~/.vimrc
+
 
 " ============================================================================
 " Search related setting:
@@ -234,6 +237,9 @@ nnoremap <leader>w :wa<CR>
 
 " open vimrc in a vertical split
 nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
+
+" edit vimrc quickly
+map <leader>v :sp ~/.vimrc<cr>
 
 
 " ============================================================================
