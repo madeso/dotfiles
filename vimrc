@@ -82,11 +82,6 @@ set laststatus=2
 " save the undo buffer in a seperate file so that we can undo after closing
 set undofile
 
-" make ctrl vim arrow keys move in the windows
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
 
 " ============================================================================
 " Search related setting:
@@ -100,9 +95,6 @@ vnoremap / /\v
 set ignorecase
 set smartcase
 
-" let tab be bracket matching
-nnoremap <tab> %
-vnoremap <tab> %
 
 
 " ============================================================================
@@ -111,14 +103,9 @@ vnoremap <tab> %
 
 " source $VIMRUNTIME/delmenu.vim
 " source $VIMRUNTIME/menu.vim
-nnoremap <leader>w :wa<CR>
 
 " syntastic
 execute pathogen#infect()
-
-" ctrl n+p to switch buffers
-nnoremap <C-n> :bnext<CR>
-nnoremap <C-p> :bprevious<CR>
 
 " make find command look in current folder too
 set path+=**
@@ -206,7 +193,6 @@ function! NumberToggle()
   endif
 endfunc
 
-nnoremap <C-n> :call NumberToggle()<cr>
 
 :au FocusLost * :set nornu
 :au FocusGained * :set rnu
@@ -218,23 +204,67 @@ autocmd InsertLeave * :set rnu
 " fix slow escape escape(ttimeoutlen) but keep the default(1 sec) slow reaction for leader (timeoutlen) 
 :set timeout timeoutlen=1000 ttimeoutlen=10
 
+
+
+" ============================================================================
+" Keyboard shortcuts (common)
+" ============================================================================
+
+" make enter in normal enter a new line
+nmap <CR> o<Esc>
+
+
+" let tab be bracket matching
+nnoremap <tab> %
+vnoremap <tab> %
+
+
+" ============================================================================
+" Keyboard shortuts (leader)
+" ============================================================================
+
 " https://stackoverflow.com/a/11993928/180307
 nnoremap <leader>c "_c
 nnoremap <leader>d "_d
 xnoremap <leader>d "_d
 xnoremap <leader>p "_dP
 
-" move lines or blocks up/down with alt+movment
-nnoremap <C-j> :m .+1<CR>==
-nnoremap <C-k> :m .-2<CR>==
-inoremap <C-j> <Esc>:m .+1<CR>==gi
-inoremap <C-k> <Esc>:m .-2<CR>==gi
-vnoremap <C-j> :m '>+1<CR>gv=gv
-vnoremap <C-k> :m '<-2<CR>gv=gv
+" use leader w to save all files (mostly for testing leader action currently)
+nnoremap <leader>w :wa<CR>
+
+" open vimrc in a vertical split
+nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
+
+
+" ============================================================================
+" Keyboard shortcuts (Ctrl)
+" ============================================================================
+
+" nnoremap <C-n> :call NumberToggle()<cr>
+
+" ctrl n+p to switch buffers
+" nnoremap <C-n> :bnext<CR>
+" nnoremap <C-p> :bprevious<CR>
+
+" hrmm... does tab and shift tab work?
+nnoremap <C-b> :bnext!<CR>
+nnoremap <C-S-b> :bprev!<CR><Paste>
 
 " make ctrl-y and ctrl-p copy and paste from system clipboard
 nnoremap <C-y> "+y
 nnoremap <C-p> "+p
 
-" make enter in normal enter a new line
-nmap <CR> o<Esc>
+" move lines or blocks up/down with alt+movment
+" not any more, I should learn to yank and paste intead...
+" nnoremap <C-j> :m .+1<CR>==
+" nnoremap <C-k> :m .-2<CR>==
+" inoremap <C-j> <Esc>:m .+1<CR>==gi
+" inoremap <C-k> <Esc>:m .-2<CR>==gi
+" vnoremap <C-j> :m '>+1<CR>gv=gv
+" vnoremap <C-k> :m '<-2<CR>gv=gv
+
+" make ctrl vim arrow keys move in the windows
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
