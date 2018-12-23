@@ -2,11 +2,21 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-ZSH=/usr/share/oh-my-zsh/
+export ZSH=$HOME/.oh-my-zsh
+# ZSH=/usr/share/oh-my-zsh/
 DEFAULT_USER="$USER"
 
-ZSH_CUSTOM=$HOME/.zsh/custom
-ZSH_THEME="agnoster-light"
+DOTFILES=/c/WorkingFolder/GitHub/dotfiles/
+if [[ ! -d $DOTFILES ]]; then
+  DOTFILES=$HOME/dev/dotfiles/
+fi
+
+ZSH_CUSTOM=$DOTFILES/zsh_custom
+
+# Set name of the theme to load. Optionally, if you set this to "random"
+# it'll load a random theme each time that oh-my-zsh is loaded.
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+ZSH_THEME="madeso"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -16,7 +26,7 @@ ZSH_THEME="agnoster-light"
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
-DISABLE_AUTO_UPDATE="true"
+# DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
@@ -40,10 +50,7 @@ DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
@@ -93,11 +100,11 @@ if [[ ! -d $ZSH_CACHE_DIR ]]; then
 fi
 
 source $ZSH/oh-my-zsh.sh
-export PATH=$HOME/dev/dotfiles/scripts:$PATH
+export PATH=$DOTFILES/scripts:$PATH
 
 export EDITOR=vi
 export TERM=rxvt-unicode
 export BROWSER=firefox
 
 alias vi='vim'
-source /dev/dotfiles/scripts/start-ssh-agent.sh
+# source /dev/dotfiles/scripts/start-ssh-agent.sh
