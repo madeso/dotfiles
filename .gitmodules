@@ -1,3 +1,6 @@
 [submodule "vimfiles/bundle/syntastic"]
 	path = vimfiles/bundle/syntastic
 	url = https://github.com/vim-syntastic/syntastic.git
+[submodule "external/z"]
+	path = external/z
+	url = git@github.com:rupa/z.git

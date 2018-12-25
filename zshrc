@@ -6,9 +6,9 @@ export ZSH=$HOME/.oh-my-zsh
 # ZSH=/usr/share/oh-my-zsh/
 DEFAULT_USER="$USER"
 
-DOTFILES=/c/WorkingFolder/GitHub/dotfiles/
+DOTFILES=/c/WorkingFolder/GitHub/dotfiles
 if [[ ! -d $DOTFILES ]]; then
-  DOTFILES=$HOME/dev/dotfiles/
+  DOTFILES=$HOME/dev/dotfiles
 fi
 
 ZSH_CUSTOM=$DOTFILES/zsh_custom
@@ -101,6 +101,8 @@ fi
 
 source $ZSH/oh-my-zsh.sh
 export PATH=$DOTFILES/scripts:$PATH
+
+. $DOTFILES/external/z/z.sh
 
 export EDITOR=vi
 export TERM=rxvt-unicode
