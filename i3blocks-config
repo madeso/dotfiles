@@ -1,5 +1,5 @@
 interval=5
-color={{comments}}
+color={{text}}
 
 [arch-update]
 command=~/.config/i3blocks/scripts/arch-update.py -b "{{emph}}" -u "{{red}}"

@@ -115,8 +115,8 @@ set $ws4 "4"
 set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
+set $ws8 "8"
+set $ws9 "9"
 set $ws10 "10"
 
 # switch to workspace
@@ -132,7 +132,9 @@ bindsym $mod+9 workspace $ws9
 bindsym $mod+0 workspace $ws10
 
 assign [class="Firefox"] $ws1
+assign [class="Thunderbird"] $ws8
 assign [class="TelegramDesktop"] $ws10
+for_window [class="Spotify"] move to workspace $ws9
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $ws1
@@ -224,7 +226,9 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
 exec firefox
+exec thunderbird
 exec telegram-desktop
+exec spotify
 
 # apply the old background
 exec_always ~/.fehbg
