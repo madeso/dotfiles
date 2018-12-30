@@ -62,6 +62,7 @@ ZSH_THEME="madeso"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
+  history-substring-search
 )
 
 
@@ -110,3 +111,7 @@ export BROWSER=firefox
 
 alias vi='vim'
 # source /dev/dotfiles/scripts/start-ssh-agent.sh
+
+# history searching...
+bindkey "^[[A" history-substring-search-up
+bindkey "^[[B" history-substring-search-down
