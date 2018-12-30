@@ -2,6 +2,7 @@ acpi
 adapta-gtk-theme
 alsa-utils
 arc-gtk-theme
+assimp
 autoconf
 automake
 awesome-terminal-fonts
@@ -11,6 +12,11 @@ bison
 bzip2
 chromium
 chromium-widevine
+clion
+clion-cmake
+clion-gdb
+clion-jre
+clion-lldb
 cmake
 coreutils
 cryptsetup
@@ -42,6 +48,7 @@ gtk2fontsel
 gvim
 gzip
 htop
+hugo
 i3-gaps
 i3blocks
 i3lock
@@ -108,6 +115,7 @@ vlc
 wget
 which
 xclip
+xdotool
 xf86-video-ati
 xfsprogs
 xorg-server
