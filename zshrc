@@ -68,6 +68,10 @@ plugins=(
 
 # User configuration
 
+# make sure ssh-agent is started
+. $DOTFILES/start_ssh_agent.sh
+# eval $(keychain --eval --quiet --nogui --noask id_rsa)
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -110,7 +114,6 @@ export TERM=rxvt-unicode
 export BROWSER=firefox
 
 alias vi='vim'
-# source /dev/dotfiles/scripts/start-ssh-agent.sh
 
 # history searching...
 bindkey "^[[A" history-substring-search-up
