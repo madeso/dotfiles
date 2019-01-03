@@ -132,6 +132,7 @@ bindsym $mod+9 workspace $ws9
 bindsym $mod+0 workspace $ws10
 
 assign [class="Firefox"] $ws1
+assign [class="Chromium"] $ws3
 assign [class="Thunderbird"] $ws8
 assign [class="TelegramDesktop"] $ws10
 for_window [class="Spotify"] move to workspace $ws9
