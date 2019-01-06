@@ -10,5 +10,8 @@ def rofi(input) -> typing.Optional[str]:
    else:
        return None
 
-if __name__ == "__main__":
+def test():
    print(rofi(['tabbed', 'stacking']))
+
+if __name__ == "__main__":
+   test()
