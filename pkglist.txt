@@ -2,6 +2,7 @@ acpi
 adapta-gtk-theme
 alsa-utils
 arc-gtk-theme
+aseprite
 assimp
 autoconf
 automake
@@ -39,8 +40,10 @@ gawk
 gcc
 gcc-libs
 gettext
+gimp
 git
 glibc
+godot
 grep
 groff
 grub
@@ -58,6 +61,7 @@ intel-ucode
 iproute2
 iputils
 jfsutils
+krita
 less
 libtool
 licenses
@@ -65,6 +69,7 @@ linux
 logrotate
 lvm2
 lxappearance
+lynx
 m4
 maim
 make
@@ -92,6 +97,7 @@ pulseaudio
 pulseaudio-alsa
 pycharm-community-edition
 python-pip
+ranger
 reiserfsprogs
 rofi
 rxvt-unicode
@@ -99,6 +105,7 @@ s-nail
 sed
 shadow
 snapd
+spotify
 sudo
 sysfsutils
 systemd
