@@ -19,6 +19,7 @@ clion-gdb
 clion-jre
 clion-lldb
 cmake
+compton
 coreutils
 cryptsetup
 deepin-icon-theme
@@ -57,6 +58,7 @@ i3blocks
 i3lock
 i3status
 inetutils
+inkscape
 intel-ucode
 iproute2
 iputils
@@ -119,6 +121,7 @@ usbutils
 util-linux
 vi
 vlc
+w3m
 wget
 which
 xclip
