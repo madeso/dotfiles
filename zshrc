@@ -63,6 +63,7 @@ ZSH_THEME="madeso"
 plugins=(
   git
   history-substring-search
+  extract
 )
 
 
