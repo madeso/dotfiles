@@ -77,6 +77,7 @@ maim
 make
 man-db
 man-pages
+materia-gtk-theme
 mdadm
 nano
 netctl
@@ -115,6 +116,7 @@ systemd-sysvcompat
 tar
 telegram-desktop
 texinfo
+thunar
 thunderbird
 unzip
 usbutils
