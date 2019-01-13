@@ -227,6 +227,7 @@ bindsym XF86AudioPause exec playerctl pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
+exec --no-startup-id dunst -config ~/.config/dunst.cfg
 exec --no-startup-id thunar --daemon
 exec --no-startup-id compton
 exec firefox
