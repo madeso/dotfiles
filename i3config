@@ -89,9 +89,13 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+w layout stacking
-bindsym $mod+t layout tabbed
-bindsym $mod+e layout toggle split
+bindsym $mod++Shift+w layout stacking
+bindsym $mod+Shift+t layout tabbed
+bindsym $mod+Shift+e layout toggle split
+
+bindsym $mod+w layout tabbed
+bindsym $mod+t exec i3-sensible-terminal -e ranger
+bindsym $mod+e exec thunar
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -156,7 +160,7 @@ bindsym $mod+Shift+c restart
 bindsym $mod+Shift+r exec ~/dev/dotfiles/dotfiles.py install i3 && i3-msg restart
 # exit i3 (logs you out of your X session)
 # bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-bindsym $mod+Shift+e exec ~/dev/dotfiles/i3shutdown.py
+bindsym $mod+Shift+x exec ~/dev/dotfiles/i3shutdown.py
 # bindsym $mod+Shift+x exec i3lock --color "$bg-color"
 
 # resize window (you can also use the mouse for that)
