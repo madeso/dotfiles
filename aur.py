@@ -37,6 +37,10 @@ def git_remote(cwd):
 def git_base(cwd):
     return cmd(['git', 'merge-base', '@', '@{u}'], cwd)
 
+def git_fetch(cwd):
+    cmd(['git', 'fetch', '-q'], cwd)
+
+
 def git_info(cwd):
     local = git_local(cwd)
     remote = git_remote(cwd)
@@ -59,6 +63,17 @@ def handle_ls(args):
     projects = find_git_folders(aur)
     for p in projects:
         print(p, git_info(p))
+        
+
+def handle_check(args):
+    aur = aur_path()
+
+    projects = find_git_folders(aur)
+    for p in projects:
+        git_fetch(p)
+        print(p, git_info(p))
+        # parse PKGBUILD for dependencies
+        # use pacman -Qi package to check if dependency has been updated
 
 
 def main():
@@ -67,6 +82,9 @@ def main():
 
     sub = sub_parsers.add_parser('ls', aliases=['dir'], help='list aur libraries')
     sub.set_defaults(func=handle_ls)
+
+    sub = sub_parsers.add_parser('check', aliases=['ch'], help='list aur libraries')
+    sub.set_defaults(func=handle_check)
 
     args = parser.parse_args()
     if args.command_name is not None:
