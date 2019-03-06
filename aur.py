@@ -9,6 +9,7 @@ import sys
 import platform
 import typing
 import json
+import re
 from enum import Enum
 
 def aur_path():
@@ -23,6 +24,10 @@ def find_git_folders(aur):
             if os.path.isdir(os.path.join(p, '.git')):
                 r.append(p)
     return r
+
+
+def get_project_name(folder):
+    return os.path.basename(folder)
 
 
 def cmd(cmd, cwd):
@@ -54,15 +59,42 @@ def git_info(cwd):
     else:
         return 'Diverged'
 
+
+pkg_pattern = re.compile(r'([a-zA-Z_0-9]*depends[a-zA-Z_0-9]*) *=\(([^)]*)\)')
+string_patterns = [
+        re.compile(r'\"([^"]*)\"'),
+        re.compile(r"\'([^']*)\'")
+        ]
+
+def pkg_info(folder):
+    file = os.path.join(folder, 'PKGBUILD')
+    if not os.path.isfile(file):
+        return None
+    with open(file, 'r') as f:
+        items = pkg_pattern.finditer(f.read())
+        for found in items:
+            var = found.group(1)
+            libs = found.group(2)
+            print(var, ':')
+            for pat in string_patterns:
+                for slib in pat.finditer(libs):
+                    print(slib)
+    return []
+
+
 #############################################################################
 
 def handle_ls(args):
     aur = aur_path()
-    print(aur)
+    # print(aur)
 
     projects = find_git_folders(aur)
     for p in projects:
-        print(p, git_info(p))
+        name = get_project_name(p)
+        print(name)
+        print('Git:', git_info(p))
+        pkg_info(p)
+        print()
         
 
 def handle_check(args):
