@@ -31,7 +31,7 @@ def get_project_name(folder):
 
 
 def cmd(cmd, cwd):
-    return subprocess.check_output(cmd, cwd=cwd).decode('utf8').strip()
+    return subprocess.check_output(cmd, stderr=subprocess.STDOUT, cwd=cwd).decode('utf8').strip()
 
 def git_local(cwd):
     return cmd(['git', 'rev-parse', '@'], cwd)
@@ -61,10 +61,13 @@ def git_info(cwd):
 
 version_pattern = re.compile(r'Version\s*:\s*(\S*)')
 def installed_version(pkg, cwd):
-    out = cmd(['pacman', '-Qi', pkg], cwd)
-    for p in version_pattern.finditer(out):
-        return p.group(1)
-    return ''
+    try:
+        out = cmd(['pacman', '-Qi', pkg], cwd)
+        for p in version_pattern.finditer(out):
+            return p.group(1)
+        return None
+    except subprocess.CalledProcessError:
+        return None
 
 
 pkg_pattern = re.compile(r'([a-zA-Z_0-9]*depends[a-zA-Z_0-9]*) *=\(([^)]*)\)')
