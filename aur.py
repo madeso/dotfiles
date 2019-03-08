@@ -59,11 +59,18 @@ def git_info(cwd):
     else:
         return 'Diverged'
 
+version_pattern = re.compile(r'Version\s*:\s*(\S*)')
+def installed_version(pkg, cwd):
+    out = cmd(['pacman', '-Qi', pkg], cwd)
+    for p in version_pattern.finditer(out):
+        return p.group(1)
+    return ''
+
 
 pkg_pattern = re.compile(r'([a-zA-Z_0-9]*depends[a-zA-Z_0-9]*) *=\(([^)]*)\)')
 string_patterns = [
-        re.compile(r'\"([^"]*)\"'),
-        re.compile(r"\'([^']*)\'")
+        re.compile(r'\"\s*([\-\.a-zA-Z0-9]+)[^"]*\"'),
+        re.compile(r"'\s*([\-\.a-zA-Z0-9]+)[^']*'")
         ]
 
 def pkg_info(folder):
@@ -78,7 +85,8 @@ def pkg_info(folder):
             print(var, ':')
             for pat in string_patterns:
                 for slib in pat.finditer(libs):
-                    print(slib)
+                    pkg = slib.group(1)
+                    print('', pkg, installed_version(pkg, folder))
     return []
 
 
