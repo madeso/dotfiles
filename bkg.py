@@ -36,7 +36,7 @@ def handle_set(args):
     files = list_files(get_backgrounds())
     f = random.choice(files)
     print('setting random bkg:', f)
-    subprocess.run(['feh', '--bg-scale', f])
+    subprocess.run(['feh', '--bg-fill', f])
 
 def main():
     parser = argparse.ArgumentParser(description='bkg helper tool')
