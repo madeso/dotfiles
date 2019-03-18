@@ -241,6 +241,6 @@ exec spotify
 exec dropbox
 
 # apply the old background
-exec_always ~/dev/dotfiles/scripts/bkg.py set
+exec_always ~/dev/dotfiles/bkg.py set
 
 
