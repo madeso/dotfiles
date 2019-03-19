@@ -231,16 +231,16 @@ bindsym XF86AudioPause exec playerctl pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
+# apply the old background
+exec_always --no-startup-id ~/dev/dotfiles/bkg.py set
+
 exec --no-startup-id dunst -config ~/.config/dunst.cfg
 exec --no-startup-id thunar --daemon
-exec --no-startup-id compton
+exec_always --no-startup-id compton --config ~/dev/dotfiles/compton.conf
 exec firefox
 exec thunderbird
 exec telegram-desktop
 exec spotify
 exec dropbox
-
-# apply the old background
-exec_always ~/dev/dotfiles/bkg.py set
 
 
