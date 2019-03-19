@@ -70,6 +70,12 @@ def installed_version(pkg, cwd):
         return None
 
 
+class Pkg:
+    def __init__(self, pkg, version):
+        self.pkg = pkg
+        self.version = version
+
+
 pkg_pattern = re.compile(r'([a-zA-Z_0-9]*depends[a-zA-Z_0-9]*) *=\(([^)]*)\)')
 string_patterns = [
         re.compile(r'\"\s*([\-\.a-zA-Z0-9]+)[^"]*\"'),
@@ -80,31 +86,44 @@ def pkg_info(folder):
     file = os.path.join(folder, 'PKGBUILD')
     if not os.path.isfile(file):
         return None
+    ret = {}
     with open(file, 'r') as f:
         items = pkg_pattern.finditer(f.read())
         for found in items:
             var = found.group(1)
             libs = found.group(2)
-            print(var, ':')
+            if var in ret:
+                li = ret[var]
+            else:
+                li = []
             for pat in string_patterns:
                 for slib in pat.finditer(libs):
                     pkg = slib.group(1)
-                    print('', pkg, installed_version(pkg, folder))
-    return []
+                    li.append( Pkg(pkg, installed_version(pkg, folder)) )
+            ret[var] = li
+    return ret
+
+
+def to_lib_dict(info, ret):
+    for libs in info.values():
+        for lib in libs:
+            ret[lib.pkg] = lib.version
 
 
 #############################################################################
 
 def handle_ls(args):
     aur = aur_path()
-    # print(aur)
-
     projects = find_git_folders(aur)
     for p in projects:
         name = get_project_name(p)
         print(name)
         print('Git:', git_info(p))
-        pkg_info(p)
+        info = pkg_info(p)
+        for section, libs in info.items():
+            print(section)
+            for lib in libs:
+                print('  ', lib.pkg, lib.version)
         print()
         
 
@@ -118,16 +137,32 @@ def handle_check(args):
         # parse PKGBUILD for dependencies
         # use pacman -Qi package to check if dependency has been updated
 
+def handle_write(args):
+    aur = aur_path()
+    projects = find_git_folders(aur)
+    map = {}
+    for p in projects:
+        name = get_project_name(p)
+        print(name)
+        to_lib_dict(pkg_info(p), map)
+    print()
+    # todo: write json
+    print(map)
+    print()
+
 
 def main():
     parser = argparse.ArgumentParser(description='aur helper tool')
     sub_parsers = parser.add_subparsers(dest='command_name', title='Commands', help='', metavar='<command>')
 
-    sub = sub_parsers.add_parser('ls', aliases=['dir'], help='list aur libraries')
+    sub = sub_parsers.add_parser('ls', help='list aur libraries')
     sub.set_defaults(func=handle_ls)
 
-    sub = sub_parsers.add_parser('check', aliases=['ch'], help='list aur libraries')
+    sub = sub_parsers.add_parser('check', help='check aur libraries for updates')
     sub.set_defaults(func=handle_check)
+
+    sub = sub_parsers.add_parser('write', help='write current dependency status to json')
+    sub.set_defaults(func=handle_write)
 
     args = parser.parse_args()
     if args.command_name is not None:
