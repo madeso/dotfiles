@@ -136,8 +136,13 @@ def handle_check(args):
     aur = aur_path()
     projects = find_git_folders(aur)
     map = None
-    with open(json_file(), 'r') as f:
-        map = json.loads(f.read())
+    if os.path.isfile(json_file()):
+        with open(json_file(), 'r') as f:
+            map = json.loads(f.read())
+    else:
+        print('Note:')
+        print('Missing json file, less checks will be done')
+        print()
     for p in projects:
         git_fetch(p)
         print(p, git_info(p))
