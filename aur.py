@@ -110,6 +110,11 @@ def to_lib_dict(info, ret):
             ret[lib.pkg] = lib.version
 
 
+def json_file():
+    home = os.path.expanduser('~')
+    return os.path.join(home, '.aur_deps.json')
+
+
 #############################################################################
 
 def handle_ls(args):
@@ -125,22 +130,27 @@ def handle_ls(args):
             for lib in libs:
                 print('  ', lib.pkg, lib.version)
         print()
-        
-
-def json_file():
-    home = os.path.expanduser('~')
-    return os.path.join(home, '.aur_deps.json')
 
 
 def handle_check(args):
     aur = aur_path()
-
     projects = find_git_folders(aur)
+    map = None
+    with open(json_file(), 'r') as f:
+        map = json.loads(f.read())
     for p in projects:
         git_fetch(p)
         print(p, git_info(p))
-        # parse PKGBUILD for dependencies
-        # use pacman -Qi package to check if dependency has been updated
+        if map is not None:
+            info = pkg_info(p)
+            differs = False
+            for libs in info.values():
+                for lib in libs:
+                    if map[lib.pkg] != lib.version:
+                        print('  ', lib.pkg, ' differs')
+                        differs = True
+            if differs:
+                print()
 
 
 def handle_write(args):
