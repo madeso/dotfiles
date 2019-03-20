@@ -11,6 +11,12 @@
 
 set $mod Mod4
 
+#use u and U to toggle window title, and hide it per default for non-floating windows
+bindsym $mod+u border none
+bindsym $mod+Shift+u border normal
+default_border none
+default_floating_border normal
+
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 # font pango:monospace 8
@@ -236,7 +242,7 @@ exec_always --no-startup-id ~/dev/dotfiles/bkg.py set
 
 exec --no-startup-id dunst -config ~/.config/dunst.cfg
 exec --no-startup-id thunar --daemon
-exec_always --no-startup-id compton --config ~/dev/dotfiles/compton.conf
+exec --no-startup-id compton --config ~/dev/dotfiles/compton.conf
 exec firefox
 exec thunderbird
 exec telegram-desktop
