@@ -127,6 +127,11 @@ def handle_ls(args):
         print()
         
 
+def json_file():
+    home = os.path.expanduser('~')
+    return os.path.join(home, '.aur_deps.json')
+
+
 def handle_check(args):
     aur = aur_path()
 
@@ -137,6 +142,7 @@ def handle_check(args):
         # parse PKGBUILD for dependencies
         # use pacman -Qi package to check if dependency has been updated
 
+
 def handle_write(args):
     aur = aur_path()
     projects = find_git_folders(aur)
@@ -145,9 +151,10 @@ def handle_write(args):
         name = get_project_name(p)
         print(name)
         to_lib_dict(pkg_info(p), map)
-    print()
-    # todo: write json
-    print(map)
+    print('Writing json to {}'.format(json_file()))
+    with open(json_file(), 'w') as f:
+        f.write(json.dumps(map, sort_keys=True, indent=4))
+    print('done.')
     print()
 
 
