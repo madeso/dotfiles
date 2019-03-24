@@ -187,6 +187,20 @@ def handle_git(args):
         print()
 
 
+def handle_install(args):
+    aur = aur_path()
+    projects = find_git_folders(aur)
+    found = False
+
+    for p in projects:
+        if get_project_name(p) == args.app:
+            found = True
+
+    if not found:
+        print('Invalid app ', aur)
+
+
+
 def main():
     parser = argparse.ArgumentParser(description='aur helper tool')
     sub_parsers = parser.add_subparsers(dest='command_name', title='Commands', help='', metavar='<command>')
@@ -202,6 +216,10 @@ def main():
 
     sub = sub_parsers.add_parser('write', help='write current dependency status to json')
     sub.set_defaults(func=handle_write)
+
+    sub = sub_parsers.add_parser('install', aliases=['in', 'up', 'update'], help='install or update the named aur dependency')
+    sub.add_argument('app')
+    sub.set_defaults(func=handle_install)
 
     args = parser.parse_args()
     if args.command_name is not None:
