@@ -33,17 +33,27 @@ def get_project_name(folder):
 def run_git_update(p):
     subprocess.run(['git', 'pull'], cwd=p)
 
+
+def install_pkg(p):
+    #Sync, Install, Clean temporary files
+    subprocess.run(['makepkg', '-sic'])
+
+
 def cmd(cmd, cwd):
     return subprocess.check_output(cmd, stderr=subprocess.STDOUT, cwd=cwd).decode('utf8').strip()
+
 
 def git_local(cwd):
     return cmd(['git', 'rev-parse', '@'], cwd)
 
+
 def git_remote(cwd):
     return cmd(['git', 'rev-parse', '@{u}'], cwd)
 
+
 def git_base(cwd):
     return cmd(['git', 'merge-base', '@', '@{u}'], cwd)
+
 
 def git_fetch(cwd):
     cmd(['git', 'fetch', '-q'], cwd)
@@ -195,10 +205,10 @@ def handle_install(args):
     for p in projects:
         if get_project_name(p) == args.app:
             found = True
+            install_pkg(p)
 
     if not found:
         print('Invalid app ', aur)
-
 
 
 def main():
@@ -226,6 +236,7 @@ def main():
         args.func(args)
     else:
         parser.print_help()
+
 
 if __name__ == "__main__":
     main()
