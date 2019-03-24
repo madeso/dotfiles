@@ -43,6 +43,10 @@ def cmd(cmd, cwd):
     return subprocess.check_output(cmd, stderr=subprocess.STDOUT, cwd=cwd).decode('utf8').strip()
 
 
+def git_get_hash(p):
+    return cmd(['git', 'rev-parse', 'HEAD'], p)
+
+
 def git_local(cwd):
     return cmd(['git', 'rev-parse', '@'], cwd)
 
@@ -117,10 +121,12 @@ def pkg_info(folder):
     return ret
 
 
-def to_lib_dict(info, ret):
+def to_lib_dict(info):
+    ret = {}
     for libs in info.values():
         for lib in libs:
             ret[lib.pkg] = lib.version
+    return ret
 
 
 def json_file():
@@ -172,16 +178,20 @@ def handle_check(args):
 
 
 def handle_write(args):
+    # todo: allow partial writes...
     aur = aur_path()
     projects = find_git_folders(aur)
-    map = {}
+    store = {}
     for p in projects:
         name = get_project_name(p)
         print(name)
-        to_lib_dict(pkg_info(p), map)
+        map = {}
+        map['git'] = git_get_hash(p)
+        map['deps'] = to_lib_dict(pkg_info(p))
+        store[name] = map
     print('Writing json to {}'.format(json_file()))
     with open(json_file(), 'w') as f:
-        f.write(json.dumps(map, sort_keys=True, indent=4))
+        f.write(json.dumps(store, sort_keys=True, indent=4))
     print('done.')
     print()
 
