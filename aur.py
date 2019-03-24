@@ -36,7 +36,7 @@ def run_git_update(p):
 
 def install_pkg(p):
     #Sync, Install, Clean temporary files
-    subprocess.run(['makepkg', '-sic'])
+    subprocess.run(['makepkg', '-sic'], cwd=p)
 
 
 def cmd(cmd, cwd):
