@@ -30,6 +30,9 @@ def get_project_name(folder):
     return os.path.basename(folder)
 
 
+def run_git_update(p):
+    subprocess.run(['git', 'pull'], cwd=p)
+
 def cmd(cmd, cwd):
     return subprocess.check_output(cmd, stderr=subprocess.STDOUT, cwd=cwd).decode('utf8').strip()
 
@@ -149,10 +152,10 @@ def handle_check(args):
         if map is not None:
             info = pkg_info(p)
             differs = False
-            for libs in info.values():
+            for section, libs in info.items():
                 for lib in libs:
-                    if map[lib.pkg] != lib.version:
-                        print('  ', lib.pkg, ' differs')
+                    if not lib.pkg in map or map[lib.pkg] != lib.version:
+                        print('  ', lib.pkg, section, ' differs')
                         differs = True
             if differs:
                 print()
@@ -173,6 +176,17 @@ def handle_write(args):
     print()
 
 
+def handle_git(args):
+    aur = aur_path()
+    projects = find_git_folders(aur)
+
+    for p in projects:
+        print('---------------------------')
+        print('      ', get_project_name(p))
+        run_git_update(p)
+        print()
+
+
 def main():
     parser = argparse.ArgumentParser(description='aur helper tool')
     sub_parsers = parser.add_subparsers(dest='command_name', title='Commands', help='', metavar='<command>')
@@ -182,6 +196,9 @@ def main():
 
     sub = sub_parsers.add_parser('check', help='check aur libraries for updates')
     sub.set_defaults(func=handle_check)
+
+    sub = sub_parsers.add_parser('git', help='update the git repos')
+    sub.set_defaults(func=handle_git)
 
     sub = sub_parsers.add_parser('write', help='write current dependency status to json')
     sub.set_defaults(func=handle_write)
