@@ -26,13 +26,20 @@ def get_mirrors():
     lines = download('https://www.archlinux.org/mirrorlist/?ip_version=6').splitlines()
     country = []
     name = ''
+    added = False
+    intro = []
     mirrors = {}
     for l in lines:
         if l.strip().startswith('##'):
             if name!='' and len(country) > 0:
                 mirrors[name] = country
                 country = []
+                if not added and len(intro) > 0:
+                    del intro[-1]
+                added = True
             name = l.strip()[2:].strip().lower()
+            if not added:
+                intro.append(l)
         elif l.strip().startswith('#Server'):
             country.append(l.strip()[1:])
         elif len(l.strip()) == 0:
@@ -42,6 +49,7 @@ def get_mirrors():
     if name=='' and len(country) > 0:
         mirrors[name] = country
         country = []
+    mirrors['intro'] = intro
     return mirrors
 
 
@@ -59,7 +67,8 @@ def handle_write(args):
             print('no country named ', l)
             return
 
-        print('#', l)
+        if l != 'intro':
+            print('#', l)
         for c in mirrors[l.lower()]:
             print(c)
         print()
@@ -72,7 +81,7 @@ def main():
     sub = sub_parsers.add_parser('ls', help='list countries')
     sub.set_defaults(func=handle_ls)
 
-    sub = sub_parsers.add_parser('write', help='write mirrows')
+    sub = sub_parsers.add_parser('write', help='write mirrors')
     sub.add_argument('lib', nargs='+', help='libraries to write')
     sub.set_defaults(func=handle_write)
 
