@@ -52,6 +52,7 @@ def handle_ls(args):
 
 
 def handle_write(args):
+    # todo: write to /etc/pacman.d/mirrorlist
     mirrors = get_mirrors()
     for l in args.lib:
         if not l.lower() in mirrors:
