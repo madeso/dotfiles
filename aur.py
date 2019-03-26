@@ -166,8 +166,12 @@ def handle_check(args):
         git_fetch(p)
         print(p, git_info(p))
         map = None
-        if store is not None and p in store:
-            map = store[p]
+        if store is not None:
+            name = get_project_name(p)
+            if name in store:
+                map = store[name]
+            else:
+                print('Missing stored information about', name)
         if map is not None:
             deps = map['deps']
             info = pkg_info(p)
