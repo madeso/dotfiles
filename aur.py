@@ -142,12 +142,15 @@ def handle_ls(args):
     for p in projects:
         name = get_project_name(p)
         print(name)
-        print('Git:', git_info(p))
-        info = pkg_info(p)
-        for section, libs in info.items():
-            print(section)
-            for lib in libs:
-                print('  ', lib.pkg, lib.version)
+        if args.all:
+            print('Git:', git_info(p))
+            info = pkg_info(p)
+            for section, libs in info.items():
+                print(section)
+                for lib in libs:
+                    print('  ', lib.pkg, lib.version)
+            print()
+    if not args.all:
         print()
 
 
@@ -238,6 +241,7 @@ def main():
     sub_parsers = parser.add_subparsers(dest='command_name', title='Commands', help='', metavar='<command>')
 
     sub = sub_parsers.add_parser('ls', help='list aur libraries')
+    sub.add_argument('--all', '-a', action='store_true', help='include more information')
     sub.set_defaults(func=handle_ls)
 
     sub = sub_parsers.add_parser('check', help='check aur libraries for updates')
