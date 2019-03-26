@@ -47,6 +47,10 @@ def git_get_hash(p):
     return cmd(['git', 'rev-parse', 'HEAD'], p)
 
 
+def git_log(p, sha):
+    return cmd(['git', 'log', '--pretty=format:%s', sha + '..HEAD'], p)
+
+
 def git_local(cwd):
     return cmd(['git', 'rev-parse', '@'], cwd)
 
@@ -176,6 +180,11 @@ def handle_check(args):
             else:
                 print('Missing stored information about', name)
         if map is not None:
+            git = map['git']
+            changes = git_log(p, git)
+            if changes != '':
+                print(changes)
+                print()
             deps = map['deps']
             info = pkg_info(p)
             differs = False
