@@ -190,13 +190,17 @@ def handle_write(args):
     aur = aur_path()
     projects = find_git_folders(aur)
     store = {}
+    if os.path.isfile(json_file()):
+        with open(json_file(), 'r') as f:
+            store = json.loads(f.read())
     for p in projects:
         name = get_project_name(p)
-        print(name)
-        map = {}
-        map['git'] = git_get_hash(p)
-        map['deps'] = to_lib_dict(pkg_info(p))
-        store[name] = map
+        if args.name == name or args.name == '-':
+            print(name)
+            map = {}
+            map['git'] = git_get_hash(p)
+            map['deps'] = to_lib_dict(pkg_info(p))
+            store[name] = map
     print('Writing json to {}'.format(json_file()))
     with open(json_file(), 'w') as f:
         f.write(json.dumps(store, sort_keys=True, indent=4))
@@ -243,6 +247,7 @@ def main():
     sub.set_defaults(func=handle_git)
 
     sub = sub_parsers.add_parser('write', help='write current dependency status to json')
+    sub.add_argument('name', help='the aur project to write, single - to mean all projects')
     sub.set_defaults(func=handle_write)
 
     sub = sub_parsers.add_parser('install', aliases=['in', 'up', 'update'], help='install or update the named aur dependency')
