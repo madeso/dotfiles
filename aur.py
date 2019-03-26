@@ -154,10 +154,10 @@ def handle_ls(args):
 def handle_check(args):
     aur = aur_path()
     projects = find_git_folders(aur)
-    map = None
+    store = None
     if os.path.isfile(json_file()):
         with open(json_file(), 'r') as f:
-            map = json.loads(f.read())
+            store = json.loads(f.read())
     else:
         print('Note:')
         print('Missing json file, less checks will be done')
@@ -165,12 +165,16 @@ def handle_check(args):
     for p in projects:
         git_fetch(p)
         print(p, git_info(p))
+        map = None
+        if store is not None and p in store:
+            map = store[p]
         if map is not None:
+            deps = map['deps']
             info = pkg_info(p)
             differs = False
             for section, libs in info.items():
                 for lib in libs:
-                    if not lib.pkg in map or map[lib.pkg] != lib.version:
+                    if not lib.pkg in deps or deps[lib.pkg] != lib.version:
                         print('  ', lib.pkg, section, ' differs')
                         differs = True
             if differs:
