@@ -36,7 +36,7 @@ def run_git_update(p):
 
 def install_pkg(p):
     #Sync, Install, Clean temporary files
-    subprocess.run(['makepkg', '-sic'], cwd=p)
+    subprocess.run(['makepkg', '-sic'], cwd=p, check=True)
 
 
 def cmd(cmd, cwd):
@@ -138,6 +138,29 @@ def json_file():
     return os.path.join(home, '.aur_deps.json')
 
 
+def write_json_deps(args_name):
+    # todo: allow partial writes...
+    aur = aur_path()
+    projects = find_git_folders(aur)
+    store = {}
+    if os.path.isfile(json_file()):
+        with open(json_file(), 'r') as f:
+            store = json.loads(f.read())
+    for p in projects:
+        name = get_project_name(p)
+        if args_name == name or args_name == '-':
+            print(name)
+            map = {}
+            map['git'] = git_get_hash(p)
+            map['deps'] = to_lib_dict(pkg_info(p))
+            store[name] = map
+    print('Writing json to {}'.format(json_file()))
+    with open(json_file(), 'w') as f:
+        f.write(json.dumps(store, sort_keys=True, indent=4))
+    print('done.')
+    print()
+
+
 #############################################################################
 
 def handle_ls(args):
@@ -198,26 +221,7 @@ def handle_check(args):
 
 
 def handle_write(args):
-    # todo: allow partial writes...
-    aur = aur_path()
-    projects = find_git_folders(aur)
-    store = {}
-    if os.path.isfile(json_file()):
-        with open(json_file(), 'r') as f:
-            store = json.loads(f.read())
-    for p in projects:
-        name = get_project_name(p)
-        if args.name == name or args.name == '-':
-            print(name)
-            map = {}
-            map['git'] = git_get_hash(p)
-            map['deps'] = to_lib_dict(pkg_info(p))
-            store[name] = map
-    print('Writing json to {}'.format(json_file()))
-    with open(json_file(), 'w') as f:
-        f.write(json.dumps(store, sort_keys=True, indent=4))
-    print('done.')
-    print()
+    write_json_deps(args.name)
 
 
 def handle_git(args):
@@ -240,6 +244,7 @@ def handle_install(args):
         if get_project_name(p) == args.app:
             found = True
             install_pkg(p)
+            write_json_deps(get_project_name(p))
 
     if not found:
         print('Invalid app ', aur)
