@@ -116,6 +116,9 @@ export BROWSER=firefox
 
 alias vi='vim'
 
+# pipe to this command to be able to paste it
+alias clip='xclip -selection clipboard'
+
 # history searching...
 bindkey "^[[A" history-substring-search-up
 bindkey "^[[B" history-substring-search-down
