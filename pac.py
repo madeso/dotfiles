@@ -31,7 +31,6 @@ def handle_remove(args):
     subprocess.run(['pacman', '-R', args.lib])
 
 
-# hrm...
 def handle_installed():
     subprocess.run(['pacman', '-Qe'])
 
@@ -59,7 +58,7 @@ def main():
     sub.add_argument('lib')
     sub.set_defaults(func=handle_remove)
 
-    sub = sub_parsers.add_parser('ls', help='list installed libs')
+    sub = sub_parsers.add_parser('ls', help='List all explicitly installed packages')
     sub.set_defaults(func=handle_installed)
 
     sub = sub_parsers.add_parser('update', help='update system')
