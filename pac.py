@@ -31,11 +31,11 @@ def handle_remove(args):
     subprocess.run(['pacman', '-R', args.lib])
 
 
-def handle_installed():
+def handle_installed(args):
     subprocess.run(['pacman', '-Qe'])
 
 
-def handle_update():
+def handle_update(args):
     subprocess.run(['pacman', '-Syu'])
 
 def main():
