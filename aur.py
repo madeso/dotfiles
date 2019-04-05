@@ -39,6 +39,20 @@ def install_pkg(p):
     subprocess.run(['makepkg', '-sic'], cwd=p, check=True)
 
 
+def clear_pkg(p):
+    # todo: remove all file and folders except .git
+    print('clearing ', p)
+    for e in os.listdir(p):
+        path = os.path.join(p, e)
+        if os.path.isdir(path):
+            if e != '.git':
+                print('removing directory ', e)
+                shutil.rmtree(path)
+        else:
+            os.remove(path)
+    subprocess.run(['git', 'checkout', '.'], cwd=p, check=True)
+
+
 def cmd(cmd, cwd):
     return subprocess.check_output(cmd, stderr=subprocess.STDOUT, cwd=cwd).decode('utf8').strip()
 
@@ -224,6 +238,11 @@ def handle_write(args):
     write_json_deps(args.name)
 
 
+def handle_add(args):
+    git = 'https://aur.archlinux.org/{}.git'.format(args.name)
+    print('Adding ', git)
+    subprocess.run(['git', 'clone', git], cwd=aur_path(), check=True)
+
 def handle_git(args):
     aur = aur_path()
     projects = find_git_folders(aur)
@@ -243,6 +262,7 @@ def handle_install(args):
     for p in projects:
         if get_project_name(p) == args.app:
             found = True
+            clear_pkg(p)
             install_pkg(p)
             write_json_deps(get_project_name(p))
 
@@ -263,6 +283,10 @@ def main():
 
     sub = sub_parsers.add_parser('git', help='update the git repos')
     sub.set_defaults(func=handle_git)
+
+    sub = sub_parsers.add_parser('add', help='add a new project')
+    sub.add_argument('name', help='the aur project to add')
+    sub.set_defaults(func=handle_add)
 
     sub = sub_parsers.add_parser('write', help='write current dependency status to json')
     sub.add_argument('name', help='the aur project to write, single - to mean all projects')
