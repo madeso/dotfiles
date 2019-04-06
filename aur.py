@@ -262,7 +262,8 @@ def handle_install(args):
     for p in projects:
         if get_project_name(p) == args.app:
             found = True
-            clear_pkg(p)
+            if args.clear:
+                clear_pkg(p)
             install_pkg(p)
             write_json_deps(get_project_name(p))
 
@@ -294,6 +295,7 @@ def main():
 
     sub = sub_parsers.add_parser('install', aliases=['in', 'up', 'update'], help='install or update the named aur dependency')
     sub.add_argument('app')
+    sub.add_argument('--noclear', action='store_false', dest='clear')
     sub.set_defaults(func=handle_install)
 
     args = parser.parse_args()
