@@ -59,19 +59,23 @@ def handle_ls(args):
         print(m)
 
 
-def handle_write(args):
-    # todo: write to /etc/pacman.d/mirrorlist
+def write_mirrors(libs, callback):
     mirrors = get_mirrors()
-    for l in args.lib:
+    for l in libs:
         if not l.lower() in mirrors:
             print('no country named ', l)
             return
 
         if l != 'intro':
-            print('#', l)
+            callback('# ' + l)
         for c in mirrors[l.lower()]:
-            print(c)
-        print()
+            callback(c)
+        callback('')
+
+
+def handle_write(args):
+    with open('/etc/pacman.d/mirrorlist', 'w') as handle:
+        write_mirrors(args.lib, lambda txt: handle.write(txt + '\n'))
 
 
 def main():
@@ -81,9 +85,14 @@ def main():
     sub = sub_parsers.add_parser('ls', help='list countries')
     sub.set_defaults(func=handle_ls)
 
+    sub = sub_parsers.add_parser('print', help='write mirrors')
+    sub.add_argument('lib', nargs='+', help='libraries to write')
+    sub.set_defaults(func=lambda args: write_mirrors(args.lib, print))
+
     sub = sub_parsers.add_parser('write', help='write mirrors')
     sub.add_argument('lib', nargs='+', help='libraries to write')
     sub.set_defaults(func=handle_write)
+
 
     args = parser.parse_args()
     if args.command_name is not None:
