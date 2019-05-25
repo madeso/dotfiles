@@ -76,17 +76,17 @@ def set_user_data(data: typing.Dict[str, str]):
         print(json.dumps(data, sort_keys=True, indent=4), file=f)
 
 
-def get_computer_name() -> str:
+def get_config(name: str) -> str:
     data = get_user_data()
-    if 'name' in data:
-        return data['name']
+    if name in data:
+        return data[name]
     else:
         return ''
 
 
-def set_computer_name(name: str):
+def set_config(name: str, value: str):
     data = get_user_data()
-    data['name'] = name
+    data[name] = value
     set_user_data(data)
 
 
@@ -568,11 +568,11 @@ def handle_home(args, data: Data):
         print("Unknown OS", s)
 
 
-def handle_name(args, data: Data):
-    if args.name is None:
-        print(get_computer_name())
+def handle_config(args, data: Data):
+    if args.value is None:
+        print(get_config(args.name))
     else:
-        set_computer_name(args.name)
+        set_config(args.name, args.value)
 
 
 def handle_diff(args, data: Data):
@@ -634,9 +634,10 @@ def main(data: Data):
     sub = sub_parsers.add_parser('home', help='Start explorer in home')
     sub.set_defaults(func=handle_home)
 
-    sub = sub_parsers.add_parser('name', help='Get or set the current computer name')
-    sub.add_argument('--name', help='if specified, sets the name to this')
-    sub.set_defaults(func=handle_name)
+    sub = sub_parsers.add_parser('config', help='Get or set a config value')
+    sub.add_argument('name', help='the name')
+    sub.add_argument('value', nargs='?', help='if specified, sets the value to this')
+    sub.set_defaults(func=handle_config)
 
     args = parser.parse_args()
     if args.command_name is not None:
