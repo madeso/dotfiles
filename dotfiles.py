@@ -73,7 +73,8 @@ def get_data():
           .file("materialdesignicons-webfont.ttf")
     )
     data.add_dir(
-        dotlib.Dir("vs_code", ".config/Code/User",
+        dotlib.Dir("vs_code", ".config/{}/User"
+            .format('Code - OSS' if dotlib.get_config_bool('code.oss') else 'Code'),
                    win_where=dotlib.PathType.APPDATA_ROAMING, win_home='Code\\User')
         .file('keybindings.json')
         .file('settings.json')

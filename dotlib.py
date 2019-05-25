@@ -84,6 +84,21 @@ def get_config(name: str) -> str:
         return ''
 
 
+def get_config_bool(name: str) -> bool:
+    v = get_config(name).strip().lower()
+    if v == 'yes':
+        return True
+    if v == '1':
+        return True
+    if v == 'true':
+        return True
+    if v == 't':
+        return True
+    if v == 'y':
+        return True
+    return False
+
+
 def set_config(name: str, value: str):
     data = get_user_data()
     data[name] = value
