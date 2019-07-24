@@ -34,7 +34,12 @@ def set_user_data(data: typing.Dict[str, str]):
 
 
 # from: https://stackoverflow.com/questions/4628122/how-to-construct-a-timedelta-object-from-a-simple-string
-regex = re.compile(r'((?P<hours>\d+?)hr)?((?P<minutes>\d+?)m)?((?P<seconds>\d+?)s)?')
+regex = re.compile(
+        r'((?P<days>\d+?)d)?'+
+        r'((?P<hours>\d+?)hr)?'+
+        r'((?P<minutes>\d+?)m)?'+
+        r'((?P<seconds>\d+?)s)?'
+        )
 def parse_time(time_str):
     parts = regex.match(time_str)
     if not parts:
@@ -52,14 +57,27 @@ def main():
     parser = argparse.ArgumentParser(description='Manage my dot files.')
     parser.add_argument('app')
     parser.add_argument('timespan')
+    parser.add_argument('--debug', '-d', action='store_true')
     args = parser.parse_args()
     data = get_user_data()
     delta = parse_time(args.timespan)
+    if args.debug:
+        print('timespan:', delta)
     if delta is None:
+        return
+    if delta <= datetime.timedelta(seconds=1):
+        print('timespan is too short')
         return
     if args.app in data:
         then = datetime.datetime.fromisoformat(data[args.app])
-        if then + delta < datetime.datetime.now():
+        future = then + delta 
+        now = datetime.datetime.now()
+        if args.debug:
+            print('Recorded:', then)
+            print('Have to pass:', future)
+            print('Now:', now)
+
+        if future < now:
             data[args.app] = datetime.datetime.now().isoformat()
             set_user_data(data)
             print('passed')
