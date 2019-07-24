@@ -85,6 +85,11 @@ def get_data():
         .file('solarized-light.rasi')
     )
     data.add_dir(
+        dotlib.Dir('services', '.config/systemd/user')
+            .file('ssh-agent.service')
+    )
+    data.add_file('pam_environment', '.pam_environment')
+    data.add_dir(
         dotlib.Dir('vimfiles', '.vim')
         .set_dir('colors')
         .file('solarized.vim')
