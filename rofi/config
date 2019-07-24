@@ -1,2 +1,4 @@
 rofi.theme: solarized-light
 rofi.font:  Noto Sans Mono 10 
+rofi.show-icons: true
+
