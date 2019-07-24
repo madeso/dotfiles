@@ -18,6 +18,6 @@
     "window.titleBarStyle": "custom",
     "window.zoomLevel": -1,
     "workbench.editor.highlightModifiedTabs": true,
-    "workbench.activityBar.visible": false,
+    "workbench.activityBar.visible": true,
     "workbench.iconTheme": null
 }
