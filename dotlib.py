@@ -515,7 +515,8 @@ def call_diff_app(left: str, right: str):
         try:
             subprocess.call(['meld', left, right])
         except OSError as e:
-            if e.errno == os.errno.ENOENT:
+            import errno
+            if e.errno == errno.ENOENT:
                 print("Note: Meld isn't installed")
                 subprocess.call(['diff', left, right, '--color'])
                 # print(diff)
