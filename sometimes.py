@@ -80,13 +80,19 @@ def main():
         if future < now:
             data[args.app] = datetime.datetime.now().isoformat()
             set_user_data(data)
-            print('passed')
+            if args.debug:
+                print('passed')
+            exit(0)
         else:
-            print('rejected')
+            if args.debug:
+                print('rejected')
+            exit(-1)
     else:
         data[args.app] = datetime.datetime.now().isoformat()
         set_user_data(data)
-        print('passed')
+        if args.debug:
+            print('passed')
+        exit(0)
 
 
 if __name__ == "__main__":
