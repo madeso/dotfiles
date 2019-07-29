@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Screenshot with shadow
+Exec="maim-window-shadow.sh"
+Comment=Select a window and take a screenshot with a shadow
+Terminal=false

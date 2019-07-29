@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Snip
+Exec="maim-snip.sh"
+Comment=Select area of your screen and copy to clipboard
+Terminal=false

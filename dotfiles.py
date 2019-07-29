@@ -85,6 +85,11 @@ def get_data():
         .file('solarized-light.rasi')
     )
     data.add_dir(
+        dotlib.Dir('shortcuts', '.local/share/applications')
+            .file('maim-snip.desktop')
+            .file('maim-window-shadow.desktop')
+    )
+    data.add_dir(
         dotlib.Dir('services', '.config/systemd/user')
             .file('ssh-agent.service')
     )
