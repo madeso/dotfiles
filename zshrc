@@ -111,6 +111,9 @@ export EDITOR=vi
 export TERM=rxvt-unicode
 export BROWSER=firefox
 
+# aseprite from aur
+export ASEPRITE_ACCEPT_EULA=yes
+
 alias vi='vim'
 
 # pipe to this command to be able to paste it
