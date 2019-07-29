@@ -279,5 +279,9 @@ nnoremap <C-l> <C-w>l
 " Commands
 " ============================================================================
 
+" fomat json with python
 com! FormatJson %!python -m json.tool
+
+" transform windows line endings to linux (probably)
+com! Ln %s/^M/\r/g
 
