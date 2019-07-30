@@ -68,6 +68,7 @@ def get_data():
     data.add_file('gnome2', '.gtkrc-2.0')
     data.add_file('gnome3.ini', '.config/gtk-3.0/settings.ini')
     data.add_file('xinitrc', '.xinitrc')
+    data.add_file('xprofile', '.xprofile')
     data.add_dir(
         dotlib.Dir("custom_fonts", ".fonts")
           .file("materialdesignicons-webfont.ttf")
