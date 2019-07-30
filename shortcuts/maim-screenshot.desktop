@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Screenshot desktop
+Exec="maim-screenshot.sh"
+Comment=Take a screenshot
+Terminal=false

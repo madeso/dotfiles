@@ -88,6 +88,7 @@ def get_data():
     data.add_dir(
         dotlib.Dir('shortcuts', '.local/share/applications')
             .file('maim-snip.desktop')
+            .file('maim-screenshot.desktop')
             .file('maim-window-shadow.desktop')
     )
     data.add_dir(
