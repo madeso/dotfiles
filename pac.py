@@ -28,7 +28,7 @@ def handle_install(args):
 
 # hrm...
 def handle_remove(args):
-    subprocess.run(['pacman', '-R', args.lib])
+    subprocess.run(['pacman', '-Rs', args.lib])
 
 
 def handle_installed(args):
