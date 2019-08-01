@@ -21,8 +21,18 @@ def get_backgrounds():
     return os.path.join(get_dotfiles(), 'backgrounds')
 
 
+def ext(f):
+    return os.path.splitext(f)[1][1:].lower()
+
+
+def is_image(f):
+    return ext(f)=='png' or ext(f) == 'jpg' or ext(f) == 'jpeg'
+
 def list_files(dir):
-    return [os.path.join(dir, f) for f in os.listdir(dir) if os.path.isfile(os.path.join(dir, f))]
+    return [os.path.join(dir, f) for f in os.listdir(dir)
+            if os.path.isfile(os.path.join(dir, f))
+            and is_image(f)
+           ]
     
 def handle_ls(args):
     bkg = get_backgrounds()
@@ -31,6 +41,7 @@ def handle_ls(args):
     files = list_files(bkg)
     for file in files:
         print('  ', file)
+    print('Found {} file(s)'.format(len(files)))
 
 def handle_set(args):
     files = list_files(get_backgrounds())
