@@ -13,6 +13,18 @@ import re
 def create_argparse():
     parser = argparse.ArgumentParser(description='Check for pacman updates')
     parser.add_argument(
+        '-B',
+        '--base_bg',
+        default='white',
+        help='base background of the output(default=white)'
+    )
+    parser.add_argument(
+        '-U',
+        '--updates_available_bg',
+        default='white',
+        help='color of the background, when updates are available(default=white)'
+    )
+    parser.add_argument(
         '-b',
         '--base_color',
         default='green',
@@ -88,7 +100,7 @@ def matching_updates(updates, watch_list):
     return matches
 
 
-message = "<span color='{0}'>{1}</span>"
+message = "<span background='{0}' color='{1}'>{2}</span>"
 args = create_argparse()
 
 updates = get_updates()
@@ -101,6 +113,6 @@ if update_count > 0:
     matches = matching_updates(updates, args.watch)
     if matches:
         info += ' [{0}]'.format(', '.join(matches))
-    print(message.format(args.updates_available_color, info))
+    print(message.format(args.updates_available_bg, args.updates_available_color, info))
 elif not args.quiet:
-    print(message.format(args.base_color, 'system up to date'))
+    print(message.format(args.base_bg, args.base_color, 'system up to date'))

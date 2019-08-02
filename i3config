@@ -35,22 +35,6 @@ set $border              {{base01}}
 set $black               #000000
 
 
-# material colors
-# source: https://material.io/design/color/#color-theme-creation
-
-# primary main/variant, secondary main/variant, error main
-set $mprim #6200EE
-set $mpriv #3700B3
-set $msecm #03DAC6
-set $msecv #018786
-set $merrm #B00020
-
-# on primary, on secondary, on error
-set $mopri #FFFFFF
-set $mosec #000000
-set $moerr #FFFFFF
-
-
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
@@ -185,7 +169,6 @@ bindsym $mod+Shift+r exec ~/dev/dotfiles/dotfiles.py install i3 && i3-msg restar
 # exit i3 (logs you out of your X session)
 # bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 bindsym $mod+Shift+x exec ~/dev/dotfiles/i3shutdown.py
-# bindsym $mod+Shift+x exec i3lock --color "$bg-color"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -215,12 +198,12 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # window colors
-#                       border             background         text                 indicator
-client.focused          $black          $bg-color          $text-color          $indicator
-client.unfocused        $black $inactive-bg-color $inactive-text-color $indicator
-client.focused_inactive $black $inactive-bg-color $inactive-text-color $indicator
-client.urgent           $black   $urgent-bg-color   $urgent-text-color   $indicator
-client.placeholder      $black $inactive-bg-color $inactive-text-color $indicator
+#                       border      background       text           indicator
+client.focused          $black    {{mat_prim}}     {{mat_opri}}    $indicator
+client.unfocused        $black    {{mat_secm}}     {{mat_osec}}    $indicator
+client.focused_inactive $black    {{mat_secm}}     {{mat_osec}}    $indicator
+client.urgent           $black    {{mat_errm}}     {{mat_oerr}}    $indicator
+client.placeholder      $black    {{mat_secv}}     {{mat_osec}}    $indicator
 client.background       $black
 
 hide_edge_borders smart
@@ -231,15 +214,15 @@ bar {
   font pango:Noto Sans Mono,Material Design Icons, 8
   status_command i3blocks
   colors {
-    background  $inactive-bg-color
-    statusline  $inactive-text-color
-    separator   $inactiveborder-text-color
+    background  {{mat_secm}}
+    statusline  {{mat_osec}}
+    separator   {{mat_osec}}
     
-    #                  border             background         text
-    focused_workspace  $bg-color          $bg-color          $text-color
-    active_workspace   $inactive-bg-color $inactive-bg-color $inactive-text-color
-    inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
-    urgent_workspace   $urgent-bg-color   $urgent-bg-color   $urgent-text-color
+    #                      border          background        text
+    focused_workspace    {{mat_prim}}     {{mat_prim}}      {{mat_opri}}
+    active_workspace     {{mat_secm}}     {{mat_secm}}      {{mat_osec}}
+    inactive_workspace   {{mat_secm}}     {{mat_secm}}      {{mat_osec}}
+    urgent_workspace     {{mat_errm}}     {{mat_errm}}      {{mat_oerr}}
   }
 }
 

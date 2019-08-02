@@ -49,6 +49,22 @@ def get_data():
         base3='#fdf6e3'
     )
 
+    # material colors
+    # source: https://material.io/design/color/#color-theme-creation
+    data.set_vars(
+        # primary main/variant, secondary main/variant, error main
+        mat_prim='#6200EE',
+        mat_priv='#3700B3',
+        mat_secm='#03DAC6',
+        mat_secv='#018786',
+        mat_errm='#B00020',
+
+        # on primary, on secondary, on error
+        mat_opri='#FFFFFF',
+        mat_osec='#000000',
+        mat_oerr='#FFFFFF'
+    )
+
     data.add_file('vimrc', '.vimrc')
     data.add_file('zshrc', '.zshrc')
     data.add_file('xresources', '.Xresources')
