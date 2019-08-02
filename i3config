@@ -35,6 +35,22 @@ set $border              {{base01}}
 set $black               #000000
 
 
+# material colors
+# source: https://material.io/design/color/#color-theme-creation
+
+# primary main/variant, secondary main/variant, error main
+set $mprim #6200EE
+set $mpriv #3700B3
+set $msecm #03DAC6
+set $msecv #018786
+set $merrm #B00020
+
+# on primary, on secondary, on error
+set $mopri #FFFFFF
+set $mosec #000000
+set $moerr #FFFFFF
+
+
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
