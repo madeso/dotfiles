@@ -48,14 +48,6 @@ def create_argparse():
         action = 'store_true',
         help = 'Do not produce output when system is up to date'
     )
-    parser.add_argument(
-        '-w',
-        '--watch',
-        nargs='*',
-        default=[],
-        help='Explicitly watch for specified packages. '
-        'Listed elements are treated as regular expressions for matching.'
-    )
     return parser.parse_args()
 
 
@@ -90,16 +82,6 @@ def get_aur_updates():
     return aur_updates
 
 
-def matching_updates(updates, watch_list):
-    matches = set()
-    for u in updates:
-        for w in watch_list:
-            if re.match(w, u):
-                matches.add(u)
-
-    return matches
-
-
 def message(bg, fg, text):
     return "<span background='{0}' color='{1}'>{2}</span>".format(bg, fg, text)
 
@@ -114,9 +96,6 @@ def main():
 
     if update_count > 0:
         info = str(update_count) + ' updates available'
-        matches = matching_updates(updates, args.watch)
-        if matches:
-            info += ' [{0}]'.format(', '.join(matches))
         print(message(args.updates_available_bg, args.updates_available_color, info))
     elif not args.quiet:
         print(message(args.base_bg, args.base_color, 'system up to date'))
