@@ -83,7 +83,7 @@ def get_aur_updates():
 
 
 def message(bg, fg, text):
-    return "<span background='{0}' color='{1}'>{2}</span>".format(bg, fg, text)
+    print( "<span background='{0}' color='{1}'>{2}</span>".format(bg, fg, text))
 
 
 def main():
@@ -96,9 +96,9 @@ def main():
 
     if update_count > 0:
         info = str(update_count) + ' updates available'
-        print(message(args.updates_available_bg, args.updates_available_color, info))
+        message(args.updates_available_bg, args.updates_available_color, info)
     elif not args.quiet:
-        print(message(args.base_bg, args.base_color, 'system up to date'))
+        message(args.base_bg, args.base_color, 'system up to date')
 
 
 if __name__ == "__main__":
