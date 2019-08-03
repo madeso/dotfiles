@@ -2,7 +2,7 @@ interval=5
 color={{mat_osec}}
 
 [arch-update]
-command=~/.config/i3blocks/scripts/arch-update.py -b "{{mat_osec}}" -B "{{mat_secm}}" -u "{{mat_oerr}}" -U "{{mat_errm}}"
+command=~/.config/i3blocks/scripts/arch-update.py -b "{{mat_osec}}" -B "{{mat_secm}}" -u "{{mat_oerr}}" -U "{{mat_errm}}" -c 25
 label= 
 interval=3600
 markup=pango
