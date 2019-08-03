@@ -100,23 +100,26 @@ def matching_updates(updates, watch_list):
     return matches
 
 
+def message(bg, fg, text):
+    return "<span background='{0}' color='{1}'>{2}</span>".format(bg, fg, text)
+
+
 def main():
-    message = "<span background='{0}' color='{1}'>{2}</span>"
     args = create_argparse()
 
     updates = get_updates()
     if args.aur:
         updates += get_aur_updates()
-
     update_count = len(updates)
+
     if update_count > 0:
         info = str(update_count) + ' updates available'
         matches = matching_updates(updates, args.watch)
         if matches:
             info += ' [{0}]'.format(', '.join(matches))
-        print(message.format(args.updates_available_bg, args.updates_available_color, info))
+        print(message(args.updates_available_bg, args.updates_available_color, info))
     elif not args.quiet:
-        print(message.format(args.base_bg, args.base_color, 'system up to date'))
+        print(message(args.base_bg, args.base_color, 'system up to date'))
 
 
 if __name__ == "__main__":
