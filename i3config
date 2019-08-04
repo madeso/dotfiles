@@ -215,7 +215,8 @@ bar {
   status_command i3blocks
   mode hide
   modifier $mod
-  tray_output none
+  # want udiskie tray icon
+  # tray_output none
 
   colors {
     background  {{mat_secm}}

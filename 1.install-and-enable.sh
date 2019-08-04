@@ -5,6 +5,8 @@
 # Run this file with sudo
 # it will enable and setup system
 
+# ntfs usb mounting
+sudo pacman -S diskie ntfs-3g
 
 #################################################################
 #    Time synchronisation
