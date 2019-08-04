@@ -213,6 +213,9 @@ hide_edge_borders smart
 bar {
   font pango:Noto Sans Mono,Material Design Icons, 8
   status_command i3blocks
+  mode hide
+  modifier $mod
+
   colors {
     background  {{mat_secm}}
     statusline  {{mat_osec}}
