@@ -1,6 +1,6 @@
 #!/bin/sh
 
-udiskie --no-notify --tray &
+udiskie --tray &
 
 export PATH="${PATH}:$HOME/dev/dotfiles/scripts"
 
