@@ -1,4 +1,5 @@
-rofi.theme: solarized-light
+rofi.theme: google-material
 rofi.font:  Noto Sans Mono 10 
 rofi.show-icons: true
+rofi.scroll-method: 1
 

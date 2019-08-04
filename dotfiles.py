@@ -62,7 +62,9 @@ def get_data():
         # on primary, on secondary, on error
         mat_opri='#FFFFFF',
         mat_osec='#000000',
-        mat_oerr='#FFFFFF'
+        mat_oerr='#FFFFFF',
+
+        junk='#FFFF00'
     )
 
     data.add_file('vimrc', '.vimrc')
@@ -101,6 +103,7 @@ def get_data():
         .file('config')
         .file('solarized-light.rasi')
     )
+    data.add_generated_file('rofi/google-material.rasi', '.config/rofi/google-material.rasi')
     data.add_dir(
         dotlib.Dir('shortcuts', '.local/share/applications')
             .file('maim-snip.desktop')
