@@ -132,6 +132,18 @@ set $ws9 "9:"
 set $ws10 "10:"
 set $ws11 "11: "
 
+workspace $ws1 output primary
+workspace $ws2 output primary
+workspace $ws3 output primary
+workspace $ws4 output primary
+workspace $ws5 output primary
+workspace $ws6 output VGA-0 primary
+workspace $ws7 output primary
+workspace $ws8 output primary
+workspace $ws9 output primary
+workspace $ws10 output primary
+workspace $ws11 output primary
+
 # switch to workspace
 bindsym $mod+1 workspace $ws1
 bindsym $mod+2 workspace $ws2
