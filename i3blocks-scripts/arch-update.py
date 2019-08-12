@@ -106,9 +106,9 @@ def main():
     fg = args.updates_available_color if critical_updates else args.base_color
 
     if number_of_updates > 0:
-        message(bg, fg, '{} updates available'.format(number_of_updates))
+        message(bg, fg, '{}+'.format(number_of_updates))
     elif not args.quiet:
-        message(bg, fg, 'system up to date')
+        message(bg, fg, 'ok')
 
 
 if __name__ == "__main__":
