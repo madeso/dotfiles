@@ -137,6 +137,7 @@ thunar
 thunderbird
 tiled
 tk
+transmission-gtk
 udiskie
 udisks2
 unrar
