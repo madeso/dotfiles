@@ -152,6 +152,7 @@ vlc-plugin-fluidsynth
 w3m
 wget
 which
+whois
 xclip
 xdotool
 xf86-input-wacom
