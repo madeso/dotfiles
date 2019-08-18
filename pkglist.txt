@@ -19,6 +19,7 @@ blender
 bzip2
 chromium
 chromium-widevine
+clang
 cmake
 code
 compton
@@ -124,6 +125,7 @@ sed
 shadow
 smbclient
 soundfont-fluid
+speedcrunch
 spotify
 sudo
 sysfsutils
