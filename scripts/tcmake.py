@@ -43,7 +43,7 @@ def handle_setup(args):
     if args.gcc:
         compilers.append('gcc')
     for compiler in compilers:
-        extra = '' if len(compilers)==1 else '-' + compiler
+        extra = '-' + compiler
         if args.debug:
             setup_cmake(wd, os.path.join(build, 'debug'+extra), 'Debug', compiler)
         if args.release:
