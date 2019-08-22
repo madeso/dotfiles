@@ -21,11 +21,20 @@ def setup_cmake(source, build, type, compiler):
         '-D', 'CMAKE_CXX_COMPILER='+compiler,
         '-DCMAKE_BUILD_TYPE='+type, source], cwd=build)
 
+def has_cmake(folder):
+    return os.path.exists(os.path.join(folder, 'CMakeLists.txt'))
+
+
 def handle_setup(args):
     wd = os.getcwd()
-    if not os.path.exists(os.path.join(wd, 'CMakeLists.txt')):
-        print('Folder does not look like a cmake project')
+    if not has_cmake(wd):
+        print('Folder does not look like a cmake project, aborting...')
         return
+
+    if args.check_parent:
+        if has_cmake(os.path.dirname(wd)):
+            print('parent folder has cmake, aborting...')
+            return
 
     build = os.path.join(wd, 'build')
     compilers = []
@@ -47,6 +56,7 @@ def main():
     sub_parsers = parser.add_subparsers(dest='command_name', title='Commands', help='', metavar='<command>')
 
     sub = sub_parsers.add_parser('setup', help='setup the build folders')
+    sub.add_argument('--no-parent-check', dest='check_parent', action='store_false', help="Don't abort if the parent folder contains a cmake file")
     sub.add_argument('--nogcc', dest='gcc', action='store_false', help="Don't setup gcc as a compiler")
     sub.add_argument('--noclang', dest='clang', action='store_false', help="Don't setup clang as a compiler")
     sub.add_argument('--nodebug', dest='debug', action='store_false', help="Don't setup a debug build")
