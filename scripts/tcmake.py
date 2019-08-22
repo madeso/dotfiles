@@ -23,6 +23,10 @@ def setup_cmake(source, build, type, compiler):
 
 def handle_setup(args):
     wd = os.getcwd()
+    if not os.path.exists(os.path.join(wd, 'CMakeLists.txt')):
+        print('Folder does not look like a cmake project')
+        return
+
     build = os.path.join(wd, 'build')
     compilers = []
     if args.clang:
