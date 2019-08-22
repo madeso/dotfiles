@@ -20,8 +20,9 @@ def setup_cmake(source, build, type):
 
 def handle_setup(args):
     wd = os.getcwd()
-    setup_cmake(wd, os.path.join(wd, 'debug'), 'Debug')
-    setup_cmake(wd, os.path.join(wd, 'release'), 'Release')
+    build = os.path.join(wd, 'build')
+    setup_cmake(wd, os.path.join(build, 'debug'), 'Debug')
+    setup_cmake(wd, os.path.join(build, 'release'), 'Release')
     pass
 
 
