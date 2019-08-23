@@ -16,9 +16,10 @@ from enum import Enum
 def setup_cmake(source, build, type, compiler):
     os.makedirs(build, exist_ok=True)
     # https://stackoverflow.com/questions/7724569/debug-vs-release-in-cmake
+    compilerpp = compiler + '++' if compiler == 'clang' else compiler
     subprocess.run(['cmake', '-G', 'Ninja',
         '-D', 'CMAKE_C_COMPILER='+compiler,
-        '-D', 'CMAKE_CXX_COMPILER='+compiler,
+        '-D', 'CMAKE_CXX_COMPILER='+compilerpp,
         '-DCMAKE_BUILD_TYPE='+type, source], cwd=build)
 
 def has_cmake(folder):
