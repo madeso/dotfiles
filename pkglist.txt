@@ -93,6 +93,7 @@ mypaint
 nano
 netctl
 networkmanager
+ninja
 noto-fonts
 ntfs-3g
 numix-gtk-theme
