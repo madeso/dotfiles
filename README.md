@@ -6,6 +6,7 @@ To add the git files use:
 
 Enable start the ssh-agent systemd service>
 
-  systemctl --user enable ssh-agent.service
-  systemctl --user start ssh-agent.service
+
+  groupadd -r autologin
+  usermod -aG autologin gustav
 

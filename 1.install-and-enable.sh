@@ -29,3 +29,15 @@ sudo pacman -S diskie ntfs-3g
 systemctl enable systemd-timesyncd.service
 timedatectl set-ntp true
 
+
+#################################################################
+#    ssh agent
+#  
+systemctl --user enable ssh-agent.service
+
+
+#################################################################
+#   Display manager (login)
+#  
+systemctl enable lightdm.service
+
