@@ -95,6 +95,8 @@ netctl
 networkmanager
 ninja
 noto-fonts
+noto-fonts-emoji
+noto-fonts-extra
 ntfs-3g
 numix-gtk-theme
 obs-studio
@@ -135,6 +137,7 @@ systemd-sysvcompat
 tar
 tcl
 telegram-desktop
+termite
 texinfo
 thunar
 thunderbird
@@ -142,6 +145,7 @@ tig
 tiled
 tk
 transmission-gtk
+ttf-fira-code
 udiskie
 udisks2
 unrar
