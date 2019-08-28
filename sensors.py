@@ -16,21 +16,24 @@ import random
 
 def print_temp_please(id, struct):
     # print(struct)
-    max = [-1]
     temp = struct['temp{}_input'.format(id)]
-    # find the lowest max that is above 0
-    def set_max(n):
+    def var(n):
         name = 'temp{}_{}'.format(id, n)
         if name in struct:
-            t = struct[name]
-            if t > 0:
-                if max[0] < 0 or t < max[0]:
-                    max[0] = t
-    set_max('crit')
-    set_max('crit_hyst')
-    set_max('max')
-    set_max('crit_alarm')
-    print(temp, max)
+            return struct[name]
+        else:
+            return -1
+    maxes = [t for t in [
+                var('crit'),
+                var('crit_hyst'),
+                var('max'),
+                var('crit_alarm')
+            ] if t > 0]
+    if len(maxes) > 0:
+        max_temp = min(maxes)
+        print(temp, max_temp)
+    else:
+        print(temp)
 
 
 def print_temp(struct):
