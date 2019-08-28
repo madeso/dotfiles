@@ -15,7 +15,7 @@ import random
 
 def message(args, t, m):
     is_hot = t > m
-    text = str(t)
+    text = '{0:.1f}'.format(t)
     bg = args.hot_bg    if is_hot else args.base_bg
     fg = args.hot_color if is_hot else args.base_color
     print("<span background='{0}' color='{1}'>{2}</span>".format(bg, fg, text), end=" ")
