@@ -70,6 +70,7 @@ def get_data():
     data.add_file('vimrc', '.vimrc')
     data.add_file('zshrc', '.zshrc')
     data.add_file('xresources', '.Xresources')
+    data.add_file('termite.conf', '.config/termite/config')
     data.add_file('fonts.conf', '.config/fontconfig/fonts.conf')
     data.add_generated_file('i3config', '.config/i3/config')
     data.add_generated_file('minttyrc', '.minttyrc')
