@@ -7,6 +7,12 @@ label=
 interval=3600
 markup=pango
 
+[sensors]
+command=~/.config/i3blocks/scripts/sensors.py -b "{{mat_osec}}" -B "{{mat_secm}}" -u "{{mat_oerr}}" -U "{{mat_errm}}"
+label=
+interval=5
+markup=pango
+
 [volume-pulseaudio]
 interval=1
 command=~/.config/i3blocks/scripts/volume-pulseaudio.sh -H "" -M "" -L "" -X "" -C "{{mat_osec}}" -c "{{mat_osec}}" -F 3 -f 3 -T 66 -t 33
