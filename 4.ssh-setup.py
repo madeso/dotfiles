@@ -45,9 +45,16 @@ def run(args):
     if args.debug:
         print('missing properties: {}'.format(missing_properties))
 
+    newlines = missing_properties + newlines
+
+    if newlines[-1:][0].strip() != '':
+        newlines.append('')
+        if args.debug:
+            print('ADDING NEWLINE AT END')
+
     if args.debug:
         print('RUN DONE')
-    return missing_properties + newlines
+    return newlines
 
 def handle_test(args):
     data = run(args)
