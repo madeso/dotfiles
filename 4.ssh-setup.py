@@ -12,13 +12,17 @@ import json
 from enum import Enum
 
 SSH_CONFIG = os.path.join(os.path.expanduser('~'), '.ssh', 'config')
-ADD_KEYS = 'AddKeysToAgent'
-KNOWN_HOSTS = 'UserKnownHostsFile'
 
 def run(args):
     lines = []
     with open(SSH_CONFIG) as f:
         lines = [line.rstrip('\n') for line in f]
+    wanted_properties = {
+        'AddKeysToAgent': 'yes',
+        'UserKnownHostsFile': '~/.ssh/known_hosts'
+    }
+    read_prop = {p:False for p in wanted_properties}
+
     newlines = []
     for l in lines:
         nl = l
@@ -27,19 +31,22 @@ def run(args):
             print(l)
             print(prop)
         property = prop[0] if len(prop)>0 else ''
-        if property == ADD_KEYS:
-            nl = '{} yes'.format(ADD_KEYS)
+        if property in wanted_properties:
+            nl = '{} {}'.format(property, wanted_properties[property])
+            read_prop[property] = True
             if args.debug:
-                print('REPLACED ADD_KEYS')
-        elif property == KNOWN_HOSTS:
-            nl = '{} ~/.ssh/known_hosts'.format(KNOWN_HOSTS)
-            if args.debug:
-                print('REPLACED KNOWN HOSTS')
+                print('REPLACED {}'.format(property))
         newlines.append(nl)
+
+    missing_properties = ['{} {}'.format(prop, wanted_properties[prop])
+            for prop in wanted_properties if not read_prop[prop]]
+
+    if args.debug:
+        print('missing properties: {}'.format(missing_properties))
 
     if args.debug:
         print('RUN DONE')
-    return newlines
+    return missing_properties + newlines
 
 def handle_test(args):
     data = run(args)
