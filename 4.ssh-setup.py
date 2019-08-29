@@ -15,8 +15,9 @@ SSH_CONFIG = os.path.join(os.path.expanduser('~'), '.ssh', 'config')
 
 def run(args):
     lines = []
-    with open(SSH_CONFIG) as f:
-        lines = [line.rstrip('\n') for line in f]
+    if os.path.isfile(SSH_CONFIG):
+        with open(SSH_CONFIG) as f:
+            lines = [line.rstrip('\n') for line in f]
     wanted_properties = {
         'AddKeysToAgent': 'yes',
         'UserKnownHostsFile': '~/.ssh/known_hosts'
