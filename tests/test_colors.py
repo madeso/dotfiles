@@ -1,6 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys
-
 
 def write_color_test(bold_flag, foreground_color, background_color, text):
     ESC = '\33'
