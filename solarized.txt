@@ -22,3 +22,4 @@ violet      #6c71c4   13/5    brmagenta
 
 base1       #93a1a1   14/4    brcyan     (comments, secondary content)
 base3       #fdf6e3   15/7    brwhite    (background)
+
