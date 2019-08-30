@@ -2,5 +2,6 @@
 
 udiskie --tray &
 
+export TERMINAL=termite
 export PATH="${PATH}:$HOME/dev/dotfiles/scripts"
 
