@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import sys
+import argparse
+
 
 def write_color_test(bold_flag, foreground_color, background_color, text):
     ESC = '\33'
@@ -21,7 +23,6 @@ def sample_text_width(text, sample_text, color_name):
 
 # reference: https://en.wikipedia.org/wiki/ANSI_escape_code
 def write_color_table(bold_flag, bright):
-    sys.stdout.write("\n")
     sys.stdout.write('Normal' if bold_flag == 0 else 'Bold')
     if bright:
         sys.stdout.write(" [bright]")
@@ -42,12 +43,20 @@ def write_color_table(bold_flag, bright):
             t = sample_text_width(sample_text, sample_text, NAMES[background_index])
             write_color_test(bold_flag, foreground_color, background_color, t)
         sys.stdout.write("\n")
+    sys.stdout.write("\n")
 
 
 def main():
-    for bold_flag in [0, 1]:
-        for bright in [False, True]:
-            write_color_table(bold_flag, bright)
+    parser = argparse.ArgumentParser(description='tool to test font colors')
+    parser.add_argument('--single', action='store_true', help='Only run a single test')
+    args = parser.parse_args()
+
+    if args.single:
+        write_color_table(0, False)
+    else:
+        for bold_flag in [0, 1]:
+            for bright in [False, True]:
+                write_color_table(bold_flag, bright)
 
 if __name__ == "__main__":
     main()
