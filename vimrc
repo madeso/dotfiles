@@ -71,7 +71,7 @@ hi WildMenu ctermfg=9 ctermbg=15
 " highlight current line
 set cursorline
 highlight clear CursorLine
-highlight CursorLine ctermbg=7
+highlight CursorLine ctermbg=18
 
 " make backspace work as in other editors in insert
 set backspace=indent,eol,start
