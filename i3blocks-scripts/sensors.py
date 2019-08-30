@@ -13,16 +13,20 @@ import re
 from enum import Enum
 import random
 
-def message(args, t, m):
+class Data:
+    def __init__(self, args):
+        self.args = args
+        self.text = []
+
+def message(data, t, m):
     is_hot = t > m
     text = '{0:.1f}'.format(t)
-    bg = args.hot_bg    if is_hot else args.base_bg
-    fg = args.hot_color if is_hot else args.base_color
-    print("<span background='{0}' color='{1}'>{2}</span>".format(bg, fg, text), end=" ")
+    bg = data.args.hot_bg    if is_hot else data.args.base_bg
+    fg = data.args.hot_color if is_hot else data.args.base_color
+    data.text.append("<span background='{0}' color='{1}'>{2}</span>".format(bg, fg, text))
 
 
-def print_temp_please(args, id, struct):
-    # print(struct)
+def print_temp_please(data, id, struct):
     temp = struct['temp{}_input'.format(id)]
     def var(n):
         name = 'temp{}_{}'.format(id, n)
@@ -38,39 +42,39 @@ def print_temp_please(args, id, struct):
             ] if t > 0]
     if len(maxes) > 0:
         max_temp = min(maxes)
-        message(args, temp, max_temp)
+        message(data, temp, max_temp)
     else:
-        message(args, temp, temp+1)
+        message(data, temp, temp+1)
 
 
-def print_temp(args, struct):
+def print_temp(data, struct):
     for i in range(1, 3):
         if 'temp{}_input'.format(i) in struct:
-            print_temp_please(args, i, struct)
+            print_temp_please(data, i, struct)
             return
-    print('error in print_temp')
+    if data.args.debug:
+        print('error in print_temp')
 
 
-def print_adapter(args, name, adapter):
-    # print(name)
-    # print(adapter)
+def print_adapter(data, name, adapter):
     printed = 0
     for i in range(1,100):
         name = 'temp{}'.format(i)
         if name not in adapter:
             break
         printed += 1
-        print_temp(args, adapter[name])
+        print_temp(data, adapter[name])
 
     for i in range(0,100):
         name = 'Core {}'.format(i)
         if name not in adapter:
             break
         printed += 1
-        print_temp(args, adapter[name])
+        print_temp(data, adapter[name])
 
     if printed == 0:
-        print('error')
+        if data.args.debug:
+            print('error')
 
 
 def main():
@@ -103,10 +107,14 @@ def main():
 
     args = parser.parse_args()
 
+    data = Data(args)
+
     source = subprocess.check_output(['sensors', '-j'], encoding='UTF-8')
-    data = json.loads(source)
-    for key in data:
-        print_adapter(args, key, data[key])
+    sensor_data = json.loads(source)
+    for key in sensor_data:
+        print_adapter(data, key, sensor_data[key])
+
+    print(' '.join(data.text))
 
 if __name__ == "__main__":
     main()
