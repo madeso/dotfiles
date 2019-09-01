@@ -419,6 +419,7 @@ def run_copy_command(args, data: Data, install: bool):
                                                                              args.force, args.verbose,
                                                                              args.ignore_errors, args.dry, data.vars)
                   )
+    subprocess.run(['killall', '-USR1', 'termite'])
 
 
 def detect_module_not_found() -> bool:
