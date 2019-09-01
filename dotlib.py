@@ -63,6 +63,16 @@ def get_config_file_name() -> str:
     return os.path.join(get_home_folder(), '.dotlib.json')
 
 
+def is_running(app: str) -> bool:
+    try:
+        import psutil
+        return app in (p.name() for p in psutil.process_iter())
+    except ModuleNotFoundError:
+        print('psutil not found, try pip install psutil')
+        return False
+
+
+
 def get_user_data() -> typing.Dict[str, str]:
     if file_exist(get_config_file_name()):
         with open(get_config_file_name(), 'r') as f:
@@ -419,7 +429,10 @@ def run_copy_command(args, data: Data, install: bool):
                                                                              args.force, args.verbose,
                                                                              args.ignore_errors, args.dry, data.vars)
                   )
-    subprocess.run(['killall', '-USR1', 'termite'])
+
+    if is_running('termite'):
+        print('Refreshing termite')
+        subprocess.run(['killall', '-USR1', 'termite'])
 
 
 def detect_module_not_found() -> bool:
