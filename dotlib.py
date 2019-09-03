@@ -9,6 +9,7 @@ import sys
 import platform
 import typing
 import json
+import time
 from enum import Enum
 
 
@@ -375,6 +376,45 @@ class GeneratedFile:
         except WindowsError as e:
             print("Could not delete temp file because {}".format(e))
 
+# https://stackoverflow.com/a/49007649/180307
+class Watcher(object):
+    refresh_delay_secs = 1
+
+    # Constructor
+    def __init__(self, watch_files, call_func_on_change=None):
+        self.filenames = watch_files
+        self.call_func_on_change = call_func_on_change
+        self._cached_stamps = [os.stat(f).st_mtime for f in self.filenames]
+
+    # Look for changes
+    def look(self):
+        file_changed = False
+
+        for i in range(len(self.filenames)):
+            stamp = os.stat(self.filenames[i]).st_mtime
+            if stamp != self._cached_stamps[i]:
+                self._cached_stamps[i] = stamp
+                file_changed = True
+                print('{} changed'.format(self.filenames[i]))
+
+        if file_changed:
+            print('Change detected...')
+            if self.call_func_on_change is not None:
+                self.call_func_on_change()
+
+    # Keep watching in a loop        
+    def watch(self):
+        while True: 
+            try: 
+                time.sleep(self.refresh_delay_secs) 
+                self.look() 
+            except KeyboardInterrupt: 
+                print('\nDone') 
+                break 
+            except FileNotFoundError:
+                pass
+
+
 
 def generated_same(generated: str, source: str, g: GenerationData) -> bool:
     if file_exist(generated) and file_exist(source):
@@ -565,6 +605,18 @@ def handle_install(args, data: Data):
     copy_command(args, data, True)
 
 
+def handle_watch(args, data: Data):
+    files = [os.path.join(get_src_folder(), f.src) for f in data.generated_files]
+
+    def on_action():
+        print()
+        copy_command(args, data, True)
+        print()
+
+    watcher = Watcher(files, on_action)
+    watcher.watch()
+
+
 def handle_print(args, data: Data):
     run_print_command(args, data)
 
@@ -643,6 +695,10 @@ def main(data: Data):
     sub = sub_parsers.add_parser('uninstall', aliases=['remove', 're', 'un'], help='Remove files from HOME')
     add_remove_commands(sub)
     sub.set_defaults(func=handle_uninstall)
+
+    sub = sub_parsers.add_parser('watch', help='watch files for changes and install them')
+    add_copy_commands(sub)
+    sub.set_defaults(func=handle_watch)
 
     sub = sub_parsers.add_parser('grab', aliases=['get'], help='Copy files from HOME to git')
     add_copy_commands(sub)
