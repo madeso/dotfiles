@@ -64,6 +64,10 @@ def main():
     sub = sub_parsers.add_parser('update', help='update system')
     sub.set_defaults(func=handle_update)
 
+    # browse command
+    # open certain aur package in browser
+    # https://aur.archlinux.org/packages/URL/
+
     args = parser.parse_args()
     if args.command_name is not None:
         args.func(args)
