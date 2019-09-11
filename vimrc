@@ -113,6 +113,10 @@ execute pathogen#infect()
 " make find command look in current folder too
 set path+=**
 
+function! SyntaxItem()
+  return synIDattr(synID(line("."),col("."),1),"name")
+endfunction
+
 hi statusline ctermfg=9 ctermbg=15
 " Formats the statusline
 set statusline=%f                           " file name
@@ -123,6 +127,8 @@ set statusline+=%y      "filetype
 set statusline+=%h      "help file flag
 set statusline+=%m      "modified flag
 set statusline+=%r      "read only flag
+set statusline+=\ 
+set statusline+=%{SyntaxItem()}
 
 " Puts in the current git status
 " if count(g:pathogen_disabled, 'Fugitive') < 1   
@@ -135,6 +141,7 @@ set statusline+=%r      "read only flag
   set statusline+=%{SyntasticStatuslineFlag()}
   set statusline+=%*
 " endif
+
 
 set statusline+=\ %=                        " align left
 " set statusline+=Line:%l/%L[%p%%]            " line X of Y [percent of file]
@@ -285,3 +292,12 @@ com! FormatJson %!python -m json.tool
 " transform windows line endings to linux (probably)
 com! Ln %s/^M/\r/g
 
+hi vimBracket ctermfg=3
+hi vimNotation ctermfg=1
+hi vimMapModkey ctermfg=0
+hi vimOption ctermfg=1
+hi vimEnvvar ctermfg=1
+
+hi shOption ctermfg=1
+hi shCmdSubRegion ctermfg=0
+hi shCommandSub ctermfg=2
