@@ -305,3 +305,6 @@ hi shCommandSub ctermfg=2
 hi htmlTitle ctermfg=1
 hi javaScript ctermfg=1
 
+hi gitcommitBranch ctermfg=1
+hi gitcommitHeader ctermfg=1
+
