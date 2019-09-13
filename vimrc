@@ -301,3 +301,7 @@ hi vimEnvvar ctermfg=1
 hi shOption ctermfg=1
 hi shCmdSubRegion ctermfg=0
 hi shCommandSub ctermfg=2
+
+hi htmlTitle ctermfg=1
+hi javaScript ctermfg=1
+
