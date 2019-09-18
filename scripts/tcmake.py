@@ -16,7 +16,8 @@ from enum import Enum
 def setup_cmake(source, build, type, compiler):
     os.makedirs(build, exist_ok=True)
     # https://stackoverflow.com/questions/7724569/debug-vs-release-in-cmake
-    compilerpp = compiler + '++' if compiler == 'clang' else compiler
+    # todo(Gustav): doesn't handle gcc with afl (should be afl-g++)
+    compilerpp = compiler + '++' if 'clang' in compiler else compiler
     subprocess.run(['cmake', '-G', 'Ninja',
         '-D', 'CMAKE_C_COMPILER='+compiler,
         '-D', 'CMAKE_CXX_COMPILER='+compilerpp,
@@ -47,6 +48,8 @@ def handle_setup(args):
         extra = '-' + compiler
         if args.debug:
             setup_cmake(wd, os.path.join(build, 'debug'+extra), 'Debug', compiler)
+        if args.afl:
+            setup_cmake(wd, os.path.join(build, 'afl'+extra), 'Debug', 'afl-'+compiler)
         if args.release:
             setup_cmake(wd, os.path.join(build, 'release'+extra), 'Release', compiler)
     pass
@@ -62,6 +65,7 @@ def main():
     sub.add_argument('--noclang', dest='clang', action='store_false', help="Don't setup clang as a compiler")
     sub.add_argument('--nodebug', dest='debug', action='store_false', help="Don't setup a debug build")
     sub.add_argument('--norelease', dest='release', action='store_false', help="Don't setup a release build")
+    sub.add_argument('--noafl', dest='afl', action='store_false', help="Don't setup a afl compatible compiler")
     sub.set_defaults(func=handle_setup)
 
     args = parser.parse_args()
