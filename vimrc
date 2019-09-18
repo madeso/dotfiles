@@ -308,3 +308,5 @@ hi javaScript ctermfg=1
 hi gitcommitBranch ctermfg=1
 hi gitcommitHeader ctermfg=1
 
+hi pythonInclude ctermfg=1
+
