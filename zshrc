@@ -107,7 +107,7 @@ export PATH=$DOTFILES/scripts:$PATH
 
 . $DOTFILES/external/z/z.sh
 
-export EDITOR=vi
+export EDITOR=vim
 export TERM=rxvt-unicode
 export BROWSER=firefox
 
@@ -122,3 +122,4 @@ alias clip='xclip -selection clipboard'
 # history searching...
 bindkey "^[[A" history-substring-search-up
 bindkey "^[[B" history-substring-search-down
+
