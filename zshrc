@@ -115,6 +115,7 @@ export BROWSER=firefox
 export ASEPRITE_ACCEPT_EULA=yes
 
 alias vi='vim'
+alias open='xdg-open'
 
 # pipe to this command to be able to paste it
 alias clip='xclip -selection clipboard'
