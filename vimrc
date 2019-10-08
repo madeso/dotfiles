@@ -315,3 +315,7 @@ hi markdownH1 ctermfg=2
 hi markdownLinkText ctermfg=4
 hi markdownListMarker ctermfg=1
 
+hi cInclude ctermfg=1
+hi cDefine ctermfg=2
+hi cPreCondit ctermfg=2
+
