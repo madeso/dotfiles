@@ -13,15 +13,17 @@ import re
 from enum import Enum
 
 
-def setup_cmake(source, build, type, compiler):
-    os.makedirs(build, exist_ok=True)
+def setup_cmake(source, build_folder, type, compiler):
+    os.makedirs(build_folder, exist_ok=True)
     # https://stackoverflow.com/questions/7724569/debug-vs-release-in-cmake
-    # todo(Gustav): doesn't handle gcc with afl (should be afl-g++)
     compilerpp = compiler + '++' if 'clang' in compiler else compiler
+    if compiler == 'afl-cc':
+        compilerpp = 'afl-g++'
     subprocess.run(['cmake', '-G', 'Ninja',
         '-D', 'CMAKE_C_COMPILER='+compiler,
         '-D', 'CMAKE_CXX_COMPILER='+compilerpp,
-        '-DCMAKE_BUILD_TYPE='+type, source], cwd=build)
+        '-DCMAKE_BUILD_TYPE='+type, source], cwd=build_folder)
+
 
 def has_cmake(folder):
     return os.path.exists(os.path.join(folder, 'CMakeLists.txt'))
@@ -38,7 +40,7 @@ def handle_setup(args):
             print('parent folder has cmake, aborting...')
             return
 
-    build = os.path.join(wd, 'build')
+    build_folder = os.path.join(wd, 'build')
     compilers = []
     if args.clang:
         compilers.append('clang')
@@ -47,11 +49,11 @@ def handle_setup(args):
     for compiler in compilers:
         extra = '-' + compiler
         if args.debug:
-            setup_cmake(wd, os.path.join(build, 'debug'+extra), 'Debug', compiler)
+            setup_cmake(wd, os.path.join(build_folder, 'debug'+extra), 'Debug', compiler)
         if args.afl:
-            setup_cmake(wd, os.path.join(build, 'afl'+extra), 'Debug', 'afl-'+compiler)
+            setup_cmake(wd, os.path.join(build_folder, 'afl'+extra), 'Debug', 'afl-'+compiler)
         if args.release:
-            setup_cmake(wd, os.path.join(build, 'release'+extra), 'Release', compiler)
+            setup_cmake(wd, os.path.join(build_folder, 'release'+extra), 'Release', compiler)
     pass
 
 
