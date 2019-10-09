@@ -104,6 +104,8 @@ def main():
         default='white',
         help='color of the text, when updates are available'
     )
+    parser.add_argument('-d', '--debug', action='store_true',
+        help='add debugability to the command')
 
     args = parser.parse_args()
 
