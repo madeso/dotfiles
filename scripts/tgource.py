@@ -11,6 +11,10 @@ import typing
 import json
 import re
 from enum import Enum
+import urllib.parse
+import urllib.request
+import time
+import hashlib
 
 #=================================
 # settings type
@@ -33,6 +37,9 @@ class Settings:
         if not self.name in data:
             data[self.name] = self.default_value
 
+#==================================
+# constants
+USE_GRAVATAR_FOR_USERIMAGE = 'use_gravatar'
 
 #==================================
 # settings
@@ -45,6 +52,8 @@ CONFIG_FILE_IDLE_TIME = Settings('file_idle_time', 60)
 CONFIG_MAX_FILE_LAG = Settings('max_file_lag', 5)
 CONFIG_DATE_FORMAT = Settings('date_format', '')
 CONFIG_HIDE = Settings('hide', [])
+CONFIG_USER_IMAGES = Settings('user_images', USE_GRAVATAR_FOR_USERIMAGE)
+CONFIG_GRAVATAR_DEFAULT = Settings('gravatar_default', 'robohash')
 
 #==================================
 # common functions
@@ -150,7 +159,7 @@ def handle_init(args):
     settings = get_project_data(folder)
     if args.force:
         settings = {}
-    configs = [CONFIG_SECONDS_PER_DAY, CONFIG_AUTOSKIP_SECONDS, CONFIG_FILE_IDLE_TIME, CONFIG_MAX_FILE_LAG, CONFIG_HIDE, CONFIG_DATE_FORMAT]
+    configs = [CONFIG_SECONDS_PER_DAY, CONFIG_AUTOSKIP_SECONDS, CONFIG_FILE_IDLE_TIME, CONFIG_MAX_FILE_LAG, CONFIG_HIDE, CONFIG_DATE_FORMAT, CONFIG_USER_IMAGES]
     for c in configs:
         c.set_defualt_if_missing(settings)
     if args.hide:
@@ -158,6 +167,56 @@ def handle_init(args):
     if args.sane_date:
         CONFIG_DATE_FORMAT.set_value(settings, '%Y-%m-%d')
     set_project_data(folder, settings)
+
+
+def avatar_image_folder(folder):
+    return os.path.join(folder, '.git', 'avatar')
+
+
+def md5_hex(data):
+    m = hashlib.md5()
+    m.update(data.encode('utf-8'))
+    return m.hexdigest()
+
+
+def handle_fetch(args):
+    if not has_gource():
+        print('Error: Missing gource, run setup')
+        return
+    folder = args.folder
+    if not is_git_folder(folder):
+        print('Error: non git folder are not supported')
+        return
+    settings = get_project_data(folder)
+    if CONFIG_USER_IMAGES.get_value(settings) != USE_GRAVATAR_FOR_USERIMAGE:
+        print('Error: Gravatar is not setup correctly')
+        print('Note: {} must be {}'.format(CONFIG_USER_IMAGES.name, USE_GRAVATAR_FOR_USERIMAGE))
+        return
+
+    size = 90
+    
+    # code based on https://github.com/acaudwell/Gource/wiki/Gravatar-Example
+    os.makedirs(avatar_image_folder(folder), exist_ok=True)
+    git_log = [s.strip() for s in subprocess.check_output(['git', 'log', '--pretty=format:%ae|%an'], cwd=folder, universal_newlines=True).splitlines()]
+    existing = []
+    for log in git_log:
+        data = log.split('|')
+        email = data[0].lower().strip()
+        author = data[1].strip()
+        author_image_file = os.path.join(avatar_image_folder(folder), '{}.png'.format(author))
+        if file_exist(author_image_file):
+            if author in existing:
+                pass
+            else:
+                print('Ignoring {} since gravatar already exists'.format(author))
+                existing.append(author)
+        else:
+            existing.append(author)
+            print(' downloading gravatar for {}'.format(author), flush=True)
+            default = CONFIG_GRAVATAR_DEFAULT.get_value(settings)
+            gravatar_url = "https://www.gravatar.com/avatar/{}?{}".format(md5_hex(email), urllib.parse.urlencode({'d':default, 's':str(size)}))
+            urllib.request.urlretrieve(gravatar_url, author_image_file)
+            time.sleep(1)
 
 
 def handle_run(args):
@@ -182,8 +241,11 @@ def handle_run(args):
         cmdline.extend(['--date-format', CONFIG_DATE_FORMAT.get_value(settings)])
     if len(CONFIG_HIDE.get_value(settings)) != 0:
         cmdline.extend(['--hide', ','.join(CONFIG_HIDE.get_value(settings))])
+    if CONFIG_USER_IMAGES.get_value(settings) != '':
+        cmdline.extend(['--user-image-dir', CONFIG_USER_IMAGES.get_value(settings) if CONFIG_USER_IMAGES.get_value(settings) != USE_GRAVATAR_FOR_USERIMAGE else avatar_image_folder(folder)])
+            
     
-    print(cmdline)
+    print(cmdline, flush=True)
     subprocess.run(cmdline, cwd=folder)
 
 
@@ -204,6 +266,10 @@ def main():
     sub.add_argument('--sane-date', action='store_true', help='set dateformat to something same')
     sub.add_argument('--folder', help='the folder where to run from', default=os.getcwd())
     sub.set_defaults(func=handle_init)
+
+    sub = sub_parsers.add_parser('fetch', help='fetch gravatars if specified in settings')
+    sub.add_argument('--folder', help='the folder where to run from', default=os.getcwd())
+    sub.set_defaults(func=handle_fetch)
 
     sub = sub_parsers.add_parser('run', help='run gource with the settings')
     sub.add_argument('--folder', help='the folder where to run from', default=os.getcwd())
