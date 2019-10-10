@@ -155,6 +155,8 @@ def handle_init(args):
         c.set_defualt_if_missing(settings)
     if args.hide:
         CONFIG_HIDE.set_value(settings, ['bloom','date','dirnames','files','filenames','mouse','progress','tree','users','usernames'])
+    if args.sane_date:
+        CONFIG_DATE_FORMAT.set_value(settings, '%Y-%m-%d')
     set_project_data(folder, settings)
 
 
@@ -199,6 +201,7 @@ def main():
     sub = sub_parsers.add_parser('init', help='init the project file')
     sub.add_argument('-f', '--force', action='store_true', help='if config exist, force overwrite')
     sub.add_argument('--hide', action='store_true', help='hide all elements')
+    sub.add_argument('--sane-date', action='store_true', help='set dateformat to something same')
     sub.add_argument('--folder', help='the folder where to run from', default=os.getcwd())
     sub.set_defaults(func=handle_init)
 
