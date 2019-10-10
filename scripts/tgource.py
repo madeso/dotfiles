@@ -54,6 +54,7 @@ CONFIG_DATE_FORMAT = Settings('date_format', '')
 CONFIG_HIDE = Settings('hide', [])
 CONFIG_USER_IMAGES = Settings('user_images', USE_GRAVATAR_FOR_USERIMAGE)
 CONFIG_GRAVATAR_DEFAULT = Settings('gravatar_default', 'robohash')
+# see the following url for full defaults: http://en.gravatar.com/site/implement/images/
 
 #==================================
 # common functions
@@ -208,14 +209,17 @@ def handle_fetch(args):
             if author in existing:
                 pass
             else:
-                print('Ignoring {} since gravatar already exists'.format(author))
+                print('Ignoring {} since gravatar already exists'.format(author), flush=True)
                 existing.append(author)
         else:
             existing.append(author)
-            print(' downloading gravatar for {}'.format(author), flush=True)
+            print('Downloading gravatar for {} with email {}'.format(author, email), flush=True)
             default = CONFIG_GRAVATAR_DEFAULT.get_value(settings)
             gravatar_url = "https://www.gravatar.com/avatar/{}?{}".format(md5_hex(email), urllib.parse.urlencode({'d':default, 's':str(size)}))
-            urllib.request.urlretrieve(gravatar_url, author_image_file)
+            try:
+                urllib.request.urlretrieve(gravatar_url, author_image_file)
+            except urllib.error.HTTPError:
+                print('ERROR: Failed to get avatar for {}'.format(author), flush=True)
             time.sleep(1)
 
 
@@ -242,7 +246,8 @@ def handle_run(args):
     if len(CONFIG_HIDE.get_value(settings)) != 0:
         cmdline.extend(['--hide', ','.join(CONFIG_HIDE.get_value(settings))])
     if CONFIG_USER_IMAGES.get_value(settings) != '':
-        cmdline.extend(['--user-image-dir', CONFIG_USER_IMAGES.get_value(settings) if CONFIG_USER_IMAGES.get_value(settings) != USE_GRAVATAR_FOR_USERIMAGE else avatar_image_folder(folder)])
+        if CONFIG_USER_IMAGES.get_value(settings) != USE_GRAVATAR_FOR_USERIMAGE or os.path.exists(avatar_image_folder(folder)):
+            cmdline.extend(['--user-image-dir', CONFIG_USER_IMAGES.get_value(settings) if CONFIG_USER_IMAGES.get_value(settings) != USE_GRAVATAR_FOR_USERIMAGE else avatar_image_folder(folder)])
             
     
     print(cmdline, flush=True)
