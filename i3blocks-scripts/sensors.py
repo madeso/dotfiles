@@ -88,7 +88,7 @@ def main():
     )
     parser.add_argument(
         '-U',
-        '--updates_available_bg',
+        '--hot_bg',
         default='red',
         help='color of the background, when updates are available(default=white)'
     )
@@ -100,7 +100,7 @@ def main():
     )
     parser.add_argument(
         '-u',
-        '--updates_available_color',
+        '--hot_color',
         default='white',
         help='color of the text, when updates are available'
     )
