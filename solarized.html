@@ -1,118 +1,75 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Solarized</title>
 <style>
+.container
+{
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1200px;
+  border: 0;
+  padding: 0px;
+  display: grid;
+  grid-template-columns: repeat(4, 300px);
+}
+
+html, body
+{
+  padding: 0;
+  margin: 0;
+}
+
 div
 {
-  color: black;
-  width:  170px;
-  height: 170px;
-  padding: 3px;
+  color: #073642;
+  padding: 6px;
   margin: 10px;
-  display: inline-block;
-  border: 1px solid black;
+  border: 1px solid #073642;
+  position: relative;
 }
+
 .invert
 {
-  color: white;
+  color: #fdf6e3;
 }
 span
 {
   display: block;
 }
 
-.name { font-size: 20px; }
-.term { font-size: 14px; font-weight: bolder; }
-.termcol { font-size: 14px; }
-.comment { font-size: 10px; }
+.name { font-size: 2em; text-transform: uppercase; }
+.hex { font-size: 1.2em; font-weight: bolder; position: absolute; right: 10px; top: 10px; font-weight: lighter;}
+.term { font-size: 1.2em; font-weight: bolder; }
+.termcol { font-size: 1.2em; }
+.comment { font-size: 1em; }
+
+.rgb { font-size: 1em;  position: absolute; right: 10px; top: 2.2em; }
+
+.xterm { font-size: 0.8em; font-weight: lighter; }
+.xtermhex { font-size: 0.8em; font-weight: lighter; }
+
 </style>
   </head>
   <body>
-    <div class="invert" style="background-color: #073642">
-      <span class="name">base02</span>
-      <span class="term">0/4</span>
-      <span class="termcol">black</span>
-    </div>
-    <div style="background-color: #dc322f">
-      <span class="name">red</span>
-      <span class="term">1/1</span>
-      <span class="termcol">red</span>
-    </div>
-    <div style="background-color: #859900">
-      <span class="name">green</span>
-      <span class="term">2/2</span>
-      <span class="termcol">green</span>
-    </div>
-    <div style="background-color: #b58900">
-      <span class="name">yellow</span>
-      <span class="term">3/3</span>
-      <span class="termcol">yellow</span>
-    </div>
-    <div style="background-color: #268bd2">
-      <span class="name">blue</span>
-      <span class="term">4/4</span>
-      <span class="termcol">blue</span>
-    </div>
-    <div style="background-color: #d33682">
-      <span class="name">magenta</span>
-      <span class="term">5/5</span>
-      <span class="termcol">magenta</span>
-    </div>
-    <div style="background-color: #2aa198">
-      <span class="name">cyan</span>
-      <span class="term">6/6</span>
-      <span class="termcol">cyan</span>
-    </div>
-    <div style="background-color: #eee8d5">
-      <span class="name">base2</span>
-      <span class="term">7/7</span>
-      <span class="termcol">white</span>
-      <span class="comment">(background highlights)</span>
-    </div>
-    <div class="invert" style="background-color: #002b36">
-      <span class="name">base03</span>
-      <span class="term">8/4</span>
-      <span class="termcol">brblack</span>
-    </div>
-    <div style="background-color: #cb4b16">
-      <span class="name">orange</span>
-      <span class="term">9/3</span>
-      <span class="termcol">brred</span>
-    </div>
-    <div style="background-color: #586e75">
-      <span class="name">base01</span>
-      <span class="term">10/7</span>
-      <span class="termcol">brgreen</span>
-      <span class="comment">(optional emphasized content)</span>
-    </div>
-    <div style="background-color: #657b83">
-      <span class="name">base00</span>
-      <span class="term">11/7</span>
-      <span class="termcol">bryellow</span>
-      <span class="comment">(body text, default code, primary content)</span>
-    </div>
-    <div style="background-color: #839496">
-      <span class="name">base0</span>
-      <span class="term">12/6</span>
-      <span class="termcol">brblue</span>
-    </div>
-    <div style="background-color: #6c71c4">
-      <span class="name">violet</span>
-      <span class="term">13/5</span>
-      <span class="termcol">brmagenta</span>
-    </div>
-    <div style="background-color: #93a1a1">
-      <span class="name">base1</span>
-      <span class="term">14/4</span>
-      <span class="termcol">brcyan</span>
-      <span class="comment">(comments, secondary content)</span>
-    </div>
-    <div style="background-color: #fdf6e3">
-      <span class="name">base3</span>
-      <span class="term">15/7</span>
-      <span class="termcol">brwhite</span>
-      <span class="comment">(background)</span>
+    <div class="container">
+       <div class="invert" style="background-color: #002b36">     <span class="name">base03 </span>        <span class="hex">#002b36</span>      <span class="term"> 8/4</span>      <span class="termcol">brblack  </span>      <span class="xterm">234</span>     <span class="xtermhex">#1c1c1c</span>    <span class="rgb">  0   43   54</span>    <span class="comment"></span>                                             </div>
+       <div class="invert" style="background-color: #073642">     <span class="name">base02 </span>        <span class="hex">#073642</span>      <span class="term"> 0/4</span>      <span class="termcol">black    </span>      <span class="xterm">235</span>     <span class="xtermhex">#262626</span>    <span class="rgb">  7   54   66</span>    <span class="comment"></span>                                             </div>
+       <div class="invert" style="background-color: #586e75">     <span class="name">base01 </span>        <span class="hex">#586e75</span>      <span class="term">10/7</span>      <span class="termcol">brgreen  </span>      <span class="xterm">240</span>     <span class="xtermhex">#585858</span>    <span class="rgb"> 88  110  117</span>    <span class="comment">optional emphasized content</span>                  </div>
+       <div class="invert" style="background-color: #657b83">     <span class="name">base00 </span>        <span class="hex">#657b83</span>      <span class="term">11/7</span>      <span class="termcol">bryellow </span>      <span class="xterm">241</span>     <span class="xtermhex">#626262</span>    <span class="rgb">101  123  131</span>    <span class="comment">body text/default code/primarty content</span>      </div>
+       <div class="invert" style="background-color: #839496">     <span class="name">base0  </span>        <span class="hex">#839496</span>      <span class="term">12/6</span>      <span class="termcol">brblue   </span>      <span class="xterm">244</span>     <span class="xtermhex">#808080</span>    <span class="rgb">131  148  150</span>    <span class="comment"></span>                                             </div>
+       <div class="invert" style="background-color: #93a1a1">     <span class="name">base1  </span>        <span class="hex">#93a1a1</span>      <span class="term">14/4</span>      <span class="termcol">brcyan   </span>      <span class="xterm">245</span>     <span class="xtermhex">#8a8a8a</span>    <span class="rgb">147  161  161</span>    <span class="comment">comments/secondary content</span>                   </div>
+       <div                style="background-color: #eee8d5">     <span class="name">base2  </span>        <span class="hex">#eee8d5</span>      <span class="term"> 7/7</span>      <span class="termcol">white    </span>      <span class="xterm">254</span>     <span class="xtermhex">#e4e4e4</span>    <span class="rgb">238  232  213</span>    <span class="comment">background highlight</span>                         </div>
+       <div                style="background-color: #fdf6e3">     <span class="name">base3  </span>        <span class="hex">#fdf6e3</span>      <span class="term">15/7</span>      <span class="termcol">brwhite  </span>      <span class="xterm">230</span>     <span class="xtermhex">#ffffd7</span>    <span class="rgb">253  246  227</span>    <span class="comment">background</span>                                   </div>
+       <div class="invert" style="background-color: #b58900">     <span class="name">yellow </span>        <span class="hex">#b58900</span>      <span class="term"> 3/3</span>      <span class="termcol">yellow   </span>      <span class="xterm">136</span>     <span class="xtermhex">#af8700</span>    <span class="rgb">181  137    0</span>    <span class="comment"></span>                                             </div>
+       <div class="invert" style="background-color: #cb4b16">     <span class="name">orange </span>        <span class="hex">#cb4b16</span>      <span class="term"> 9/3</span>      <span class="termcol">brred    </span>      <span class="xterm">166</span>     <span class="xtermhex">#d75f00</span>    <span class="rgb">203   75   22</span>    <span class="comment"></span>                                             </div>
+       <div class="invert" style="background-color: #dc322f">     <span class="name">red    </span>        <span class="hex">#dc322f</span>      <span class="term"> 1/1</span>      <span class="termcol">red      </span>      <span class="xterm">160</span>     <span class="xtermhex">#d70000</span>    <span class="rgb">220   50   47</span>    <span class="comment"></span>                                             </div>
+       <div class="invert" style="background-color: #d33682">     <span class="name">magenta</span>        <span class="hex">#d33682</span>      <span class="term"> 5/5</span>      <span class="termcol">magenta  </span>      <span class="xterm">125</span>     <span class="xtermhex">#af005f</span>    <span class="rgb">211   54  130</span>    <span class="comment"></span>                                             </div>
+       <div class="invert" style="background-color: #6c71c4">     <span class="name">violet </span>        <span class="hex">#6c71c4</span>      <span class="term">13/5</span>      <span class="termcol">brmagenta</span>      <span class="xterm"> 61</span>     <span class="xtermhex">#5f5faf</span>    <span class="rgb">108  113  196</span>    <span class="comment"></span>                                             </div>
+       <div class="invert" style="background-color: #268bd2">     <span class="name">blue   </span>        <span class="hex">#268bd2</span>      <span class="term"> 4/4</span>      <span class="termcol">blue     </span>      <span class="xterm"> 33</span>     <span class="xtermhex">#0087ff</span>    <span class="rgb"> 38  139  210</span>    <span class="comment"></span>                                             </div>
+       <div class="invert" style="background-color: #2aa198">     <span class="name">cyan   </span>        <span class="hex">#2aa198</span>      <span class="term"> 6/6</span>      <span class="termcol">cyan     </span>      <span class="xterm"> 37</span>     <span class="xtermhex">#00afaf</span>    <span class="rgb"> 42  161  152</span>    <span class="comment"></span>                                             </div>
+       <div class="invert" style="background-color: #859900">     <span class="name">green  </span>        <span class="hex">#859900</span>      <span class="term"> 2/2</span>      <span class="termcol">green    </span>      <span class="xterm"> 64</span>     <span class="xtermhex">#5f8700</span>    <span class="rgb">133  153    0</span>    <span class="comment"></span>                                             </div>
     </div>
   </body>
 </html>
