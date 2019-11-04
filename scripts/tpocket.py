@@ -72,6 +72,8 @@ USERNAME = Settings('username', '')
 ########################################################################################################################
 # Pocket functions
 
+# reference: https://getpocket.com/developer/docs/v3/retrieve
+
 POCKET_CONSUMER_KEY = '88378-7e4d291dcf51de39675f5caa'
 POCKET_REQUEST = 'https://getpocket.com/v3/oauth/request'
 POCKET_AUTH = 'https://getpocket.com/v3/oauth/authorize'
@@ -108,6 +110,7 @@ def get_all_pockets_data():
     if ACCESS_TOKEN.get_value(data) == '':
         return []
     if file_exist(get_cache_file_name()):
+        # todo(Gustav): check for latest if enought time has passed
         with open(get_cache_file_name(), 'r', encoding="utf-8") as f:
             return json.loads(f.read())
     else:
@@ -212,6 +215,8 @@ def main():
     sub.add_argument('--filter', default='', help='url filter')
     sub.add_argument('--reverse', action='store_true', help='reverse list order')
     sub.set_defaults(func=handle_list)
+
+    # todo(Gustav): mark for deletion, star and execute/push to pocket
 
     args = parser.parse_args()
     if args.command_name is not None:
