@@ -8,6 +8,7 @@ import urllib.request
 import urllib.parse
 import collections
 
+
 ########################################################################################################################
 # Common functions
 
@@ -23,17 +24,22 @@ def get_config_file_name() -> str:
     return os.path.join(get_home_folder(), '.tpocket.json')
 
 
-def get_user_data() -> typing.Dict[str, str]:
+class Data:
+    def __init__(self, data: typing.Dict[str, str]):
+        self.data = data
+
+
+def get_user_data() -> Data:
     if file_exist(get_config_file_name()):
         with open(get_config_file_name(), 'r', encoding="utf-8") as f:
-            return json.loads(f.read())
+            return Data(json.loads(f.read()))
     else:
-        return {}
+        return Data({})
 
 
-def set_user_data(data: typing.Dict[str, str]):
+def set_user_data(data: Data):
     with open(get_config_file_name(), 'w', encoding="utf-8") as f:
-        print(json.dumps(data, sort_keys=True, indent=4), file=f)
+        print(json.dumps(data.data, sort_keys=True, indent=4), file=f)
 
 
 class Settings:
@@ -41,18 +47,18 @@ class Settings:
         self.name = name
         self.default_value = default_value
 
-    def get_value(self, data):
-        if self.name not in data:
+    def get_value(self, data:Data):
+        if self.name not in data.data:
             return self.default_value
         else:
-            return data[self.name]
+            return data.data[self.name]
 
-    def set_value(self, data, value):
-        data[self.name] = value
+    def set_value(self, data: Data, value):
+        data.data[self.name] = value
 
-    def set_defualt_if_missing(self, data):
-        if self.name not in data:
-            data[self.name] = self.default_value
+    def set_defualt_if_missing(self, data: Data):
+        if self.name not in data.data:
+            data.data[self.name] = self.default_value
 
 
 def s(ss: str) -> str:
@@ -68,7 +74,7 @@ def s(ss: str) -> str:
 REQUEST_TOKEN = Settings('request_token', '')
 ACCESS_TOKEN = Settings('access_token', '')
 USERNAME = Settings('username', '')
-
+DELETE_LIST = Settings('delete_list', [])
 
 ########################################################################################################################
 # Pocket functions
@@ -145,6 +151,13 @@ def get_all_add_subargs(sub):
     sub.add_argument('--filter', default='', help='url filter')
 
 
+def mark_for_delete(data: Data, p: Post):
+    dl: typing.List[int] = DELETE_LIST.get_value(data)
+    dl.append(p.id)
+    DELETE_LIST.set_value(data, dl)
+    print('Deleting id ', p.id)
+
+
 ########################################################################################################################
 # handler functions
 
@@ -195,12 +208,21 @@ def handle_list(args):
     data = get_all_pockets(args)
     data.sort(key=lambda pp: pp.added, reverse=args.reverse)
     for p in data:
-        print(p.id)
-        print(p.added)
-        print(s(p.url))
-        print(s(p.title))
-        print(s(p.excerpt))
-        print()
+        if args.display_id:
+            print(p.id)
+        if args.display_date:
+            print(p.added)
+        if args.display_url:
+            print(s(p.url))
+        if args.display_title:
+            print(s(p.title))
+        if args.display_excerpt:
+            print(s(p.excerpt))
+        if not args.compact:
+            print()
+        # pehaps add support for?
+        # https://pypi.org/project/breadability/
+        # https://github.com/codelucas/newspaper
 
 
 def handle_host(args):
@@ -209,6 +231,66 @@ def handle_host(args):
     items = sorted(counter.items(), key=lambda x: x[1]) if args.all else counter.most_common(args.top)
     for host, count in items:
         print('  ', host, count)
+
+
+def handle_delete(args):
+    data = get_user_data()
+    pockets = get_all_pockets(args)
+    delete_all = False
+    for p in pockets:
+        if delete_all:
+            mark_for_delete(data, p)
+        else:
+            if args.range > 0:
+                for x in range(args.range):
+                    print()
+
+            if p.id in DELETE_LIST.get_value(data):
+                continue
+
+            print('Delete?')
+            if args.display_title:
+                print('title:', s(p.title))
+            if args.display_url:
+                print('url:  ', s(p.url))
+            if args.display_date:
+                print(p.added)
+            if args.display_excerpt:
+                print(s(p.excerpt))
+            while True:
+                i = input('d(delete)/A(ll)/n(ext)/a(bort) > ')
+                if i == 'd':
+                    mark_for_delete(data, p)
+                    break
+                elif i == 'a':
+                    print('aborting...')
+                    set_user_data(data)
+                    return
+                elif i == 'A':
+                    delete_all = True
+                    mark_for_delete(data, p)
+                    break
+                elif i == 'n':
+                    break
+                else:
+                    print('Unknown option ', i)
+    set_user_data(data)
+
+
+def handle_pending(args):
+    data = get_user_data()
+    pockets = {p.id: p for p in get_all_pockets(args)}
+
+    if args.clear:
+        DELETE_LIST.set_value(data, [])
+        set_user_data(data)
+
+    for id in DELETE_LIST.get_value(data):
+        if id in pockets:
+            p = pockets[id]
+            print(p.title)
+        else:
+            print('ERROR: missing id:', id)
 
 
 ########################################################################################################################
@@ -227,6 +309,12 @@ def main():
     sub = sub_parsers.add_parser('list', help='init the project file')
     get_all_add_subargs(sub)
     sub.add_argument('--reverse', action='store_true', help='reverse list order')
+    sub.add_argument('--id', dest='display_id', action='store_true', help="display post id")
+    sub.add_argument('--url', dest='display_url', action='store_true', help="display post url")
+    sub.add_argument('--no-date', dest='display_date', action='store_false', help="don't display date")
+    sub.add_argument('--no-title', dest='display_title', action='store_false', help="don't display title")
+    sub.add_argument('--no-excerpt', dest='display_excerpt', action='store_false', help="don't display excerpt")
+    sub.add_argument('--compact', action='store_true', help="compact display")
     sub.set_defaults(func=handle_list)
 
     sub = sub_parsers.add_parser('hosts', help='list all hosts')
@@ -234,6 +322,20 @@ def main():
     sub.add_argument('--top', type=int, default=10, help='the number of items to display')
     sub.add_argument('--all', action='store_true', help='ignore top arg, display all')
     sub.set_defaults(func=handle_host)
+
+    sub = sub_parsers.add_parser('delete', help='delete posts')
+    get_all_add_subargs(sub)
+    sub.add_argument('--range', type=int, default=3, help='number of newlines between each promp')
+    sub.add_argument('--url', dest='display_url', action='store_true', help="display post url")
+    sub.add_argument('--no-date', dest='display_date', action='store_false', help="don't display date")
+    sub.add_argument('--no-title', dest='display_title', action='store_false', help="don't display title")
+    sub.add_argument('--no-excerpt', dest='display_excerpt', action='store_false', help="don't display excerpt")
+    sub.set_defaults(func=handle_delete)
+
+    sub = sub_parsers.add_parser('pending', help='list outgoing changes')
+    get_all_add_subargs(sub)
+    sub.add_argument('--clear', action='store_true', help="clear pending first")
+    sub.set_defaults(func=handle_pending)
 
     # todo(Gustav): mark for deletion, star and execute/push to pocket
 
