@@ -6,8 +6,8 @@ import os
 import datetime
 import urllib.request
 import urllib.parse
+import urllib.error
 import collections
-
 
 ########################################################################################################################
 # Common functions
@@ -85,14 +85,18 @@ POCKET_CONSUMER_KEY = '88378-7e4d291dcf51de39675f5caa'
 POCKET_REQUEST = 'https://getpocket.com/v3/oauth/request'
 POCKET_AUTH = 'https://getpocket.com/v3/oauth/authorize'
 POCKET_GET = 'https://getpocket.com/v3/get'
+POCKET_SEND = 'https://getpocket.com/v3/send'
 
 
 def get_pocket_request(url, data):
-    r = urllib.request.Request(url=url, method='POST')
-    r.add_header('Content-Type', 'application/json; charset=UTF8')
+    the_method = 'GET' if data is None else 'POST'
+    r = urllib.request.Request(url=url, method=the_method)
+    if data is not None:
+        r.add_header('Content-Type', 'application/json; charset=UTF8')
+
     r.add_header('X-Accept', 'application/json')
-    data_encoded = json.dumps(data).encode('utf-8')
-    with urllib.request.urlopen(r, data_encoded) as f:
+    data_encoded = json.dumps(data).encode('utf-8') if data is not None else None
+    with urllib.request.urlopen(r, data=data_encoded) as f:
         return json.loads(f.read().decode('utf-8'))
 
 
@@ -111,16 +115,17 @@ class Post:
         self.url = post['resolved_url']
 
 
-def get_all_pockets_data():
+def get_all_pockets_data(refresh: bool):
     data = get_user_data()
 
     if ACCESS_TOKEN.get_value(data) == '':
         return []
-    if file_exist(get_cache_file_name()):
+    if not refresh and file_exist(get_cache_file_name()):
         # todo(Gustav): check for latest if enought time has passed
         with open(get_cache_file_name(), 'r', encoding="utf-8") as f:
             return json.loads(f.read())
     else:
+        print('Downloading posts from pocket...')
         request_data = {
             'consumer_key': POCKET_CONSUMER_KEY,
             'access_token': ACCESS_TOKEN.get_value(data)
@@ -131,8 +136,19 @@ def get_all_pockets_data():
         return gets
 
 
-def get_all_pockets(args) -> typing.List[Post]:
-    data = get_all_pockets_data()
+def set_all_pockets_data(data):
+    with open(get_cache_file_name(), 'w', encoding="utf-8") as f:
+        print(json.dumps(data, sort_keys=True, indent=4), file=f)
+
+
+def pocket_data_remove_post(data, post_id):
+    posts = data['list']
+    posts.pop(post_id)
+    return data
+
+
+def get_all_pockets(args, refresh=False) -> typing.List[Post]:
+    data = get_all_pockets_data(refresh)
     ret = []
     for postid, post in data['list'].items():
         add = True
@@ -202,6 +218,11 @@ def handle_debug(args):
     print('request', REQUEST_TOKEN.get_value(data))
     print('access', ACCESS_TOKEN.get_value(data))
     print('user', USERNAME.get_value(data))
+
+
+def handle_refresh(args):
+    args.filter = ''
+    data = get_all_pockets(args, refresh=True)
 
 
 def handle_list(args):
@@ -288,9 +309,51 @@ def handle_pending(args):
     for id in DELETE_LIST.get_value(data):
         if id in pockets:
             p = pockets[id]
-            print(p.title)
+            print(s(p.title))
         else:
             print('ERROR: missing id:', id)
+
+
+def handle_push(args):
+    data = get_user_data()
+    delete_list = DELETE_LIST.get_value(data)
+    if len(delete_list) <= 0:
+        print('No things to delete, aborting...')
+        return
+
+    if ACCESS_TOKEN.get_value(data) == '':
+        print('Not logged in to pocket, aborting...')
+        return
+
+    to_send = []
+    for post_id in delete_list:
+        to_send.append({'action': 'delete', 'item_id': post_id})
+
+    request_data = {
+        'actions': json.dumps(to_send, sort_keys=True),
+        'access_token': ACCESS_TOKEN.get_value(data),
+        'consumer_key': POCKET_CONSUMER_KEY
+    }
+    arg = urllib.parse.urlencode(request_data)
+    url = '{}?{}'.format(POCKET_SEND, arg)
+    delete_result = get_pocket_request(url, None)['action_results']
+
+    pocket_data = get_all_pockets_data(refresh=False)
+
+    new_list = []
+    removed_count = 0
+    for post_id, removed in zip(delete_list, delete_result):
+        if removed:
+            pocket_data_remove_post(pocket_data, post_id)
+            removed_count += 1
+        else:
+            new_list.append(post_id)
+
+    DELETE_LIST.set_value(data, new_list)
+
+    set_user_data(data)
+    set_all_pockets_data(pocket_data)
+    print('{} removed of {} total. {} remaining.'.format(removed_count, len(delete_list), len(new_list)))
 
 
 ########################################################################################################################
@@ -337,11 +400,23 @@ def main():
     sub.add_argument('--clear', action='store_true', help="clear pending first")
     sub.set_defaults(func=handle_pending)
 
-    # todo(Gustav): mark for deletion, star and execute/push to pocket
+    sub = sub_parsers.add_parser('push', help='send pending changes to pocket')
+    sub.set_defaults(func=handle_push)
+
+    sub = sub_parsers.add_parser('refresh', help='refresh cached data')
+    sub.set_defaults(func=handle_refresh)
+
+    # todo(Gustav): star and execute/push to pocket
 
     args = parser.parse_args()
     if args.command_name is not None:
-        args.func(args)
+        try:
+            args.func(args)
+        except urllib.error.HTTPError as x:
+            print(x)
+            err = 'X-Error'
+            if err in x.headers:
+                print(x.headers[err])
     else:
         parser.print_help()
 
