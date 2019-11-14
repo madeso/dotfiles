@@ -5,7 +5,8 @@ import typing
 import os
 import datetime
 import urllib.request
-
+import urllib.parse
+import collections
 
 ########################################################################################################################
 # Common functions
@@ -140,6 +141,10 @@ def get_all_pockets(args) -> typing.List[Post]:
     return ret
 
 
+def get_all_add_subargs(sub):
+    sub.add_argument('--filter', default='', help='url filter')
+
+
 ########################################################################################################################
 # handler functions
 
@@ -198,6 +203,14 @@ def handle_list(args):
         print()
 
 
+def handle_host(args):
+    data = get_all_pockets(args)
+    counter = collections.Counter(urllib.parse.urlparse(p.url).hostname for p in data)
+    items = sorted(counter.items(), key=lambda x: x[1]) if args.all else counter.most_common(args.top)
+    for host, count in items:
+        print('  ', host, count)
+
+
 ########################################################################################################################
 # main function
 
@@ -212,9 +225,15 @@ def main():
     sub.set_defaults(func=handle_debug)
 
     sub = sub_parsers.add_parser('list', help='init the project file')
-    sub.add_argument('--filter', default='', help='url filter')
+    get_all_add_subargs(sub)
     sub.add_argument('--reverse', action='store_true', help='reverse list order')
     sub.set_defaults(func=handle_list)
+
+    sub = sub_parsers.add_parser('hosts', help='list all hosts')
+    get_all_add_subargs(sub)
+    sub.add_argument('--top', type=int, default=10, help='the number of items to display')
+    sub.add_argument('--all', action='store_true', help='ignore top arg, display all')
+    sub.set_defaults(func=handle_host)
 
     # todo(Gustav): mark for deletion, star and execute/push to pocket
 
