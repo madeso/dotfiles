@@ -10,6 +10,7 @@ import platform
 import typing
 import json
 import time
+import collections
 from enum import Enum
 
 
@@ -136,13 +137,15 @@ class VarPath:
 
 
 class Path:
-    def __init__(self, src: str, home: VarPath):
+    def __init__(self, classes: typing.List[str], src: str, home: VarPath):
+        self.classes = classes
         self.home = home
         self.src = src
 
 
 class Dir:
-    def __init__(self, src: str, home: str, win_where: PathType = PathType.USER, win_home: typing.Optional[str]=None):
+    def __init__(self, classes: typing.List[str], src: str, home: str, win_where: PathType = PathType.USER, win_home: typing.Optional[str]=None):
+        self.classes = classes
         self.files = []
         self.home = win_home if is_windows() and win_home is not None else home
         self.src = src
@@ -166,7 +169,7 @@ class Dir:
                 pass
             else:
                 if os.path.isfile(os.path.join(get_src_folder(), self.src, subdir, entry)):
-                    self.files.append(Path(
+                    self.files.append(Path(self.classes,
                         os.path.join(self.src, subdir, entry),
                         VarPath(self.home, entry, subdir, self.win_where)
                     ))
@@ -175,12 +178,12 @@ class Dir:
 
     def file(self, path: str) -> 'Dir':
         if self.subdir is None:
-            self.files.append(Path(
+            self.files.append(Path(self.classes,
                 os.path.join(self.src, path),
                 VarPath(self.home, path, None, self.win_where)
             ))
         else:
-            self.files.append(Path(
+            self.files.append(Path(self.classes,
                 os.path.join(self.src, self.subdir, path),
                 VarPath(self.home, path, self.subdir, self.win_where)
             ))
@@ -206,14 +209,14 @@ class Data:
             self.vars.set_alias(key, value)
 
     def add_file(self, classes: typing.List[str], src: str, home: str):
-        file = Path(src, VarPath(None, home, None, PathType.USER))
+        file = Path(classes, src, VarPath(None, home, None, PathType.USER))
         self.interesting_files.append(file)
 
     def add_generated_file(self, classes: typing.List[str], src: str, home: str):
-        file = Path(src, VarPath(None, home, None, PathType.USER))
+        file = Path(classes, src, VarPath(None, home, None, PathType.USER))
         self.generated_files.append(file)
 
-    def add_dir(self, classes: typing.List[str], subdir: Dir):
+    def add_dir(self, subdir: Dir):
         for f in subdir.files:
             self.interesting_files.append(f)
 
@@ -657,6 +660,13 @@ def handle_config(args, data: Data):
         set_config(args.name, args.value)
 
 
+def handle_class(args, data: Data):
+    c = collections.Counter()
+    for f in data.interesting_files:
+        c = c + collections.Counter(f.classes)
+    print(c)
+
+
 def handle_diff(args, data: Data):
     matches = []
     for_each_file(data, True, 'diff matches', args.file,
@@ -724,6 +734,9 @@ def main(data: Data):
     sub.add_argument('name', help='the name')
     sub.add_argument('value', nargs='?', help='if specified, sets the value to this')
     sub.set_defaults(func=handle_config)
+
+    sub = sub_parsers.add_parser('class', help='Get or set the class')
+    sub.set_defaults(func=handle_class)
 
     args = parser.parse_args()
     if args.command_name is not None:

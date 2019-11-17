@@ -81,8 +81,8 @@ def get_data():
     data.add_generated_file(win, 'minttyrc', '.minttyrc')
     data.add_generated_file(arch, 'dunst.cfg', '.config/dunst.cfg')
     data.add_generated_file(arch, 'i3blocks-config', '.config/i3blocks/config')
-    data.add_dir(arch,
-        dotlib.Dir("i3blocks-scripts", ".config/i3blocks/scripts")
+    data.add_dir(
+        dotlib.Dir(arch, "i3blocks-scripts", ".config/i3blocks/scripts")
           .file("arch-update.py")
           .file("disk_usage.sh")
           .file("load_average.sh")
@@ -93,36 +93,36 @@ def get_data():
     data.add_file(gnome, 'gnome2', '.gtkrc-2.0')
     data.add_file(gnome, 'gnome3.ini', '.config/gtk-3.0/settings.ini')
     data.add_file(arch, 'xprofile', '.xprofile')
-    data.add_dir(arch,
-        dotlib.Dir("custom_fonts", ".fonts")
+    data.add_dir(
+        dotlib.Dir(arch, "custom_fonts", ".fonts")
           .file("materialdesignicons-webfont.ttf")
     )
-    data.add_dir(code,
-        dotlib.Dir("vs_code", ".config/{}/User"
+    data.add_dir(
+        dotlib.Dir(code, "vs_code", ".config/{}/User"
             .format('Code - OSS' if dotlib.get_config_bool('code.oss') else 'Code'),
                    win_where=dotlib.PathType.APPDATA_ROAMING, win_home='Code\\User')
         .file('keybindings.json')
         .file('settings.json')
     )
-    data.add_dir(arch,
-        dotlib.Dir('rofi', '.config/rofi')
+    data.add_dir(
+        dotlib.Dir(arch, 'rofi', '.config/rofi')
         .file('config')
         .file('solarized-light.rasi')
     )
     data.add_generated_file(arch, 'rofi/google-material.rasi', '.config/rofi/google-material.rasi')
-    data.add_dir(arch,
-        dotlib.Dir('shortcuts', '.local/share/applications')
+    data.add_dir(
+        dotlib.Dir(arch, 'shortcuts', '.local/share/applications')
             .file('maim-snip.desktop')
             .file('maim-screenshot.desktop')
             .file('maim-window-shadow.desktop')
     )
-    data.add_dir(arch,
-        dotlib.Dir('services', '.config/systemd/user')
+    data.add_dir(
+        dotlib.Dir(arch, 'services', '.config/systemd/user')
             .file('ssh-agent.service')
     )
     data.add_file(arch, 'pam_environment', '.pam_environment')
-    data.add_dir(general,
-        dotlib.Dir('vimfiles', '.vim')
+    data.add_dir(
+        dotlib.Dir(general, 'vimfiles', '.vim')
         .set_dir('colors')
         .file('solarized.vim')
         .set_dir('bitmaps')
