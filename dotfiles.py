@@ -67,16 +67,21 @@ def get_data():
         junk='#FFFF00'
     )
 
-    data.add_file('vimrc', '.vimrc')
-    data.add_file('zshrc', '.zshrc')
-    data.add_file('xresources', '.Xresources')
-    data.add_generated_file('termite.conf', '.config/termite/config')
-    data.add_file('fonts.conf', '.config/fontconfig/fonts.conf')
-    data.add_generated_file('i3config', '.config/i3/config')
-    data.add_generated_file('minttyrc', '.minttyrc')
-    data.add_generated_file('dunst.cfg', '.config/dunst.cfg')
-    data.add_generated_file('i3blocks-config', '.config/i3blocks/config')
-    data.add_dir(
+    general = ['general']
+    arch = ['arch']
+    win = ['win']
+    code = ['code']
+    gnome = ['gnome']
+    data.add_file(general, 'vimrc', '.vimrc')
+    data.add_file(arch, 'zshrc', '.zshrc')
+    data.add_file(arch, 'xresources', '.Xresources')
+    data.add_generated_file(arch, 'termite.conf', '.config/termite/config')
+    data.add_file(arch, 'fonts.conf', '.config/fontconfig/fonts.conf')
+    data.add_generated_file(arch, 'i3config', '.config/i3/config')
+    data.add_generated_file(win, 'minttyrc', '.minttyrc')
+    data.add_generated_file(arch, 'dunst.cfg', '.config/dunst.cfg')
+    data.add_generated_file(arch, 'i3blocks-config', '.config/i3blocks/config')
+    data.add_dir(arch,
         dotlib.Dir("i3blocks-scripts", ".config/i3blocks/scripts")
           .file("arch-update.py")
           .file("disk_usage.sh")
@@ -85,38 +90,38 @@ def get_data():
           .file("keyboard-map.sh")
           .file("sensors.py")
     )
-    data.add_file('gnome2', '.gtkrc-2.0')
-    data.add_file('gnome3.ini', '.config/gtk-3.0/settings.ini')
-    data.add_file('xprofile', '.xprofile')
-    data.add_dir(
+    data.add_file(gnome, 'gnome2', '.gtkrc-2.0')
+    data.add_file(gnome, 'gnome3.ini', '.config/gtk-3.0/settings.ini')
+    data.add_file(arch, 'xprofile', '.xprofile')
+    data.add_dir(arch,
         dotlib.Dir("custom_fonts", ".fonts")
           .file("materialdesignicons-webfont.ttf")
     )
-    data.add_dir(
+    data.add_dir(code,
         dotlib.Dir("vs_code", ".config/{}/User"
             .format('Code - OSS' if dotlib.get_config_bool('code.oss') else 'Code'),
                    win_where=dotlib.PathType.APPDATA_ROAMING, win_home='Code\\User')
         .file('keybindings.json')
         .file('settings.json')
     )
-    data.add_dir(
+    data.add_dir(arch,
         dotlib.Dir('rofi', '.config/rofi')
         .file('config')
         .file('solarized-light.rasi')
     )
-    data.add_generated_file('rofi/google-material.rasi', '.config/rofi/google-material.rasi')
-    data.add_dir(
+    data.add_generated_file(arch, 'rofi/google-material.rasi', '.config/rofi/google-material.rasi')
+    data.add_dir(arch,
         dotlib.Dir('shortcuts', '.local/share/applications')
             .file('maim-snip.desktop')
             .file('maim-screenshot.desktop')
             .file('maim-window-shadow.desktop')
     )
-    data.add_dir(
+    data.add_dir(arch,
         dotlib.Dir('services', '.config/systemd/user')
             .file('ssh-agent.service')
     )
-    data.add_file('pam_environment', '.pam_environment')
-    data.add_dir(
+    data.add_file(arch, 'pam_environment', '.pam_environment')
+    data.add_dir(general,
         dotlib.Dir('vimfiles', '.vim')
         .set_dir('colors')
         .file('solarized.vim')

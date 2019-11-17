@@ -205,15 +205,15 @@ class Data:
         for key, value in kwargs.items():
             self.vars.set_alias(key, value)
 
-    def add_file(self, src: str, home: str):
+    def add_file(self, classes: typing.List[str], src: str, home: str):
         file = Path(src, VarPath(None, home, None, PathType.USER))
         self.interesting_files.append(file)
 
-    def add_generated_file(self, src: str, home: str):
+    def add_generated_file(self, classes: typing.List[str], src: str, home: str):
         file = Path(src, VarPath(None, home, None, PathType.USER))
         self.generated_files.append(file)
 
-    def add_dir(self, subdir: Dir):
+    def add_dir(self, classes: typing.List[str], subdir: Dir):
         for f in subdir.files:
             self.interesting_files.append(f)
 
