@@ -425,7 +425,7 @@ def generated_same(generated: str, source: str, g: GenerationData) -> bool:
 
 
 def matchlist_contains_file(terms: typing.List[str], path: str) -> bool:
-    if len(terms) is 0:
+    if len(terms) == 0:
         return True
     for t in terms:
         if t not in path:
