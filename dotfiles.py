@@ -72,6 +72,7 @@ def get_data():
     win = ['win']
     code = ['code']
     gnome = ['gnome']
+
     data.add_file(general, 'vimrc', '.vimrc')
     data.add_file(arch, 'zshrc', '.zshrc')
     data.add_file(arch, 'xresources', '.Xresources')

@@ -74,7 +74,6 @@ def is_running(app: str) -> bool:
         return False
 
 
-
 def get_user_data() -> typing.Dict[str, str]:
     if file_exist(get_config_file_name()):
         with open(get_config_file_name(), 'r') as f:
@@ -379,6 +378,7 @@ class GeneratedFile:
         except WindowsError as e:
             print("Could not delete temp file because {}".format(e))
 
+
 # https://stackoverflow.com/a/49007649/180307
 class Watcher(object):
     refresh_delay_secs = 1
@@ -416,7 +416,6 @@ class Watcher(object):
                 break 
             except FileNotFoundError:
                 pass
-
 
 
 def generated_same(generated: str, source: str, g: GenerationData) -> bool:
