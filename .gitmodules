@@ -4,3 +4,6 @@
 [submodule "external/z"]
 	path = external/z
 	url = git@github.com:rupa/z.git
+[submodule "external/prettygood"]
+	path = external/prettygood
+	url = git@github.com:madeso/prettygood.git
