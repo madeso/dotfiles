@@ -627,23 +627,34 @@ def handle_class(args, data: Data):
     c = collections.Counter()
     for f in data.interesting_files:
         c = c + collections.Counter(f.classes)
-    print(c)
+    for f in data.generated_files:
+        c = c + collections.Counter(f.classes)
+    existing_classes = frozenset(name for name, count in c.items())
 
     config = get_config()
 
-    values: typing.List[str] = SETTINGS_CLASS.get_value(config)
+    classes: typing.List[str] = SETTINGS_CLASS.get_value(config)
 
     if args.value:
-        if args.value not in values:
-            values.append(args.value)
-        else:
-            values.remove(args.value)
-        SETTINGS_CLASS.set_value(config, values)
+        if not args.remove and args.value not in classes:
+            classes.append(args.value)
+        if args.remove and args.value in classes:
+            classes.remove(args.value)
+        SETTINGS_CLASS.set_value(config, classes)
         config.save()
 
-    print('Classes:')
-    for v in values:
-        print(v)
+    if len(classes) > 0:
+        print('Classes:')
+        for c in classes:
+            x = '*' if c in existing_classes else ' '
+            print(' ' + x + c)
+
+    classes_to_add = list(c for c in existing_classes if c not in classes)
+    if len(classes_to_add) > 0:
+        print()
+        print('Classes to add:')
+        for c in classes_to_add:
+            print('  ' + c)
 
 
 def has_class(c: str) -> bool:
