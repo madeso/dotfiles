@@ -397,28 +397,37 @@ def matchlist_contains_file(terms: typing.List[str], path: str) -> bool:
     return True
 
 
+def has_atleast_one_class(classes: typing.List[str]) -> bool:
+    for c in classes:
+        if has_class(c):
+            return True
+    return False
+
+
 def for_each_file(data: Data, install: bool, verb: str, search: typing.List[str], callback_copy, callback_generate):
     total = 0
     operated = 0
     for file in data.interesting_files:
-        total += 1
-        home_path = file.home.get_abs_path()
-        src_path = os.path.join(get_src_folder(), file.src)
-        from_path = src_path if install else home_path
-        to_path = home_path if install else src_path
-        if matchlist_contains_file(search, from_path) or matchlist_contains_file(search, to_path):
-            operated += 1
-            callback_copy(from_path, to_path)
-    if install:
-        for file in data.generated_files:
+        if has_atleast_one_class(file.classes):
             total += 1
             home_path = file.home.get_abs_path()
             src_path = os.path.join(get_src_folder(), file.src)
-            from_path = src_path
-            to_path = home_path
+            from_path = src_path if install else home_path
+            to_path = home_path if install else src_path
             if matchlist_contains_file(search, from_path) or matchlist_contains_file(search, to_path):
                 operated += 1
-                callback_generate(from_path, to_path)
+                callback_copy(from_path, to_path)
+    if install:
+        for file in data.generated_files:
+            if has_atleast_one_class(file.classes):
+                total += 1
+                home_path = file.home.get_abs_path()
+                src_path = os.path.join(get_src_folder(), file.src)
+                from_path = src_path
+                to_path = home_path
+                if matchlist_contains_file(search, from_path) or matchlist_contains_file(search, to_path):
+                    operated += 1
+                    callback_generate(from_path, to_path)
     print('{} of {} {}.'.format(operated, total, verb))
 
 
