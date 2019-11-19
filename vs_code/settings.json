@@ -24,5 +24,8 @@
     "editor.minimap.enabled": true,
     "editor.minimap.side": "right",
     "editor.minimap.scale": 2,
-    "editor.minimap.renderCharacters": false
+    "editor.minimap.renderCharacters": false,
+
+    "editor.fontFamily": "Fira Code, Consolas, 'Courier New', monospace"
+
 }
