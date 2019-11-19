@@ -2,8 +2,7 @@
     "window.menuBarVisibility": "default",
     "workbench.colorTheme": "Solarized Light",
     "editor.renderIndentGuides": false,
-    "editor.minimap.enabled": false,
-    "editor.renderWhitespace": "none",
+    "editor.renderWhitespace": "selection",
     "workbench.statusBar.visible": true,
     "explorer.openEditors.visible": 0,
     "[plaintext]": {
@@ -19,5 +18,11 @@
     "window.zoomLevel": -1,
     "workbench.editor.highlightModifiedTabs": true,
     "workbench.activityBar.visible": true,
-    "workbench.iconTheme": null
+    "workbench.iconTheme": null,
+
+    "editor.minimap.maxColumn": 100,
+    "editor.minimap.enabled": true,
+    "editor.minimap.side": "right",
+    "editor.minimap.scale": 2,
+    "editor.minimap.renderCharacters": false
 }
