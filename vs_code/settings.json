@@ -1,5 +1,6 @@
 {
-    "window.menuBarVisibility": "default",
+    // osx doesnt like the default option, there is toggle too, but not so sure about that one...
+    "window.menuBarVisibility": "hidden",
     "workbench.colorTheme": "Solarized Light",
     "editor.renderIndentGuides": false,
     "editor.renderWhitespace": "selection",
