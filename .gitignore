@@ -6,3 +6,4 @@ venv/
 # vim stuff
 Session.vim
 *.un~
+.DS_Store
