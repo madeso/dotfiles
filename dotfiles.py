@@ -100,7 +100,7 @@ def get_data():
     )
     data.add_dir(
         dotlib.Dir(code, "vs_code", ".config/{}/User"
-            .format('Code - OSS' if dotlib.get_config_bool('code.oss') else 'Code'),
+            .format('Code - OSS' if dotlib.has_class('arch') else 'Code'),
                    win_where=dotlib.PathType.APPDATA_ROAMING, win_home='Code\\User')
         .file('keybindings.json')
         .file('settings.json')

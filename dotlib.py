@@ -13,6 +13,14 @@ import time
 import collections
 from enum import Enum
 
+from external.prettygood.config import *
+
+SETTINGS_CLASS = Settings('class', [])
+
+
+def get_config() -> Config:
+    return get_user_data('dotlib')
+
 
 def file_exist(file: str) -> bool:
     return os.path.isfile(file)
@@ -61,10 +69,6 @@ def get_folder(path: PathType) -> str:
     return get_home_folder()
 
 
-def get_config_file_name() -> str:
-    return os.path.join(get_home_folder(), '.dotlib.json')
-
-
 def is_running(app: str) -> bool:
     try:
         import psutil
@@ -72,48 +76,6 @@ def is_running(app: str) -> bool:
     except ModuleNotFoundError:
         print('psutil not found, try pip install psutil')
         return False
-
-
-def get_user_data() -> typing.Dict[str, str]:
-    if file_exist(get_config_file_name()):
-        with open(get_config_file_name(), 'r') as f:
-            return json.loads(f.read())
-    else:
-        return {}
-
-
-def set_user_data(data: typing.Dict[str, str]):
-    with open(get_config_file_name(), 'w') as f:
-        print(json.dumps(data, sort_keys=True, indent=4), file=f)
-
-
-def get_config(name: str) -> str:
-    data = get_user_data()
-    if name in data:
-        return data[name]
-    else:
-        return ''
-
-
-def get_config_bool(name: str) -> bool:
-    v = get_config(name).strip().lower()
-    if v == 'yes':
-        return True
-    if v == '1':
-        return True
-    if v == 'true':
-        return True
-    if v == 't':
-        return True
-    if v == 'y':
-        return True
-    return False
-
-
-def set_config(name: str, value: str):
-    data = get_user_data()
-    data[name] = value
-    set_user_data(data)
 
 
 class VarPath:
@@ -652,18 +614,33 @@ def handle_home(args, data: Data):
         print("Unknown OS", s)
 
 
-def handle_config(args, data: Data):
-    if args.value is None:
-        print(get_config(args.name))
-    else:
-        set_config(args.name, args.value)
-
-
 def handle_class(args, data: Data):
     c = collections.Counter()
     for f in data.interesting_files:
         c = c + collections.Counter(f.classes)
     print(c)
+
+    config = get_config()
+
+    values: typing.List[str] = SETTINGS_CLASS.get_value(config)
+
+    if args.value:
+        if args.value not in values:
+            values.append(args.value)
+        else:
+            values.remove(args.value)
+        SETTINGS_CLASS.set_value(config, values)
+        config.save()
+
+    print('Classes:')
+    for v in values:
+        print(v)
+
+
+def has_class(c: str) -> bool:
+    config = get_config()
+    values: typing.List[str] = SETTINGS_CLASS.get_value(config)
+    return c in values
 
 
 def handle_diff(args, data: Data):
@@ -729,12 +706,9 @@ def main(data: Data):
     sub = sub_parsers.add_parser('home', help='Start explorer in home')
     sub.set_defaults(func=handle_home)
 
-    sub = sub_parsers.add_parser('config', help='Get or set a config value')
-    sub.add_argument('name', help='the name')
-    sub.add_argument('value', nargs='?', help='if specified, sets the value to this')
-    sub.set_defaults(func=handle_config)
-
     sub = sub_parsers.add_parser('class', help='Get or set the class')
+    sub.add_argument('value', nargs='?', help='if specified, add this class')
+    sub.add_argument('--remove', action='store_true', help='remove class instead of adding it')
     sub.set_defaults(func=handle_class)
 
     args = parser.parse_args()
