@@ -3,9 +3,14 @@
     "workbench.colorTheme": "Solarized Light",
     "editor.renderIndentGuides": false,
     "editor.renderWhitespace": "selection",
+    // horizontal bar in <= traditional & @
+    "editor.fontLigatures": "'ss02', 'ss03', 'ss05'",
+    "editor.fontFamily": "Fira Code, Consolas, 'Courier New', monospace",
     "workbench.statusBar.visible": true,
     "explorer.openEditors.visible": 0,
+    "editor.minimap.enabled": false,
     "[plaintext]": {
+        "editor.minimap.enabled": true,
         "editor.wordBasedSuggestions": false,
         "editor.quickSuggestions": {
             "other": false,
@@ -21,11 +26,7 @@
     "workbench.iconTheme": null,
 
     "editor.minimap.maxColumn": 100,
-    "editor.minimap.enabled": true,
     "editor.minimap.side": "right",
     "editor.minimap.scale": 2,
-    "editor.minimap.renderCharacters": false,
-
-    "editor.fontFamily": "Fira Code, Consolas, 'Courier New', monospace"
-
+    "editor.minimap.renderCharacters": false
 }
