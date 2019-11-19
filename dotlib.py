@@ -58,6 +58,10 @@ def is_windows() -> bool:
     return platform.system() == 'Windows'
 
 
+def is_osx() -> bool:
+    return platform.system() == 'Darwin'
+
+
 class PathType(Enum):
     USER = 1
     APPDATA_ROAMING = 2
@@ -105,10 +109,14 @@ class Path:
 
 
 class Dir:
-    def __init__(self, classes: typing.List[str], src: str, home: str, win_where: PathType = PathType.USER, win_home: typing.Optional[str]=None):
+    def __init__(self, classes: typing.List[str], src: str, home: str, win_where: PathType = PathType.USER, win_home: typing.Optional[str]=None, osx_home: typing.Optional[str]=None):
         self.classes = classes
         self.files = []
-        self.home = win_home if is_windows() and win_home is not None else home
+        self.home = home
+        if is_windows() and win_home is not None:
+            self.home = win_home
+        if is_osx() and osx_home is not None:
+            self.home = osx_home
         self.src = src
         self.subdir = None
         self.win_where = win_where
