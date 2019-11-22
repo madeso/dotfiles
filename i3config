@@ -275,6 +275,6 @@ exec firefox
 exec thunderbird
 exec telegram-desktop
 exec spotify
-exec dropbox
+# exec dropbox
 
 
