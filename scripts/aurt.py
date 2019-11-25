@@ -242,10 +242,15 @@ def handle_write(args):
     write_json_deps(args.name)
 
 
-def handle_add(args):
-    git = 'https://aur.archlinux.org/{}.git'.format(args.name)
+def add_project(project_name):
+    git = 'https://aur.archlinux.org/{}.git'.format(project_name)
     print('Adding ', git)
     subprocess.run(['git', 'clone', git], cwd=aur_path(), check=True)
+
+
+def handle_add(args):
+    add_project(args.name)
+
 
 def handle_git(args):
     aur = aur_path()
@@ -272,6 +277,26 @@ def handle_backup(args):
     with open(backup_path, 'w') as f:
         f.write(json.dumps(store, sort_keys=True, indent=4))
 
+    print()
+
+
+def handle_restore(args):
+    backup_path = get_backup_path()
+    existing_names = [get_project_name(p) for p in find_git_folders(aur_path())]
+    stored_names = []
+    if os.path.isfile(backup_path):
+        print('Restoring ', backup_path)
+        with open(backup_path, 'r') as f:
+            store = json.loads(f.read())
+            if 'projects' in store:
+                stored_names = store['projects']
+    for n in stored_names:
+        if n in existing_names:
+            print('existing, not backing up...', n)
+        else:
+            add_project(n)
+
+    print()
 
 def handle_install(args):
     aur = aur_path()
@@ -303,6 +328,9 @@ def main():
 
     sub = sub_parsers.add_parser('backup', help='do backup of aur to dotfiles')
     sub.set_defaults(func=handle_backup)
+
+    sub = sub_parsers.add_parser('restore', help='do restore of dotfiles to aur')
+    sub.set_defaults(func=handle_restore)
 
     sub = sub_parsers.add_parser('git', help='update the git repos')
     sub.set_defaults(func=handle_git)
