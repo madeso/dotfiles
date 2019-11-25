@@ -1,6 +1,7 @@
 accountsservice
 acpi
 adapta-gtk-theme
+afl
 alsa-utils
 arandr
 arc-gtk-theme
@@ -12,17 +13,19 @@ automake
 autorandr
 awesome-terminal-fonts
 baobab
+base
 bash
 binutils
 bison
 blender
 bzip2
+calibre-python3
 chromium
 chromium-widevine
 clang
+cloc
 cmake
 code
-compton
 coreutils
 cryptsetup
 deepin-icon-theme
@@ -30,11 +33,13 @@ device-mapper
 dhcpcd
 diffutils
 dmenu
+doxygen
 dropbox
 dunst
 e2fsprogs
 fakeroot
 feh
+figlet
 file
 filesystem
 findutils
@@ -44,7 +49,9 @@ fortune-mod
 gawk
 gcc
 gcc-libs
+gdb
 gettext
+gifski
 gimp
 git
 glibc
@@ -70,7 +77,6 @@ iputils
 jfsutils
 krita
 less
-libreoffice-still
 libtool
 licenses
 lightdm
@@ -108,7 +114,9 @@ pacman-contrib
 papirus-icon-theme
 patch
 pciutils
+peek
 perl
+picom
 pkgconf
 playerctl
 procps-ng
@@ -126,6 +134,7 @@ s-nail
 samba
 sdl_image
 sed
+sfxr
 shadow
 smbclient
 soundfont-fluid
@@ -146,6 +155,7 @@ tig
 tiled
 tk
 transmission-gtk
+tree
 ttf-fira-code
 udiskie
 udisks2
