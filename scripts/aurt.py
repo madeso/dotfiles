@@ -228,7 +228,7 @@ def handle_check(args):
             for section, libs in info.items():
                 for lib in libs:
                     if not lib.pkg in deps or deps[lib.pkg] != lib.version:
-                        print('  ', lib.pkg, section, ' differs')
+                        print('  ', lib.pkg, section, 'differs')
                         differs = True
             if differs:
                 print()
