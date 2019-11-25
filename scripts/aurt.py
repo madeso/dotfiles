@@ -16,6 +16,10 @@ def aur_path():
     return os.path.expanduser('~/aur/')
 
 
+def get_src_folder() -> str:
+    return os.path.dirname(os.path.abspath(__file__))
+
+
 def find_git_folders(aur):
     r = []
     for e in os.listdir(aur):
@@ -254,6 +258,21 @@ def handle_git(args):
         print()
 
 
+def get_backup_path():
+    return os.path.join(os.path.dirname(get_src_folder()), 'backup-aur.json')
+
+
+def handle_backup(args):
+    backup_path = get_backup_path()
+    aur = aur_path()
+    projects = find_git_folders(aur)
+    names = [get_project_name(p) for p in projects]
+    store = {'projects': names}
+    print('Backing up to ', backup_path)
+    with open(backup_path, 'w') as f:
+        f.write(json.dumps(store, sort_keys=True, indent=4))
+
+
 def handle_install(args):
     aur = aur_path()
     projects = find_git_folders(aur)
@@ -281,6 +300,9 @@ def main():
 
     sub = sub_parsers.add_parser('check', help='check aur libraries for updates')
     sub.set_defaults(func=handle_check)
+
+    sub = sub_parsers.add_parser('backup', help='do backup of aur to dotfiles')
+    sub.set_defaults(func=handle_backup)
 
     sub = sub_parsers.add_parser('git', help='update the git repos')
     sub.set_defaults(func=handle_git)
