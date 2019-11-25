@@ -212,7 +212,7 @@ def handle_check(args):
         print()
     for p in projects:
         git_fetch(p)
-        print(p, git_info(p))
+        print(p, '| git: ' + git_info(p))
         map = None
         if store is not None:
             name = get_project_name(p)
