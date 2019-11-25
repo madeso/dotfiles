@@ -22,11 +22,12 @@ def get_src_folder() -> str:
 
 def find_git_folders(aur):
     r = []
-    for e in os.listdir(aur):
-        p = os.path.join(aur, e)
-        if os.path.isdir(p):
-            if os.path.isdir(os.path.join(p, '.git')):
-                r.append(p)
+    if os.path.isdir(aur):
+        for e in os.listdir(aur):
+            p = os.path.join(aur, e)
+            if os.path.isdir(p):
+                if os.path.isdir(os.path.join(p, '.git')):
+                    r.append(p)
     return r
 
 
@@ -243,6 +244,7 @@ def handle_write(args):
 
 
 def add_project(project_name):
+    os.makedirs(aur_path(), exist_ok=True)
     git = 'https://aur.archlinux.org/{}.git'.format(project_name)
     print('Adding ', git)
     subprocess.run(['git', 'clone', git], cwd=aur_path(), check=True)
