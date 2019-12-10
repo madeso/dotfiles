@@ -268,6 +268,9 @@ exec_always --no-startup-id ~/dev/dotfiles/bkg.py set
 
 exec --no-startup-id ~/dev/dotfiles/setup_capslock.sh
 
+# try to fix autorandr not detecting setup at boot
+exec --no-startup-id autorandr -c
+
 exec --no-startup-id dunst -config ~/.config/dunst.cfg
 exec --no-startup-id thunar --daemon
 exec --no-startup-id compton --config ~/dev/dotfiles/compton.conf

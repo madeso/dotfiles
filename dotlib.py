@@ -641,7 +641,7 @@ def handle_class(args, data: Data):
 
     config = get_config()
 
-    classes: typing.List[str] = SETTINGS_CLASS.get_value(config)
+    classes = SETTINGS_CLASS.get_value(config)
 
     if args.value:
         if not args.remove and args.value not in classes:
@@ -667,7 +667,7 @@ def handle_class(args, data: Data):
 
 def has_class(c: str) -> bool:
     config = get_config()
-    values: typing.List[str] = SETTINGS_CLASS.get_value(config)
+    values = SETTINGS_CLASS.get_value(config)
     return c in values
 
 

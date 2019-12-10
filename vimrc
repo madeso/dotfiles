@@ -71,7 +71,7 @@ hi WildMenu ctermfg=9 ctermbg=15
 " highlight current line
 set cursorline
 highlight clear CursorLine
-highlight CursorLine ctermbg=18
+highlight CursorLine ctermbg=14
 
 " make backspace work as in other editors in insert
 set backspace=indent,eol,start
@@ -184,7 +184,7 @@ syntax on
 filetype indent on
 
 " for python files, draw line at margin
-autocmd FileType python setlocal colorcolumn=79 | highlight ColorColumn ctermbg=White guibg=orange
+autocmd FileType python setlocal colorcolumn=79 | highlight ColorColumn ctermbg=14 guibg=orange
 
 " linenumbers
 set number
