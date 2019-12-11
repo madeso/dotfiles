@@ -19,7 +19,7 @@ def exec(cmd):
 
 def handle_single(args):
     # youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' -i -o '%(title)s.%(ext)s' --restrict-filenames https://www.youtube.com/watch?v=vWaY7TqRzlg
-    exec(["youtube-dl", "-f", "'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'", "-i", "-o", "'%(title)s.%(ext)s'", "--restrict-filenames", args.video])
+    exec(["youtube-dl", "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best", "--ignore-errors", "--output", "'%(title)s.%(ext)s'", "--restrict-filenames", args.video])
 
 
 # todo(Gustav): handle channel
