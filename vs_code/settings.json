@@ -1,9 +1,10 @@
 {
     // osx doesnt like the default option, there is toggle too, but not so sure about that one...
-    "window.menuBarVisibility": "hidden",
+    "window.menuBarVisibility": "toggle",
     "workbench.colorTheme": "Solarized Light",
     "editor.renderIndentGuides": false,
     "editor.renderWhitespace": "selection",
+    "editor.rulers": [79, 99],
     // horizontal bar in <= traditional & @
     "editor.fontLigatures": "'ss02', 'ss03', 'ss05'",
     "editor.fontFamily": "Fira Code, Consolas, 'Courier New', monospace",
@@ -29,5 +30,6 @@
     "editor.minimap.maxColumn": 100,
     "editor.minimap.side": "right",
     "editor.minimap.scale": 2,
-    "editor.minimap.renderCharacters": false
+    "editor.minimap.renderCharacters": false,
+    "explorer.confirmDragAndDrop": false
 }
