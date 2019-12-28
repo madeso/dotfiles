@@ -69,12 +69,13 @@ def get_data():
 
     general = ['general']
     arch = ['arch']
+    zsh = ['zsh']
     win = ['win']
     code = ['code']
     gnome = ['gnome']
 
     data.add_file(general, 'vimrc', '.vimrc')
-    data.add_file(arch, 'zshrc', '.zshrc')
+    data.add_file(zsh, 'zshrc', '.zshrc')
     data.add_file(arch, 'xresources', '.Xresources')
     data.add_generated_file(arch, 'termite.conf', '.config/termite/config')
     data.add_file(arch, 'fonts.conf', '.config/fontconfig/fonts.conf')

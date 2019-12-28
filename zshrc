@@ -108,7 +108,7 @@ export PATH=$DOTFILES/scripts:$PATH
 . $DOTFILES/external/z/z.sh
 
 export EDITOR=vim
-export TERM=rxvt-unicode
+# export TERM=rxvt-unicode
 export BROWSER=firefox
 
 # aseprite from aur
