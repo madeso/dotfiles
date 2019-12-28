@@ -122,8 +122,8 @@ bindsym $mod+a focus parent
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1:"
-set $ws2 "2:"
-set $ws3 "3:3"
+set $ws2 "2:"
+set $ws3 "3:"
 set $ws4 "4:4"
 set $ws5 "5:5"
 set $ws6 "6:6"
@@ -268,6 +268,9 @@ exec_always --no-startup-id ~/dev/dotfiles/bkg.py set
 
 exec --no-startup-id ~/dev/dotfiles/setup_capslock.sh
 
+# try to fix autorandr not detecting setup at boot
+exec --no-startup-id autorandr -c
+
 exec --no-startup-id dunst -config ~/.config/dunst.cfg
 exec --no-startup-id thunar --daemon
 exec --no-startup-id compton --config ~/dev/dotfiles/compton.conf
@@ -275,6 +278,6 @@ exec firefox
 exec thunderbird
 exec telegram-desktop
 exec spotify
-exec dropbox
+# exec dropbox
 
 

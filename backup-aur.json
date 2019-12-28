@@ -1,0 +1,11 @@
+{
+    "projects": [
+        "aseprite",
+        "chromium-widevine",
+        "vlc-plugin-fluidsynth",
+        "dropbox",
+        "spotify",
+        "godot",
+        "sfxr"
+    ]
+}
