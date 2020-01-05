@@ -320,3 +320,5 @@ hi cInclude ctermfg=1
 hi cDefine ctermfg=2
 hi cPreCondit ctermfg=2
 
+hi jsonBraces ctermfg=2
+
