@@ -6,7 +6,6 @@ alsa-utils
 arandr
 arc-gtk-theme
 ardour
-aseprite
 assimp
 autoconf
 automake
@@ -21,7 +20,6 @@ blender
 bzip2
 calibre-python3
 chromium
-chromium-widevine
 clang
 cloc
 cmake
@@ -34,7 +32,6 @@ dhcpcd
 diffutils
 dmenu
 doxygen
-dropbox
 dunst
 e2fsprogs
 fakeroot
@@ -55,7 +52,6 @@ gifski
 gimp
 git
 glibc
-godot
 grep
 groff
 grub
@@ -98,6 +94,7 @@ mdadm
 meld
 mypaint
 nano
+neofetch
 netctl
 networkmanager
 ninja
@@ -134,12 +131,10 @@ s-nail
 samba
 sdl_image
 sed
-sfxr
 shadow
 smbclient
 soundfont-fluid
 speedcrunch
-spotify
 sudo
 sysfsutils
 systemd
@@ -165,7 +160,6 @@ usbutils
 util-linux
 vi
 vlc
-vlc-plugin-fluidsynth
 w3m
 wget
 which
