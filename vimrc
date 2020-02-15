@@ -91,8 +91,8 @@ au BufWritePost .vimrc so ~/.vimrc
 " ============================================================================
 
 " make searching regex behave like regular regex
-nnoremap / /\v
-vnoremap / /\v
+" nnoremap / /\v
+" vnoremap / /\v
 
 " make search case insensitive when searching lowercase and case sensitive when using one or more uppercase
 set ignorecase
@@ -151,8 +151,8 @@ set statusline+=\ Buf:%n                    " Buffer number
 " set statusline+=\ [%b][0x%B]\               " ASCII and byte code under cursor
 
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_lua_checkers = ["luac", "luacheck"]
 
