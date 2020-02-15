@@ -34,17 +34,10 @@ inoremap <right> <nop>
 set nowrap
 autocmd FileType markdown setlocal wrap
 
-" set spacing to 2
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
-" except in python, cause pep says 4
-function! SetPythonSpacing()
-  setlocal tabstop=4
-  setlocal shiftwidth=4
-  setlocal softtabstop=4
-endfunction
-autocmd FileType python call SetPythonSpacing()
+" set spacing to 4
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 
 " always insert spaces, but insert spaces according to the tab size
 set shiftround
@@ -324,4 +317,7 @@ hi cPreCondit ctermfg=2
 hi yamlKeyValueDelimiter ctermfg=2
 
 hi jsonBraces ctermfg=2
+
+" editorconfig
+hi dosiniHeader ctermfg=1
 
