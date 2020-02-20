@@ -311,6 +311,8 @@ hi markdownListMarker ctermfg=1
 
 hi cInclude ctermfg=1
 hi cSpecialCharacter ctermfg=1
+hi cSpecial ctermfg=1
+hi cFormat ctermfg=1
 hi cDefine ctermfg=2
 hi cPreCondit ctermfg=2
 
