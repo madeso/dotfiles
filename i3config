@@ -273,7 +273,7 @@ exec --no-startup-id autorandr -c
 
 exec --no-startup-id dunst -config ~/.config/dunst.cfg
 exec --no-startup-id thunar --daemon
-exec --no-startup-id compton --config ~/dev/dotfiles/compton.conf
+exec --no-startup-id picom --config ~/dev/dotfiles/compton.conf
 exec firefox
 exec thunderbird
 exec telegram-desktop
