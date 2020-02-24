@@ -21,6 +21,9 @@ ZSH_THEME="madeso"
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
+# make ls a* also matches American.txt
+unsetopt CASE_GLOB
+
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
