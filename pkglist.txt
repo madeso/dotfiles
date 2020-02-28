@@ -132,6 +132,7 @@ s-nail
 samba
 sdl_image
 sed
+sfxr
 shadow
 smbclient
 soundfont-fluid
