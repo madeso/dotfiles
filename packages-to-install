@@ -1,0 +1,209 @@
+# dev tools
+pycharm-community-edition
+cloc
+cmake
+clang
+afl
+autoconf
+automake
+bison
+flex
+doxygen
+git
+tig
+# tcl and tk for gitk, arch only lists tk
+# tcl
+tk
+tiled
+ninja
+gcc
+gcc-libs
+gdb
+make
+meld
+code
+
+
+# libraries/dependencies
+assimp
+sdl_image
+love
+
+
+# system
+pacman-contrib # for checkupdates and pactree
+xdotool # get active window, toggle capslock
+chromium # backup browser
+openshot # video editor
+peek # gif recorder
+gifski # improve gif quality
+udiskie # udisks frontend
+udisks2
+xclip # copy to clipboard
+figlet
+unrar
+unzip
+zip
+hugo
+handbrake # dvd to mp4
+htop
+i3-gaps
+i3blocks
+i3lock
+i3status
+baobab # disk usage displayer
+firefox
+dunst # notifications
+feh
+vlc
+w3m
+telegram-desktop
+thunar # file explorer
+thunderbird
+transmission-gtk # download torrents
+tig # git interface
+picom # compton clone, prevents screentearing
+ranger
+rofi
+arandr
+autorandr
+maim # make image - take screenshots
+speedcrunch
+termite # terminal
+neofetch # display os info
+gvim
+lightdm
+lightdm-gtk-greeter
+gimp
+krita
+inkscape
+mypaint
+blender
+obs-studio
+ardour # daw
+whois
+xf86-input-wacom
+imagemagick # for wip lock script
+tree
+
+# music control
+# music control
+playerctl
+acpi
+alsa-utils
+
+
+# fonts, icons and themes
+numix-gtk-theme
+adapta-gtk-theme
+arc-gtk-theme
+awesome-terminal-fonts
+deepin-icon-theme
+ttf-fira-code
+noto-fonts
+noto-fonts-emoji
+noto-fonts-extra
+papirus-icon-theme
+materia-gtk-theme
+
+
+# setup / select
+lxappearance # gtk theme switcher
+gtk2fontsel
+lightdm-gtk-greeter-settings
+xorg-xfontsel
+
+
+# nas things
+samba
+smbclient
+ntfs-3g
+
+# packages
+# base
+
+
+
+# not categorized
+# fortune-mod
+# openssh
+# pulseaudio
+# pulseaudio-alsa
+# qt5-webview
+# xf86-video-ati
+# xorg-server
+# xorg-xinit
+# xorg-xprop
+
+
+
+
+
+
+# accountsservice # ligtht dm optional dependency
+# bash # not used anymore
+# binutils
+# bzip2
+# calibre-python3 # not used anymore
+# coreutils
+# cryptsetup
+# device-mapper
+# dhcpcd
+# diffutils
+# dmenu
+# e2fsprogs
+# fakeroot
+# file
+# filesystem
+# findutils
+# inetutils
+# intel-ucode
+# iproute2
+# iputils
+# jfsutils
+# less
+# libtool
+# licenses
+# linux
+# logrotate
+# lvm2
+# m4
+# man-db
+# man-pages
+# mdadm
+# nano
+# netctl
+# networkmanager
+# pacman
+# patch
+# pciutils
+# perl
+# pkgconf
+# procps-ng
+# psmisc
+# python-pip
+# reiserfsprogs
+# s-nail
+# tar
+# sed
+# shadow
+# soundfont-fluid # not needed anymore?
+# sudo
+# sysfsutils
+# systemd
+# systemd-sysvcompat
+# texinfo
+# usbutils
+# util-linux
+# vi
+# wget
+# which
+# xfsprogs
+# gawk
+# gettext
+# glibc
+# grep
+# groff
+# grub
+# gzip
+# lynx
