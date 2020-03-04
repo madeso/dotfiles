@@ -19,7 +19,13 @@ def exec(cmd):
 
 def handle_single(args):
     # youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' -i -o '%(title)s.%(ext)s' --restrict-filenames https://www.youtube.com/watch?v=vWaY7TqRzlg
-    exec(["youtube-dl", "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best", "--ignore-errors", "--output", "'%(title)s.%(ext)s'", "--restrict-filenames", args.video])
+    params = ["youtube-dl", "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best", "--ignore-errors", "--output", "'%(title)s.%(ext)s'", "--restrict-filenames"]
+
+    if args.keep:
+        params += ['-k']
+
+    params += [args.video]
+    exec(params)
 
 
 # todo(Gustav): handle channel
@@ -36,6 +42,7 @@ def main():
 
     sub = sub_parsers.add_parser('single', help='single video')
     sub.add_argument('video', help='the url of the video')
+    sub.add_argument('-k', '--keep', action='store_true', dest='keep', help='keep the intermediate')
     sub.set_defaults(func=handle_single)
 
     args = parser.parse_args()
