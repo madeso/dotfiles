@@ -10,6 +10,9 @@ To add the git files use:
 2. lsblk to find usb dongle
 3. run dd if=arch.iso of=/dev/sdX status="progress"
 4. boot from usb, read arch installation wiki
+Boot: 200 M
+Swap: 150% of (potential) ram
+Root/home: 
 
 For a arch installation, the following setup needs to be done
 
