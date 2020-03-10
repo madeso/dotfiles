@@ -307,6 +307,7 @@ hi pythonInclude ctermfg=1
 hi markdownHeadingDelimiter ctermfg=2
 hi markdownH1 ctermfg=2
 hi markdownLinkText ctermfg=4
+hi markdownCodeDelimiter ctermfg=1
 hi markdownListMarker ctermfg=1
 
 hi cInclude ctermfg=1
