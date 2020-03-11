@@ -17,9 +17,13 @@
   ls = !"git ls-files | awk -F / '{print $1}' | uniq | xargs ls -dF --color=auto"
   aliases = config --get-regexp '^alias\\.'
   # git fetch git://192.168.1.123/
-  # or try git instaweb
   serve = "daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/"
+  webgui = !"~/dev/dotfiles/external/git-webui/release/libexec/git-core/git-webui"
+  # todo(Gustav): fix dotfiles expansion
+  # webgui = !"`echo $DOTFILES`/external/git-webui/release/libexec/git-core/git-webui"
 [push]
   default = simple
 [difftool]
   prompt = no
+[webui]
+  nobrowser = yes

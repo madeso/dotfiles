@@ -7,3 +7,6 @@
 [submodule "external/prettygood"]
 	path = external/prettygood
 	url = git@github.com:madeso/prettygood.git
+[submodule "external/git-webui"]
+	path = external/git-webui
+	url = git@github.com:alberthier/git-webui.git
