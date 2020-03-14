@@ -285,6 +285,8 @@ com! FormatJson %!python -m json.tool
 " transform windows line endings to linux (probably)
 com! Ln %s/^M/\r/g
 
+hi Visual ctermbg=14
+
 hi vimBracket ctermfg=3
 hi vimNotation ctermfg=1
 hi vimMapModkey ctermfg=0
@@ -316,6 +318,9 @@ hi cSpecial ctermfg=1
 hi cFormat ctermfg=1
 hi cDefine ctermfg=2
 hi cPreCondit ctermfg=2
+
+hi cppRawString ctermfg=1
+
 
 hi yamlKeyValueDelimiter ctermfg=2
 
