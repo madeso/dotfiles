@@ -59,6 +59,8 @@ vlc
 w3m
 telegram-desktop
 thunar # file explorer
+gvfs # for thunar (file browsing?)
+tumbler # for thunar thumbnails
 thunderbird
 transmission-gtk # download torrents
 tig # git interface
