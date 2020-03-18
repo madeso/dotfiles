@@ -101,7 +101,7 @@ bindsym $mod+Shift+t layout tabbed
 bindsym $mod+Shift+e layout toggle split
 
 bindsym $mod+w layout tabbed
-bindsym $mod+t exec i3-sensible-terminal -e ranger
+#bindsym $mod+t exec i3-sensible-terminal -e ranger
 bindsym $mod+e exec thunar
 
 # toggle tiling / floating
@@ -111,7 +111,7 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+Tab focus mode_toggle
 
 bindsym Print exec ~/dev/dotfiles/tools/maim-active-window.sh
-bindsym $mod+space exec ~/dev/dotfiles/scripts/switch-kblayout.sh
+bindsym $mod+space exec ~/dev/dotfiles/tools/switch-kblayout.sh
 bindsym $mod+m exec ~/dev/dotfiles/fancylock.sh
 # focus the parent container
 bindsym $mod+a focus parent
@@ -266,7 +266,7 @@ bindsym XF86AudioPrev exec playerctl previous
 # apply the old background
 exec_always --no-startup-id ~/dev/dotfiles/bkg.py set
 
-exec --no-startup-id ~/dev/dotfiles/setup_capslock.sh
+exec --no-startup-id ~/dev/dotfiles/tools/setup_capslock.sh
 
 # try to fix autorandr not detecting setup at boot
 exec --no-startup-id autorandr -c
