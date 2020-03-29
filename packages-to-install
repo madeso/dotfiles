@@ -22,6 +22,10 @@ gdb
 make
 meld
 code
+graphviz
+python-pylint
+# refactoring inside vscode
+python-rope
 
 
 # libraries/dependencies

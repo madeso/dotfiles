@@ -178,6 +178,7 @@ filetype indent on
 
 " for python files, draw line at margin
 autocmd FileType python setlocal colorcolumn=79 | highlight ColorColumn ctermbg=14 guibg=orange
+autocmd FileType cpp setlocal colorcolumn=79 | highlight ColorColumn ctermbg=14 guibg=orange
 
 " linenumbers
 set number
@@ -292,6 +293,8 @@ hi vimNotation ctermfg=1
 hi vimMapModkey ctermfg=0
 hi vimOption ctermfg=1
 hi vimEnvvar ctermfg=1
+
+hi pythonEscape ctermfg=1
 
 hi shOption ctermfg=1
 hi shCmdSubRegion ctermfg=0
