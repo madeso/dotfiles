@@ -304,8 +304,11 @@ hi shParen ctermfg=3
 hi PreProc ctermfg=1
 hi Delimiter ctermfg=2
 
+hi htmlSpecialChar ctermfg=1
 hi htmlTitle ctermfg=1
 hi javaScript ctermfg=1
+hi cssAttrComma ctermfg=1
+hi cssUnicodeEscape ctermfg=1
 
 hi gitcommitBranch ctermfg=1
 hi gitcommitHeader ctermfg=1
@@ -314,6 +317,7 @@ hi pythonInclude ctermfg=1
 
 hi markdownHeadingDelimiter ctermfg=2
 hi markdownH1 ctermfg=2
+hi markdownH2 ctermfg=1
 hi markdownLinkText ctermfg=4
 hi markdownCodeDelimiter ctermfg=1
 hi markdownListMarker ctermfg=1
