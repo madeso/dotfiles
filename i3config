@@ -11,11 +11,21 @@
 
 set $mod Mod4
 
+# gaps settings
+set $inner_gaps 10
+set $outer_gaps 10
+
+smart_gaps on
+smart_borders on
+for_window [class="^.*"] border pixel 2
+gaps inner $inner_gaps
+gaps outer $outer_gaps
+
 #use u and U to toggle window title, and hide it per default for non-floating windows
 bindsym $mod+u border none
 bindsym $mod+Shift+u border normal
-default_border none
-default_floating_border normal
+# default_border none
+# default_floating_border normal
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
