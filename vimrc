@@ -334,6 +334,8 @@ hi cppRawString ctermfg=1
 
 hi yamlKeyValueDelimiter ctermfg=2
 
+hi dtGroup ctermfg=1
+
 hi jsonBraces ctermfg=2
 
 " editorconfig
