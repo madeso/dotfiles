@@ -15,6 +15,10 @@ Boot: 200 M
 Swap: 150% of (potential) ram
 Root/home: 23-32 GB (currently 25 is ok)
 
+get ram size:
+
+  free -h --si
+
 For a arch installation, the following setup needs to be done
 
   groupadd -r autologin
