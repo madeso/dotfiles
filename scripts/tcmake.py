@@ -16,8 +16,8 @@ from enum import Enum
 def setup_cmake(source, build_folder, type, compiler):
     os.makedirs(build_folder, exist_ok=True)
     # https://stackoverflow.com/questions/7724569/debug-vs-release-in-cmake
-    compilerpp = compiler + '++' if 'clang' in compiler else compiler
-    if compiler == 'afl-cc':
+    compilerpp = compiler + '++' if 'clang' in compiler else 'g++'
+    if compiler == 'afl-gcc':
         compilerpp = 'afl-g++'
     subprocess.run(['cmake', '-G', 'Ninja',
         '-D', 'CMAKE_C_COMPILER='+compiler,
