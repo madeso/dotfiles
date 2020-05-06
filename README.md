@@ -30,6 +30,9 @@ fdisk /dev/sdX
 (N)ew partion, last sector = "size": +200M (megabyte) +12G (gigabyte)
 (D)elete partion
 
+Network manager: pacman -S networkmanager
+systemctl enable NetworkManager
+
 For a arch installation, the following setup needs to be done
 
   groupadd -r autologin
