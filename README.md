@@ -33,16 +33,27 @@ fdisk /dev/sdX
 Network manager: pacman -S networkmanager
 systemctl enable NetworkManager
 
-For a arch installation, the following setup needs to be done
+when installing, remember to install vi, visudo, unzip
 
-  groupadd -r autologin
-  usermod -aG autologin gustav
+
+    as root:
+    useradd -m -g wheel gustav
+    passwd gustav
+    add to /etc/sudoers using visudo
+
+    logout and login
+    download dotfiles repo and unzip
+    run install scripts in order
+    
+
+    groupadd -r autologin
+    usermod -aG autologin gustav
 
 Setup primary display using:
 
-  arandr
+    arandr
 
 and save it using:
 
-  autorandr --save alone
+    autorandr --save alone
 
