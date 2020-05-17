@@ -19,7 +19,7 @@ systemctl enable autorandr.service
 
 #################################################################
 #    ntfs usb mounting
-sudo pacman -S diskie ntfs-3g
+sudo pacman -S udiskie ntfs-3g
 
 
 #################################################################
