@@ -100,7 +100,6 @@ alsa-utils
 
 
 # fonts, icons and themes
-numix-gtk-theme
 adapta-gtk-theme
 arc-gtk-theme
 awesome-terminal-fonts
