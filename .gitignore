@@ -7,3 +7,5 @@ venv/
 Session.vim
 *.un~
 .DS_Store
+
+.vscode
