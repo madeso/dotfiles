@@ -30,6 +30,8 @@ fdisk /dev/sdX
 (N)ew partion, last sector = "size": +200M (megabyte) +12G (gigabyte)
 (D)elete partion
 
+locale: set swedish locale but english language
+
 Network manager: pacman -S networkmanager
 systemctl enable NetworkManager
 
@@ -42,7 +44,7 @@ when installing, remember to install vi, visudo, unzip
     add to /etc/sudoers using visudo
 
     logout and login
-    download dotfiles repo and unzip
+    download dotfiles via git http and init submodules
     run install scripts in order
     
 
