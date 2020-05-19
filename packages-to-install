@@ -80,6 +80,8 @@ neofetch # display os info
 gvim
 lightdm
 lightdm-gtk-greeter
+xorg-server
+xorg-xinit # is this needed with lightdm?
 gimp
 krita
 inkscape
