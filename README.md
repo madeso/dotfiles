@@ -45,9 +45,13 @@ when installing, remember to install vi, visudo, unzip
     download dotfiles repo and unzip
     run install scripts in order
     
-
+    to add autologin:
     groupadd -r autologin
     usermod -aG autologin gustav
+
+    /etc/lightdm/lightdm.conf
+    [Seat:*]
+    autologin-user=gustav
 
 Setup primary display using:
 
