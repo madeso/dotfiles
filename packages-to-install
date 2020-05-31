@@ -23,6 +23,7 @@ make
 meld
 code
 graphviz
+python-pillow # PIL fork
 python-pylint
 # refactoring inside vscode
 python-rope
