@@ -77,6 +77,7 @@ def get_data():
     data.add_file(general, 'vimrc', '.vimrc')
     data.add_file(zsh, 'zshrc', '.zshrc')
     data.add_file(arch, 'xresources', '.Xresources')
+    data.add_file(arch, 'powermate.toml', '.config/powermate.toml')
     data.add_generated_file(arch, 'termite.conf', '.config/termite/config')
     data.add_file(arch, 'fonts.conf', '.config/fontconfig/fonts.conf')
     data.add_generated_file(arch, 'i3config', '.config/i3/config')
