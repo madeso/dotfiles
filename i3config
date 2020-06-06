@@ -151,7 +151,7 @@ workspace $ws5 output primary
 workspace $ws6 output primary
 workspace $ws7 output primary
 workspace $ws8 output primary
-workspace $ws9 output VGA-0 primary
+workspace $ws9 output HDMI-1 VGA-0 primary
 workspace $ws10 output primary
 workspace $ws11 output primary
 
@@ -238,7 +238,8 @@ hide_edge_borders smart
 # finds out, if available)
 bar {
   strip_workspace_numbers yes
-  output primary
+  # temporary
+  # output primary
 
   font pango:Noto Sans Mono,Material Design Icons, 8
   status_command i3blocks
