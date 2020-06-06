@@ -94,6 +94,8 @@ whois
 xf86-input-wacom
 imagemagick # for wip lock script
 tree
+pulseaudio
+pulseaudio-alsa
 
 # music control
 # music control
@@ -135,8 +137,6 @@ ntfs-3g
 # not categorized
 # fortune-mod
 # openssh
-# pulseaudio
-# pulseaudio-alsa
 # qt5-webview
 # xf86-video-ati
 # xorg-server
