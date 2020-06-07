@@ -63,3 +63,6 @@ and save it using:
 
     autorandr --save alone
 
+in thunderbird add the followin calender for swedish holidays
+
+    https://calendar.google.com/calendar/ical/en.swedish%23holiday%40group.v.calendar.google.com/public/basic.ics
