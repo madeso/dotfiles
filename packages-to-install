@@ -36,6 +36,7 @@ love
 
 
 # system
+rsync
 usbutils # lsusb is cool
 pacman-contrib # for checkupdates and pactree
 xdotool # get active window, toggle capslock
