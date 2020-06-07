@@ -120,6 +120,7 @@ bindsym $mod+Shift+space floating toggle
 # change focus between tiling / floating windows
 bindsym $mod+Tab focus mode_toggle
 
+bindsym $mod+Shift+S exec ~/dev/dotfiles/scripts/maim-snip.sh
 bindsym Print exec ~/dev/dotfiles/tools/maim-active-window.sh
 bindsym $mod+space exec ~/dev/dotfiles/tools/switch-kblayout.sh
 bindsym $mod+m exec ~/dev/dotfiles/fancylock.sh
