@@ -37,8 +37,3 @@ cp ssh-agent.service ~/.config/systemd/user/ssh-agent.service
 systemctl --user enable ssh-agent.service
 
 
-#################################################################
-#   Display manager (login)
-#  
-systemctl enable lightdm.service
-
