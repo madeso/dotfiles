@@ -29,11 +29,3 @@ sudo pacman -S udiskie ntfs-3g
 systemctl enable systemd-timesyncd.service
 timedatectl set-ntp true
 
-
-#################################################################
-#    ssh agent
-#  
-cp ssh-agent.service ~/.config/systemd/user/ssh-agent.service
-systemctl --user enable ssh-agent.service
-
-
