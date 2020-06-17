@@ -35,7 +35,7 @@ locale: set swedish locale but english language
 Network manager: pacman -S networkmanager
 systemctl enable NetworkManager
 
-when installing, remember to install vim, sudo, which, unzip
+when installing, remember to install vim, sudo, which, unzip, base-devel
 
 
     as root:

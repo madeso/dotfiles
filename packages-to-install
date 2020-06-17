@@ -90,6 +90,7 @@ krita
 inkscape
 mypaint
 blender
+lmms
 obs-studio
 ardour # daw
 whois
@@ -100,11 +101,10 @@ pulseaudio
 pulseaudio-alsa
 
 # music control
-# music control
 playerctl
 acpi
 alsa-utils
-
+pacucontrol # sound contol app
 
 # fonts, icons and themes
 adapta-gtk-theme
