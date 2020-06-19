@@ -276,11 +276,12 @@ bindsym XF86AudioPrev exec playerctl previous
 
 exec --no-startup-id ~/dev/dotfiles/tools/setup_capslock.sh
 
-# try to fix autorandr not detecting setup at boot
-exec --no-startup-id autorandr -c
-
 # powermate audo control: aur powermate-cli
 exec --no-startup-id powermate
+
+# try to fix autorandr not detecting setup at boot
+exec --no-startup-id ~/dev/dotfiles/autorandr-startup.sh
+
 
 exec --no-startup-id dunst -config ~/.config/dunst.cfg
 exec --no-startup-id thunar --daemon
