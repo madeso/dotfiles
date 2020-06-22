@@ -116,6 +116,7 @@ def get_data():
     data.add_generated_file(arch, 'rofi/google-material.rasi', '.config/rofi/google-material.rasi')
     data.add_dir(
         dotlib.Dir(arch, 'shortcuts', '.local/share/applications')
+            .file('dia-integrated.desktop')
             .file('maim-snip.desktop')
             .file('maim-screenshot.desktop')
             .file('maim-window-shadow.desktop')

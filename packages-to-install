@@ -25,6 +25,7 @@ code
 graphviz
 python-pillow # PIL fork
 python-pylint
+dia # diagram editor
 # refactoring inside vscode
 python-rope
 

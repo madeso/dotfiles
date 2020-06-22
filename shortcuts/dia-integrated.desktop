@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Dia (integrated)
+Exec=dia --integrated
+Comment=Run dia in integrated mode
+Terminal=false
