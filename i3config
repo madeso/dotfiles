@@ -21,6 +21,9 @@ for_window [class="^.*"] border pixel 2
 gaps inner $inner_gaps
 gaps outer $outer_gaps
 
+# don't change the active window when moving the mouse
+focus_follows_mouse no
+
 #use u and U to toggle window title, and hide it per default for non-floating windows
 bindsym $mod+u border none
 bindsym $mod+Shift+u border normal
