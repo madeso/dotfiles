@@ -296,5 +296,6 @@ exec --no-startup-id spotify
 # exec dropbox
 
 # apply the background last, hopefully this fixes the bkg issue
-exec_always --no-startup-id ~/dev/dotfiles/bkg.py set
+# exec_always --no-startup-id ~/dev/dotfiles/bkg.py set
+# try to move it to autorandr-setup.h
 
