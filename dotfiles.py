@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import dotlib
-
+import os
 
 def get_data():
     data = dotlib.Data()
@@ -104,7 +104,7 @@ def get_data():
     data.add_dir(
         dotlib.Dir(code, "vs_code", ".config/{}/User"
             .format('Code - OSS' if dotlib.has_class('arch') else 'Code'),
-                   win_where=dotlib.PathType.APPDATA_ROAMING, win_home='Code\\User', osx_home='Library/Application Support/Code/User')
+                   win_where=dotlib.PathType.APPDATA_ROAMING, win_home='Code' + os.path.sep + 'User', osx_home='Library/Application Support/Code/User')
         .file('keybindings.json')
         .file('settings.json')
     )

@@ -47,6 +47,11 @@ def get_home_folder() -> str:
 
 
 def get_appdata_roaming_folder() -> str:
+    if has_class('wsl'):
+        user = subprocess.check_output(['cmd.exe', '/c', 'echo', '%username%'], text=True).strip()
+        print(user)
+        appdata = '/mnt/c/Users/{}/Appdata/Roaming'.format(user)
+        return appdata
     return os.getenv('APPDATA')
 
 
@@ -55,7 +60,7 @@ def get_src_folder() -> str:
 
 
 def is_windows() -> bool:
-    return platform.system() == 'Windows'
+    return has_class('wsl') or platform.system() == 'Windows'
 
 
 def is_osx() -> bool:
