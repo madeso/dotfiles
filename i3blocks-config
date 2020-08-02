@@ -30,6 +30,6 @@ interval=once
 signal=10 
 
 [time]
-command=date '+%d-%b(%m)-%Y v%V %R'
+command=date '+%a %d-%b(%m)-%Y v%V %R'
 
 
