@@ -141,7 +141,7 @@ set $ws3 "3:"
 set $ws4 "4:4"
 set $ws5 "5:5"
 set $ws6 "6:6"
-set $ws7 "7:"
+set $ws7 "7:7"
 set $ws8 "8:"
 set $ws9 "9:"
 set $ws10 "10:"
@@ -173,7 +173,6 @@ bindsym $mod+0 workspace $ws10
 bindsym $mod+p workspace $ws11
 
 assign [class="firefox"] $ws1
-assign [class="Chromium"] $ws7
 assign [class="Thunderbird"] $ws8
 for_window [class="Spotify"] move to workspace $ws9
 assign [class="TelegramDesktop"] $ws10
