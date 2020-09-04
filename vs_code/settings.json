@@ -31,5 +31,25 @@
     "editor.minimap.side": "right",
     "editor.minimap.scale": 2,
     "editor.minimap.renderCharacters": false,
-    "explorer.confirmDragAndDrop": false
+    "explorer.confirmDragAndDrop": false,
+
+    "todohighlight.isEnable": true,
+    "todohighlight.include": [
+        "**/*.cpp",
+        "**/*.cc",
+        "**/*.h",
+        "**/*.hh"
+    ],
+    "todohighlight.defaultStyle": {
+        "color": "#586e75",
+        "fontWeight": "bold",
+        "backgroundColor": "inherit",
+        "overviewRulerColor": "#eee8d5",
+        "cursor": "arrow",
+        "border": "0px solid #000",
+        "borderRadius": "0px",
+        "isWholeLine": false,
+    },
+    "todohighlight.isCaseSensitive": true,
+    "todohighlight.keywordsPattern": "//[ ]*todo\\(([^)]+)\\):"
 }
