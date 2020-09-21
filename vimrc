@@ -288,6 +288,9 @@ com! Ln %s/^M/\r/g
 
 hi Visual ctermbg=14
 
+hi jsonNoQuotesError ctermfg=10 ctermbg=5
+hi jsonCommentError ctermfg=2 ctermbg=5
+
 hi vimBracket ctermfg=3
 hi vimNotation ctermfg=1
 hi vimMapModkey ctermfg=0
