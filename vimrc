@@ -301,6 +301,9 @@ hi shCmdSubRegion ctermfg=0
 hi shCommandSub ctermfg=2
 hi shParen ctermfg=3
 
+hi htmlH3 ctermfg=1
+hi htmlLink ctermfg=2
+
 hi PreProc ctermfg=1
 hi Delimiter ctermfg=2
 
