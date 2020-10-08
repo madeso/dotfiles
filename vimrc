@@ -339,6 +339,7 @@ hi cppRawString ctermfg=1
 
 
 hi yamlKeyValueDelimiter ctermfg=2
+hi yamlFlowIndicator ctermfg=1
 
 hi dtGroup ctermfg=1
 
