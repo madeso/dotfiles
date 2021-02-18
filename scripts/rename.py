@@ -2,15 +2,6 @@
 
 import argparse
 import os
-import filecmp
-import subprocess
-import shutil
-import sys
-import platform
-import typing
-import json
-import re
-from enum import Enum
 
 
 def handle_ext(args):
@@ -24,6 +15,16 @@ def handle_ext(args):
         os.rename(from_path, new_path)
 
 
+def handle_lower(args):
+    for relative in args.files:
+        from_path = os.path.abspath(os.path.realpath(relative))
+        pre, ext = os.path.splitext(from_path)
+        head, tail = os.path.split(pre)
+        tail = tail.lower()
+        new_path = os.path.join(head, tail + ext)
+        os.rename(from_path, new_path)
+
+
 def main():
     parser = argparse.ArgumentParser(description='rename files')
     sub_parsers = parser.add_subparsers(dest='command_name', title='Commands', help='', metavar='<command>')
@@ -32,6 +33,10 @@ def main():
     sub.add_argument('extension', help="the new extension")
     sub.add_argument('files', nargs='+', help="the files to change")
     sub.set_defaults(func=handle_ext)
+
+    sub = sub_parsers.add_parser('lower', help='change filename to small caps')
+    sub.add_argument('files', nargs='+', help="the files to change")
+    sub.set_defaults(func=handle_lower)
 
     args = parser.parse_args()
     if args.command_name is not None:
