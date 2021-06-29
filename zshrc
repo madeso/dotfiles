@@ -106,7 +106,7 @@ if [[ ! -d $ZSH_CACHE_DIR ]]; then
 fi
 
 source $ZSH/oh-my-zsh.sh
-export PATH=$DOTFILES/scripts:$PATH
+export PATH=$DOTFILES/scripts:~/.local/bin/:$PATH
 
 . $DOTFILES/external/z/z.sh
 
