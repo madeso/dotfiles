@@ -11,6 +11,7 @@ import typing
 import json
 import re
 from enum import Enum
+import datetime
 
 DATA_LIST = 'list'
 DATA_COMMITS = 'commits'
@@ -58,6 +59,14 @@ def create_data_from_git():
     ordered_commits = [line[0] for line in data]
     commits = {d[0]: {COMMIT_DATE: int(d[1]), COMMIT_TEXT: d[2], COMMIT_STATE: STATE_UNKNOWN, COMMIT_ERROR: ''} for d in data}
     r = {DATA_LIST: ordered_commits, DATA_COMMITS: commits}
+    return r
+
+
+def create_git_shortlong_map():
+    cmd = ['git', 'log', '--format=%h:%H']
+    output = subprocess.check_output(cmd, encoding='utf-8').split('\n')
+    data = [line.split(':', maxsplit=1) for line in output if len(line.strip()) > 1]
+    r = {d[0]: d[1] for d in data}
     return r
 
 
@@ -184,6 +193,60 @@ def handle_check(args):
         data[DATA_COMMITS] = commits
         set_data(data)
 
+def get_status_string(state):
+    if state == STATE_PASSED:
+        return '+'
+    elif state == STATE_FAILED:
+        return '-'
+    else:
+        return '?'
+
+
+def handle_lg(args):
+    data = require_data()
+    ordered = data[DATA_LIST]
+    commits = data[DATA_COMMITS]
+    
+    for h in ordered:
+        c = commits[h]
+        status = get_status_string(c[COMMIT_STATE])
+        text = c[COMMIT_TEXT]
+        timestamp = datetime.datetime.fromtimestamp(c[COMMIT_DATE])
+        ts = timestamp.strftime('%Y-%m-%d %H:%M:%S')
+        print(f'{status} {ts} {text}')
+
+
+def handle_prepare(args):
+    hashes = create_git_shortlong_map()
+    data = require_data()
+    ordered = set(data[DATA_LIST])
+    commits = data[DATA_COMMITS]
+    
+    for l in open(args.input, 'r'):
+        l = l.rstrip()
+        if l.startswith('pick '):
+            state = 'probably not a valid commit'
+            sp = l.split(' ', maxsplit=2)
+            otext = sp[2].strip()
+            h = sp[1].strip()
+            if h in hashes:
+                state = 'hash is not found in setup'
+                lh = hashes[h]
+                if lh in commits:
+                    state = 'text not updated'
+                    c = commits[lh]
+                    text = c[COMMIT_TEXT]
+                    if text.strip() != otext.strip():
+                        state = ''
+                        l = f'reword {h} {text}'
+                        updated = True
+            if state != '':
+                print(f'# {h} {state}')
+        # c = commits[h]
+        print(l)
+        pass
+
+
 
 def main():
     parser = argparse.ArgumentParser(description='Opinionated git tool')
@@ -200,6 +263,13 @@ def main():
 
     sub = sub_parsers.add_parser('check', help='check all commits')
     sub.set_defaults(func=handle_check)
+
+    sub = sub_parsers.add_parser('lg', help='list all logs')
+    sub.set_defaults(func=handle_lg)
+
+    sub = sub_parsers.add_parser('prepare', help='prepare a rebase file')
+    sub.add_argument('input', help='the input file')
+    sub.set_defaults(func=handle_prepare)
 
     args = parser.parse_args()
     if args.command_name is not None:
