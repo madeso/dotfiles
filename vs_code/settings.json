@@ -51,5 +51,23 @@
         "isWholeLine": false,
     },
     "todohighlight.isCaseSensitive": true,
-    "todohighlight.keywordsPattern": "//[ ]*todo\\(([^)]+)\\):"
+    "todohighlight.keywordsPattern": "//[ ]*todo\\(([^)]+)\\):",
+    "[cpp]": {
+        "editor.defaultFormatter": "ms-vscode.cpptools"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "editor.matchBrackets": "always",
+    "editor.bracketPairColorization.enabled": true,
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+          {
+            "scope": "comment",
+            "settings": {
+              "fontStyle": ""
+            }
+          }
+        ]
+      }
 }
