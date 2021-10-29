@@ -1,3 +1,3 @@
 #!/bin/sh
-maim -s | xclip -selection clipboard -t image/png
+maim -s --hidecursor | xclip -selection clipboard -t image/png
 
