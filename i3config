@@ -81,12 +81,6 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
-# alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
-
 # move focused window
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
@@ -274,6 +268,13 @@ bar {
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+
+bindsym $mod+Up exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
+bindsym $mod+Down exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
+bindsym $mod+Left exec playerctl play-pause
+bindsym $mod+Right exec playerctl play-pause
+
+
 
 # Media player controls
 bindsym XF86AudioPlay exec playerctl play-pause

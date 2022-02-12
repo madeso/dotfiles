@@ -21,6 +21,9 @@ ZSH_THEME="madeso"
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
+# gpg
+export GPG_TTY=$(tty)
+
 # make ls a* also matches American.txt
 unsetopt CASE_GLOB
 
