@@ -64,7 +64,14 @@ hi WildMenu ctermfg=9 ctermbg=15
 " highlight current line
 set cursorline
 highlight clear CursorLine
-highlight CursorLine ctermbg=14
+highlight CursorLine ctermbg=7
+
+" cursor style
+" Set IBeam shape in insert mode, underline shape in replace mode and block shape in normal mode. 
+" https://vim.fandom.com/wiki/Change_cursor_shape_in_different_modes#For_VTE_compatible_terminals_.28urxvt.2C_st.2C_xterm.2C_gnome-terminal_3.x.2C_Konsole_KDE5_and_others.29_and_wsltty
+let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
+let &t_EI = "\<Esc>[6 q"
 
 " make backspace work as in other editors in insert
 set backspace=indent,eol,start

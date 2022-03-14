@@ -76,6 +76,11 @@ def get_data():
 
     data.add_file(general, 'vimrc', '.vimrc')
     data.add_file(zsh, 'zshrc', '.zshrc')
+    data.add_dir(
+        dotlib.Dir(arch, 'kitty', '.config/kitty')
+        .file('kitty.conf')
+        .file('kitty-solarized-light.conf')
+    )
     data.add_file(arch, 'xresources', '.Xresources')
     data.add_file(arch, 'powermate.toml', '.config/powermate.toml')
     data.add_file(arch, 'ranger.conf', '.config/ranger/rc.conf')
