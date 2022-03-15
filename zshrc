@@ -128,6 +128,11 @@ alias clip='xclip -selection clipboard'
 
 alias icat="kitty +kitten icat --align=left"
 
+alias idot='dot -Efontsize=18 -Efontname=sans -Nfontname=sans -Tpng \
+        -Gbgcolor=white -Gcolor=black -Ecolor=black -Efontcolor=black -Ncolor=black -Nfontcolor=black \
+    | convert -trim -bordercolor white -border 20 -transparent white - - \
+    | icat'
+
 # history searching...
 bindkey "^[[A" history-substring-search-up
 bindkey "^[[B" history-substring-search-down
