@@ -1,5 +1,5 @@
 #!/bin/sh
 du -h /var/cache/pacman
-paccache -r
+paccache -rk1
 du -h /var/cache/pacman
 
