@@ -23,6 +23,7 @@
   # webgui = !"`echo $DOTFILES`/external/git-webui/release/libexec/git-core/git-webui"
 [push]
   default = simple
+  autoSetupRemote = true
 [difftool]
   prompt = no
 [webui]
