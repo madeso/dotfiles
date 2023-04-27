@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
-import dotlib
 import os
+import dotlib
 
 def get_data():
+    """get my settings"""
     data = dotlib.Data()
 
     # usage aliases
