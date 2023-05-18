@@ -4,18 +4,57 @@
         "key": "ctrl+d",
         "command": "editor.action.copyLinesDownAction",
         "when": "editorTextFocus && !editorReadonly"
-    },
-    {
+    }
+    ,{
         "key": "ctrl+shift+d",
         "command": "editor.action.copyLinesUpAction",
         "when": "editorTextFocus && !editorReadonly"
-    },
-    {
-        "key": "ctrl+j",
-        "command": "-workbench.action.togglePanel"
-    },
-    {
-        "key": "ctrl+j",
-        "command": "editor.action.joinLines"
     }
+
+
+    // Toggle between terminal and editor focus
+    ,{
+        "key":     "ctrl+`",
+        "command": "workbench.action.terminal.focus"
+    }
+    ,{
+        "key":     "ctrl+`",
+        "command": "workbench.action.focusActiveEditorGroup",
+        "when":    "terminalFocus"
+    }
+
+    // toggle between terminals
+    ,{
+        "key": "ctrl+pagedown",
+        "command": "workbench.action.terminal.focusNext",
+        "when": "terminalFocus"
+    }
+    ,{
+        "key": "ctrl+pageup",
+        "command": "workbench.action.terminal.focusPrevious",
+        "when": "terminalFocus"
+    }
+
+
+    // move between editors
+    // BUG: overrides ctrl-h
+    /*
+    ,{
+        "key": "ctrl+h",
+        "command": "workbench.action.navigateLeft"
+    }
+    ,{
+        "key": "ctrl+l",
+        "command": "workbench.action.navigateRight"
+    }
+    ,{
+        "key": "ctrl+k",
+        "command": "workbench.action.navigateUp"
+    }
+    ,{
+        "key": "ctrl+j",
+        "command": "workbench.action.navigateDown"
+    }
+    */
+
 ]
