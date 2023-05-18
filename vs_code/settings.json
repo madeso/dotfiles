@@ -1,16 +1,39 @@
 {
     // osx doesnt like the default option, there is toggle too, but not so sure about that one...
     "window.menuBarVisibility": "toggle",
-    "workbench.colorTheme": "Solarized Light",
-    "editor.renderIndentGuides": false,
-    "editor.renderWhitespace": "selection",
-    "editor.rulers": [79, 99],
-    // horizontal bar in <= traditional & @
-    "editor.fontLigatures": "'ss02', 'ss03', 'ss05'",
-    "editor.fontFamily": "Fira Code, Consolas, 'Courier New', monospace",
-    "workbench.statusBar.visible": true,
     "explorer.openEditors.visible": 0,
+    "workbench.statusBar.visible": true,
     "editor.minimap.enabled": false,
+    "window.titleBarStyle": "custom",
+    "workbench.editor.highlightModifiedTabs": true,
+    "workbench.iconTheme": null,
+    "editor.minimap.maxColumn": 100,
+    "editor.minimap.side": "right",
+    "editor.minimap.scale": 2,
+    "editor.minimap.renderCharacters": false,
+    "explorer.confirmDragAndDrop": false,
+    "workbench.colorTheme": "Solarized Light",
+    "editor.renderWhitespace": "none",
+    "editor.inlayHints.enabled": "offUnlessPressed",
+    "editor.guides.highlightActiveIndentation": true,
+    "editor.rulers": [
+        79,
+        99
+    ],
+    "editor.guides.indentation": false,
+    "editor.matchBrackets": "always",
+    "editor.guides.bracketPairs": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.stickyScroll.enabled": false,
+    "explorer.fileNesting.enabled": false,
+    // disable ligatures, traditional & @ rounder () {} longer |
+    "editor.fontLigatures": "'calt' off, 'ss03', 'ss05', 'cv31', 'cv29', 'cv30'",
+    // with ligatures: "editor.fontLigatures": "'ss02', 'ss03', 'ss05', 'cv31', 'cv29', 'cv30', 'ss08'",
+    // references:
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/font-feature-settings
+    // https://learn.microsoft.com/en-us/typography/opentype/spec/features_ae
+    // https://github.com/tonsky/FiraCode/issues/1479
+    "editor.fontFamily": "Fira Code, Consolas, 'Courier New', monospace",
     "[plaintext]": {
         "editor.minimap.enabled": true,
         "editor.wordBasedSuggestions": false,
@@ -20,19 +43,7 @@
             "strings": false
         }
     },
-    "python.linting.pylintEnabled": false,
-    "window.titleBarStyle": "custom",
-    "window.zoomLevel": -1,
-    "workbench.editor.highlightModifiedTabs": true,
-    "workbench.activityBar.visible": true,
-    "workbench.iconTheme": null,
-
-    "editor.minimap.maxColumn": 100,
-    "editor.minimap.side": "right",
-    "editor.minimap.scale": 2,
-    "editor.minimap.renderCharacters": false,
-    "explorer.confirmDragAndDrop": false,
-
+    "python.linting.pylintEnabled": true,
     "todohighlight.isEnable": true,
     "todohighlight.include": [
         "**/*.cpp",
@@ -48,7 +59,7 @@
         "cursor": "arrow",
         "border": "0px solid #000",
         "borderRadius": "0px",
-        "isWholeLine": false,
+        "isWholeLine": false
     },
     "todohighlight.isCaseSensitive": true,
     "todohighlight.keywordsPattern": "//[ ]*todo\\(([^)]+)\\):",
@@ -58,16 +69,30 @@
     "[json]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     },
-    "editor.matchBrackets": "always",
-    "editor.bracketPairColorization.enabled": true,
+    // disable cmake prompt when opening projects
+    "cmake.configureOnOpen": false,
     "editor.tokenColorCustomizations": {
         "textMateRules": [
-          {
-            "scope": "comment",
-            "settings": {
-              "fontStyle": ""
+            {
+                "scope": "comment",
+                "settings": {
+                    "fontStyle": ""
+                }
             }
-          }
         ]
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    "editor.inlineSuggest.enabled": true,
+    "window.zoomLevel": -1,
+    "extensions.ignoreRecommendations": true,
+    "[glsl]": {
+        "editor.defaultFormatter": "raczzalan.webgl-glsl-editor"
+    },
+    "debug.javascript.autoAttachFilter": "disabled",
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
     }
 }
