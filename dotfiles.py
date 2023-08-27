@@ -87,10 +87,11 @@ def get_data():
     data.add_file(arch, 'ranger.conf', '.config/ranger/rc.conf')
     data.add_generated_file(arch, 'termite.conf', '.config/termite/config')
     data.add_file(arch, 'fonts.conf', '.config/fontconfig/fonts.conf')
-    data.add_generated_file(arch, 'i3config', '.config/i3/config')
+    # data.add_generated_file(arch, 'i3config', '.config/i3/config')
+    data.add_file(arch, 'i3config_clean', '.config/i3/config')
     data.add_generated_file(win, 'minttyrc', '.minttyrc')
     data.add_generated_file(arch, 'dunst.cfg', '.config/dunst.cfg')
-    data.add_generated_file(arch, 'i3blocks-config', '.config/i3blocks/config')
+    data.add_generated_file(arch, 'i3blocks-config', '.config/i3blocks/git')
     data.add_dir(
         dotlib.Dir(arch, "i3blocks-scripts", ".config/i3blocks/scripts")
           .file("arch-update.py")
