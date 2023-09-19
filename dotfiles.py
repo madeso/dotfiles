@@ -7,6 +7,8 @@ def get_data():
     """get my settings"""
     data = dotlib.Data()
 
+    os.environ
+
     # usage aliases
     data.set_var_alias(
         comments='base1', secondary='base1',
@@ -146,6 +148,7 @@ def get_data():
         .file('proto.vim')
         .add_dir('bundle/syntastic/')
     )
+    data.add_file(win, 'powershell.ps1', 'Documents/PowerShell/Microsoft.PowerShell_profile.ps1')
     return data
 
 
