@@ -76,7 +76,8 @@
             {
                 "scope": "comment",
                 "settings": {
-                    "fontStyle": ""
+                    "fontStyle": "bold",
+                    "foreground": "#000000"
                 }
             }
         ]
