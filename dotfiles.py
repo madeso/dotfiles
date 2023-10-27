@@ -75,7 +75,7 @@ def get_data():
     data.add_file(arch, 'xresources', '.Xresources')
     data.add_file(arch, 'powermate.toml', '.config/powermate.toml')
     data.add_file(arch, 'ranger.conf', '.config/ranger/rc.conf')
-    data.add_file(arch, 'termite.conf', '.config/termite/config')
+    # data.add_file(arch, 'termite.conf', '.config/termite/config') # no longer used
     data.add_file(arch, 'fonts.conf', '.config/fontconfig/fonts.conf')
     # data.add_file(arch, 'i3config', '.config/i3/config')
     data.add_file(arch, 'i3config_clean', '.config/i3/config')
