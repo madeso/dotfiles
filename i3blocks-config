@@ -1,21 +1,21 @@
 interval=5
-color={{mat_osec}}
+color=#000000
 
 [arch-update]
-command=~/.config/i3blocks/scripts/arch-update.py -b "{{mat_osec}}" -B "{{mat_secm}}" -u "{{mat_oerr}}" -U "{{mat_errm}}" -c 25
+command=~/.config/i3blocks/scripts/arch-update.py -b "#000000" -B "#03DAC6" -u "#FFFFFF" -U "#B00020" -c 25
 label= 
 interval=300
 markup=pango
 
 [sensors]
-command=~/.config/i3blocks/scripts/sensors.py print -b "{{mat_osec}}" -B "{{mat_secm}}" -u "{{mat_oerr}}" -U "{{mat_errm}}"
+command=~/.config/i3blocks/scripts/sensors.py print -b "#000000" -B "#03DAC6" -u "#FFFFFF" -U "#B00020"
 label=
 interval=5
 markup=pango
 
 [volume-pulseaudio]
 interval=1
-command=~/.config/i3blocks/scripts/volume-pulseaudio.sh -H "" -M "" -L "" -X "" -C "{{mat_osec}}" -c "{{mat_osec}}" -F 3 -f 3 -T 66 -t 33
+command=~/.config/i3blocks/scripts/volume-pulseaudio.sh -H "" -M "" -L "" -X "" -C "#000000" -c "#000000" -F 3 -f 3 -T 66 -t 33
 
 [load_average]
 label=:

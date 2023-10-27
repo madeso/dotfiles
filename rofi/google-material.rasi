@@ -7,21 +7,21 @@
  ******************************************************************************/
 
 * {
-    foreground:                  {{mat_osec}};
-    active-foreground:           {{junk}};
-    urgent-foreground:           {{mat_oerr}};
+    foreground:                  #000000;
+    active-foreground:           #FFFF00;
+    urgent-foreground:           #FFFFFF;
     alternate-normal-foreground: @foreground;
     normal-foreground:           @foreground;
-    selected-normal-foreground:  {{mat_opri}};
+    selected-normal-foreground:  #FFFFFF;
     alternate-urgent-foreground: @urgent-foreground;
     selected-urgent-foreground:  @urgent-foreground;
     selected-active-foreground:  @active-foreground;
     alternate-active-foreground: @active-foreground;
 
-    background:                  {{mat_secm}};
-    selected-normal-background:  {{mat_priv}};
+    background:                  #03DAC6;
+    selected-normal-background:  #3700B3;
     alternate-normal-background: @background;
-    urgent-background:           {{mat_errm}};
+    urgent-background:           #B00020;
     alternate-urgent-background: @background;
     normal-background:           @background;
     alternate-active-background: @background;
