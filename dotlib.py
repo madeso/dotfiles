@@ -70,11 +70,15 @@ def is_osx() -> bool:
 class PathType(Enum):
     USER = 1
     APPDATA_ROAMING = 2
+    APPDATA_LOCAL = 3
 
 
 def get_folder(path: PathType) -> str:
     if path == PathType.APPDATA_ROAMING:
         return get_appdata_roaming_folder()
+    elif path == PathType.APPDATA_LOCAL:
+        roaming = get_appdata_roaming_folder()
+        return os.path.normpath(os.path.join(roaming, '..', 'Local'))
     return get_home_folder()
 
 
