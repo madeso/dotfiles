@@ -65,6 +65,10 @@ def get_data():
     code = ['code']
     gnome = ['gnome']
 
+    # on linux this should be ~/.local/share/nvim/
+    data.add_dir(dotlib.Dir(general, 'nvim', 'nvim', win_where=dotlib.PathType.APPDATA_LOCAL)
+                 .file('init.lua'))
+
     data.add_file(general, 'vimrc', '.vimrc')
     data.add_file(zsh, 'zshrc', '.zshrc')
     data.add_dir(

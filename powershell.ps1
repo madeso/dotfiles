@@ -3,12 +3,15 @@
 
 
 # make ls behave like ls on linux...
-# old ls function: function ls_alias { wsl ls --color=auto -hF $args }
+
+
 function ls_alias { Get-ChildItem $args -Exclude .*  | Format-Wide Name -AutoSize }
 Set-Alias -Name ls -Value ls_alias -Option AllScope
 
 # which
 New-Alias which get-command
+
+New-Alias vi nvim-qt
 
 # add git-status in prompt: https://github.com/dahlbyk/posh-git
 Import-Module posh-git
