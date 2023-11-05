@@ -12,6 +12,10 @@ import json
 import re
 from enum import Enum
 
+# todo(Gustav): allow switching between legacy and new version
+# YOUTUBE_DL = "youtube-dl"
+YOUTUBE_DL = "yt-dlp"
+
 
 def exec(cmd):
     subprocess.run(cmd)
@@ -20,7 +24,7 @@ def exec(cmd):
 def handle_single(args):
     for v in args.video:
         # youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' -i -o '%(title)s.%(ext)s' --restrict-filenames https://www.youtube.com/watch?v=vWaY7TqRzlg
-        params = ["youtube-dl", "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best", "--ignore-errors", "--output", "'%(title)s.%(ext)s'", "--restrict-filenames"]
+        params = [YOUTUBE_DL, "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best", "--ignore-errors", "--output", "'%(title)s.%(ext)s'", "--restrict-filenames"]
 
         if args.keep:
             params += ['-k']
@@ -34,7 +38,7 @@ def handle_channel(args):
     # youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' -i -o '%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s' --restrict-filenames --write-sub --sub-lang en --convert-subs srt --playlist-reverse --download-archive dan-root.txt https://www.youtube.com/user/rootay/videos
 
     params = [
-        "youtube-dl",
+        YOUTUBE_DL,
         "-f",
         'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
         "-i",
