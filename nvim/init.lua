@@ -10,3 +10,12 @@ vim.opt.shiftwidth = 4
 vim.opt.smarttab = true
 vim.opt.softtabstop = 4
 
+-- todo:
+-- packager
+-- fuzzy finder: telescope
+-- color theme
+-- nvim-tree
+-- nvim-tree/nvim-web-devicons
+-- lsp server
+-- tree sitter
+
