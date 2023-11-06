@@ -7,68 +7,56 @@ def get_data():
     """get my settings"""
     data = dotlib.Data()
 
-    os.environ
-
     # usage aliases
-    data.set_var_alias(
-        comments='base1', secondary='base1',
-        background='base3',
-        body='base00', text='base00', default='base00', code='base00', primary='base00', content='base00',
-        emph='base01',
-        highlights='base2'
-    )
+    #     comments='base1', secondary='base1',
+    #     background='base3',
+    #     body='base00', text='base00', default='base00', code='base00', primary='base00', content='base00',
+    #     emph='base01',
+    #     highlights='base2'
 
     # console color aliases
-    data.set_var_alias(
-        black='base02',
-        white='base2',
-        brblack='base03',
-        brred='orange',
-        brgreen='base01',
-        bryellow='base00',
-        brblue='base0',
-        brmagenta='violet',
-        brcyan='base1',
-        brwhite='base3'
-    )
+    #     black='base02',
+    #     white='base2',
+    #     brblack='base03',
+    #     brred='orange',
+    #     brgreen='base01',
+    #     bryellow='base00',
+    #     brblue='base0',
+    #     brmagenta='violet',
+    #     brcyan='base1',
+    #     brwhite='base3'
 
     # color names
-    data.set_vars(
-        base02='#073642',
-        red='#dc322f',
-        green='#859900',
-        yellow='#b58900',
-        blue='#268bd2',
-        magenta='#d33682',
-        cyan='#2aa198',
-        base2='#eee8d5',
-        base03='#002b36',
-        orange='#cb4b16',
-        base01='#586e75',
-        base00='#657b83',
-        base0='#839496',
-        violet='#6c71c4',
-        base1='#93a1a1',
-        base3='#fdf6e3'
-    )
+    #     base02='#073642',
+    #     red='#dc322f',
+    #     green='#859900',
+    #     yellow='#b58900',
+    #     blue='#268bd2',
+    #     magenta='#d33682',
+    #     cyan='#2aa198',
+    #     base2='#eee8d5',
+    #     base03='#002b36',
+    #     orange='#cb4b16',
+    #     base01='#586e75',
+    #     base00='#657b83',
+    #     base0='#839496',
+    #     violet='#6c71c4',
+    #     base1='#93a1a1',
+    #     base3='#fdf6e3'
 
     # material colors
     # source: https://material.io/design/color/#color-theme-creation
-    data.set_vars(
-        # primary main/variant, secondary main/variant, error main
-        mat_prim='#6200EE',
-        mat_priv='#3700B3',
-        mat_secm='#03DAC6',
-        mat_secv='#018786',
-        mat_errm='#B00020',
-
-        # on primary, on secondary, on error
-        mat_opri='#FFFFFF',
-        mat_osec='#000000',
-        mat_oerr='#FFFFFF',
-
-        junk='#FFFF00'
-    )
+    #     # primary main/variant, secondary main/variant, error main
+    #     mat_prim='#6200EE',
+    #     mat_priv='#3700B3',
+    #     mat_secm='#03DAC6',
+    #     mat_secv='#018786',
+    #     mat_errm='#B00020',
+    #     # on primary, on secondary, on error
+    #     mat_opri='#FFFFFF',
+    #     mat_osec='#000000',
+    #     mat_oerr='#FFFFFF',
+    #     junk='#FFFF00'
 
     general = ['general']
     arch = ['arch']
@@ -78,7 +66,7 @@ def get_data():
     gnome = ['gnome']
 
     # on linux this should be ~/.local/share/nvim/
-    data.add_dir(dotlib.Dir(general, 'nvim', 'nvim', win_where=dotlib.PathType.APPDATA_LOCAL)
+    data.add_dir(dotlib.Dir(general, 'nvim', '.config/nvim', win_where=dotlib.PathType.APPDATA_LOCAL)
                  .file('init.lua'))
 
     data.add_file(general, 'vimrc', '.vimrc')
@@ -91,13 +79,13 @@ def get_data():
     data.add_file(arch, 'xresources', '.Xresources')
     data.add_file(arch, 'powermate.toml', '.config/powermate.toml')
     data.add_file(arch, 'ranger.conf', '.config/ranger/rc.conf')
-    data.add_generated_file(arch, 'termite.conf', '.config/termite/config')
+    # data.add_file(arch, 'termite.conf', '.config/termite/config') # no longer used
     data.add_file(arch, 'fonts.conf', '.config/fontconfig/fonts.conf')
-    # data.add_generated_file(arch, 'i3config', '.config/i3/config')
+    # data.add_file(arch, 'i3config', '.config/i3/config')
     data.add_file(arch, 'i3config_clean', '.config/i3/config')
-    data.add_generated_file(win, 'minttyrc', '.minttyrc')
-    data.add_generated_file(arch, 'dunst.cfg', '.config/dunst.cfg')
-    data.add_generated_file(arch, 'i3blocks-config', '.config/i3blocks/git')
+    data.add_file(win, 'minttyrc', '.minttyrc')
+    data.add_file(arch, 'dunst.cfg', '.config/dunst.cfg')
+    data.add_file(arch, 'i3blocks-config', '.config/i3blocks/config')
     data.add_dir(
         dotlib.Dir(arch, "i3blocks-scripts", ".config/i3blocks/scripts")
           .file("arch-update.py")
@@ -126,7 +114,7 @@ def get_data():
         .file('config')
         .file('solarized-light.rasi')
     )
-    data.add_generated_file(arch, 'rofi/google-material.rasi', '.config/rofi/google-material.rasi')
+    data.add_file(arch, 'rofi/google-material.rasi', '.config/rofi/google-material.rasi')
     data.add_dir(
         dotlib.Dir(arch, 'shortcuts', '.local/share/applications')
             .file('dia-integrated.desktop')

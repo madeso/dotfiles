@@ -15,6 +15,16 @@ from enum import Enum
 
 from external.prettygood.config import *
 
+# removed
+# generate_file
+# file_generate
+# generate_file_as_str
+# GeneratedFile
+# generated_same
+# GenerationData
+
+# to be removed
+
 SETTINGS_CLASS = Settings('class', [])
 
 
@@ -175,55 +185,14 @@ class Data:
 
     def __init__(self):
         self.interesting_files = Data._empty_files()
-        self.generated_files = Data._empty_files()
-        self.vars = GenerationData()
-
-    def set_vars(self, **kwargs):
-        for key, value in kwargs.items():
-            self.vars.set(key, value)
-
-    def set_var_alias(self, **kwargs):
-        for key, value in kwargs.items():
-            self.vars.set_alias(key, value)
 
     def add_file(self, classes: typing.List[str], src: str, home: str):
         file = Path(classes, src, VarPath(None, home, None, PathType.USER))
         self.interesting_files.append(file)
 
-    def add_generated_file(self, classes: typing.List[str], src: str, home: str):
-        file = Path(classes, src, VarPath(None, home, None, PathType.USER))
-        self.generated_files.append(file)
-
     def add_dir(self, subdir: Dir):
         for f in subdir.files:
             self.interesting_files.append(f)
-
-
-class GenerationData:
-    @staticmethod
-    def _empty_dictionary() -> typing.Dict[str, str]:
-        return {}
-
-    def __init__(self):
-        self.data = GenerationData._empty_dictionary()
-        self.alias = GenerationData._empty_dictionary()
-
-    def set_alias(self, name: str, val: str):
-        self.alias[name] = val
-
-    def set_raw(self, name: str, val: str):
-        self.data[name] = val
-        if val[0] == '#':
-            # also write this as rgb
-            h = val.lstrip('#')
-            rgb = tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
-            self.set_raw('{}_rgb'.format(name), '{r}, {g}, {b}'.format(r=rgb[0], g=rgb[1], b=rgb[2]))
-
-    def set(self, name: str, val: str):
-        self.set_raw(name, val)
-        for (n, v) in self.alias.items():
-            if v == name:
-                self.set_raw(n, val)
 
 
 def file_same(lhs: str, rhs: str) -> bool:
@@ -263,9 +232,6 @@ def clean_single_file(use_home: bool, verbose: bool, dry: bool, file: Path):
 def clean_interesting(use_home: bool, verbose: bool, dry: bool, data: Data):
     for file in data.interesting_files:
         clean_single_file(use_home, verbose, dry, file)
-    if use_home:
-        for file in data.generated_files:
-            clean_single_file(use_home, verbose, dry, file)
 
 
 def add_verbose(sub):
@@ -322,41 +288,6 @@ def file_copy(src: str, dst: str, remove: bool, force: bool, verbose: bool, igno
     file_base(src, dst, remove, force, verbose, ignore_errors, dry, shutil.copy)
 
 
-def file_generate(src: str, dst: str, remove: bool, force: bool, verbose: bool, ignore_errors: bool, dry: bool
-                  , gen: GenerationData):
-    file_base(src, dst, remove, force, verbose, ignore_errors, dry, lambda srcf, dstf: generate_file(srcf, dstf, gen))
-
-
-def generate_file_as_str(from_path: str, g: GenerationData) -> str:
-    import pystache
-    with open(from_path, 'r', encoding='utf-8') as fromf:
-        return pystache.render(fromf.read(), g.data)
-
-
-def generate_file(from_path: str, to_path: str, g: GenerationData):
-    with open(to_path, 'w', encoding='utf-8') as tof:
-        tof.write( generate_file_as_str(from_path, g) )
-
-
-class GeneratedFile:
-    def __init__(self, source_file: str, g: GenerationData):
-        import tempfile
-        self.source_file = source_file
-        self.g = g
-        handle, tmp = tempfile.mkstemp(text=True)
-        os.close(handle)
-        self.path_to_generated_file = tmp
-
-    def __enter__(self) -> 'GeneratedFile':
-        generate_file(self.source_file, self.path_to_generated_file, self.g)
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        try:
-            remove_file(self.path_to_generated_file, False, False)
-        except WindowsError as e:
-            print("Could not delete temp file because {}".format(e))
-
 
 # https://stackoverflow.com/a/49007649/180307
 class Watcher(object):
@@ -397,14 +328,6 @@ class Watcher(object):
                 pass
 
 
-def generated_same(generated: str, source: str, g: GenerationData) -> bool:
-    if file_exist(generated) and file_exist(source):
-        with GeneratedFile(source, g) as temp:
-            return filecmp.cmp(generated, temp.path_to_generated_file)
-    else:
-        return False
-
-
 def matchlist_contains_file(terms: typing.List[str], path: str) -> bool:
     if len(terms) == 0:
         return True
@@ -421,9 +344,10 @@ def has_atleast_one_class(classes: typing.List[str]) -> bool:
     return False
 
 
-def for_each_file(data: Data, install: bool, verb: str, search: typing.List[str], callback_copy, callback_generate):
+def for_each_file(data: Data, install: bool, verb: str, search: typing.List[str], callback_copy):
     total = 0
     operated = 0
+    
     for file in data.interesting_files:
         if has_atleast_one_class(file.classes):
             total += 1
@@ -434,17 +358,6 @@ def for_each_file(data: Data, install: bool, verb: str, search: typing.List[str]
             if matchlist_contains_file(search, from_path) or matchlist_contains_file(search, to_path):
                 operated += 1
                 callback_copy(from_path, to_path)
-    if install:
-        for file in data.generated_files:
-            if has_atleast_one_class(file.classes):
-                total += 1
-                home_path = file.home.get_abs_path()
-                src_path = os.path.join(get_src_folder(), file.src)
-                from_path = src_path
-                to_path = home_path
-                if matchlist_contains_file(search, from_path) or matchlist_contains_file(search, to_path):
-                    operated += 1
-                    callback_generate(from_path, to_path)
     print('{} of {} {}.'.format(operated, total, verb))
 
 
@@ -454,10 +367,7 @@ def run_copy_command(args, data: Data, install: bool):
     for_each_file(data, install, verb='copied', search=args.search,
                   callback_copy=lambda from_path, to_path: file_copy(from_path, to_path, args.remove,
                                                                      args.force, args.verbose, args.ignore_errors,
-                                                                     args.dry),
-                  callback_generate=lambda from_path, to_path: file_generate(from_path, to_path, args.remove,
-                                                                             args.force, args.verbose,
-                                                                             args.ignore_errors, args.dry, data.vars)
+                                                                     args.dry)
                   )
 
     if is_running('termite'):
@@ -465,33 +375,8 @@ def run_copy_command(args, data: Data, install: bool):
         subprocess.run(['killall', '-USR1', 'termite'])
 
 
-def detect_module_not_found() -> bool:
-    try:
-        ModuleNotFoundError
-    except NameError:
-        return False
-    return True
-
-
-HAS_MODULE_NOT_FOUND = detect_module_not_found()
-
-
-def handle_module_not_found(err: "ModuleNotFoundError"):
-    print('Some parts of the command failed due to missing modules', file=sys.stderr)
-    if 'pystache' in str(err):
-        print('It looks like you are missing pystache, "pip install pystache" should do the trick.')
-    else:
-        print(err, file=sys.stderr)
-
-
 def copy_command(args, data: Data, install: bool):
-    if HAS_MODULE_NOT_FOUND:
-        try:
-            run_copy_command(args, data, install)
-        except ModuleNotFoundError as err:
-            handle_module_not_found(err)
-    else:
-        run_copy_command(args, data, install)
+    run_copy_command(args, data, install)
 
 
 def run_print_command(args, data: Data):
@@ -499,20 +384,7 @@ def run_print_command(args, data: Data):
         print('Copying {} -> {}'.format(from_path, to_path))
         print()
 
-    def print_generate(from_path, to_path):
-        print('Generate {} -> {}'.format(from_path, to_path))
-        print(generate_file_as_str(from_path, data.vars))
-        print()
-
-    if HAS_MODULE_NOT_FOUND:
-        try:
-            for_each_file(data, True, verb='printed', search=args.search,
-                          callback_copy=print_copied, callback_generate=print_generate)
-        except ModuleNotFoundError as err:
-            handle_module_not_found(err)
-    else:
-        for_each_file(data, True, verb='printed', search=args.search,
-                      callback_copy=print_copied, callback_generate=print_generate)
+    for_each_file(data, True, verb='printed', search=args.search, callback_copy=print_copied)
 
 
 def add_remove_commands(sub):
@@ -542,9 +414,7 @@ def print_file_infos(data: Data, verbose: bool):
             print("Same", absolute_home, absolute_source)
 
     for_each_file(data, True, 'status printed', search=[],
-                  callback_copy=lambda source, home: file_diff(home, source, file_same),
-                  callback_generate=lambda source, home: file_diff(home, source, lambda s, h: generated_same(s, h, data.vars))
-                  )
+                  callback_copy=lambda source, home: file_diff(home, source, file_same))
 
 
 def call_diff_app(left: str, right: str):
@@ -596,7 +466,8 @@ def handle_install(args, data: Data):
 
 
 def handle_watch(args, data: Data):
-    files = [os.path.join(get_src_folder(), f.src) for f in data.generated_files]
+    # todo(Gustav): make sure this works...
+    files = [os.path.join(get_src_folder(), f.src) for f in data.files]
 
     def on_action():
         print()
@@ -644,8 +515,6 @@ def handle_class(args, data: Data):
     c = collections.Counter()
     for f in data.interesting_files:
         c = c + collections.Counter(f.classes)
-    for f in data.generated_files:
-        c = c + collections.Counter(f.classes)
     existing_classes = frozenset(name for name, count in c.items())
 
     config = get_config()
@@ -683,17 +552,11 @@ def has_class(c: str) -> bool:
 def handle_diff(args, data: Data):
     matches = []
     for_each_file(data, True, 'diff matches', args.file,
-                  callback_copy=lambda from_path, to_path: matches.append((from_path, to_path, False)),
-                  callback_generate=lambda from_path, to_path: matches.append((from_path, to_path, True))
-                  )
+                  callback_copy=lambda from_path, to_path: matches.append((from_path, to_path)))
     matches = list(set(matches))
     if len(matches) == 1:
-        src, home, generate = matches[0]
-        if generate:
-            with GeneratedFile(src, data.vars) as temp:
-                call_diff_app(temp.path_to_generated_file, home)
-        else:
-            call_diff_app(src, home)
+        src, home = matches[0]
+        call_diff_app(src, home)
     else:
         if args.print:
             for m in matches:

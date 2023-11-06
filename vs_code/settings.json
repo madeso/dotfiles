@@ -52,8 +52,8 @@
         "**/*.hh"
     ],
     "todohighlight.defaultStyle": {
-        "color": "#586e75",
-        "fontWeight": "bold",
+        "color": "#93a1a1",
+        "fontWeight": "",
         "backgroundColor": "inherit",
         "overviewRulerColor": "#eee8d5",
         "cursor": "arrow",
@@ -78,6 +78,13 @@
                 "settings": {
                     "fontStyle": "bold",
                     "foreground": "#000000"
+                }
+            },
+            {
+                "scope": "comment.block.documentation.cpp",
+                "settings": {
+                    "fontStyle": "",
+                    "foreground": "#657b83"
                 }
             }
         ]
