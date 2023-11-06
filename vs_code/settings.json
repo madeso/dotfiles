@@ -96,6 +96,9 @@
     "[jsonc]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     },
+    // "all" | "gutter" | "overview" | "none"
+    "scm.diffDecorations": "overview",
+    "workbench.startupEditor": "none",
     "[javascript]": {
         "editor.defaultFormatter": "vscode.typescript-language-features"
     },
