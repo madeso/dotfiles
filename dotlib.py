@@ -190,6 +190,10 @@ class Data:
         file = Path(classes, src, VarPath(None, home, None, PathType.USER))
         self.interesting_files.append(file)
 
+    def add_file_path(self, classes: typing.List[str], src: str, home: str, path: PathType):
+        file = Path(classes, src, VarPath(None, home, None, path))
+        self.interesting_files.append(file)
+
     def add_dir(self, subdir: Dir):
         for f in subdir.files:
             self.interesting_files.append(f)

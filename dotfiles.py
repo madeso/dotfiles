@@ -141,7 +141,28 @@ def get_data():
         .add_dir('bundle/syntastic/')
     )
     data.add_file(win, 'powershell.ps1', 'Documents/PowerShell/Microsoft.PowerShell_profile.ps1')
+
+    if dotlib.is_windows():
+        # determine terminal name
+        containing_folder_type = dotlib.PathType.APPDATA_LOCAL
+        containing_folder = os.path.join(dotlib.get_folder(containing_folder_type), 'Packages')
+        all_dirs = get_all_dirs(containing_folder)
+        dirs = [d for d in all_dirs if 'Microsoft.WindowsTerminal' in d]
+        if len(dirs) == 1:
+            terminal_name = dirs[0].split(os.path.sep)[-1]
+            print(f'Found terminal name: {terminal_name}')
+            # todo(Gustav): add ignore sections/keys
+            data.add_file_path(win, 'windows-terminal.json', f'Packages/{terminal_name}/LocalState/settings.json',
+                            containing_folder_type)
+        else:
+            print(f'Error: found {len(dirs)} terminal folders: {dirs}')
+
     return data
+
+
+def get_all_dirs(d):
+    return [os.path.join(d, o) for o in os.listdir(d) 
+                    if os.path.isdir(os.path.join(d,o))]
 
 
 if __name__ == "__main__":
