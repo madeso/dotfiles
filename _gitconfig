@@ -21,10 +21,20 @@
   webgui = !"~/dev/dotfiles/external/git-webui/release/libexec/git-core/git-webui"
   # todo(Gustav): fix dotfiles expansion
   # webgui = !"`echo $DOTFILES`/external/git-webui/release/libexec/git-core/git-webui"
+
 [push]
   default = simple
   autoSetupRemote = true
+
+[diff]
+	algorithm = histogram
+
+[init]
+    defaultBranch = main
+
 [difftool]
   prompt = no
+
 [webui]
   nobrowser = yes
+
