@@ -2,6 +2,12 @@
 
 import argparse
 import os
+import glob
+
+def ext_abs_path(from_path, ext):
+    pre, _ = os.path.splitext(from_path)
+    new_path = pre + ext
+    os.rename(from_path, new_path)
 
 
 def handle_ext(args):
@@ -9,10 +15,17 @@ def handle_ext(args):
     if ext[0] != '.':
         ext = '.' + ext
     for relative in args.files:
-        from_path = os.path.abspath(os.path.realpath(relative))
-        pre, _ = os.path.splitext(from_path)
-        new_path = pre + ext
-        os.rename(from_path, new_path)
+        if args.glob:
+            paths = glob.glob(relative)
+            renamed = False
+            for path in paths:
+                ext_abs_path(path, ext)
+                renamed = True
+            if not renamed:
+                print(f"no files found for {relative}")
+        else:
+            from_path = os.path.abspath(os.path.realpath(relative))
+            ext_abs_path(from_path, ext)
 
 
 def handle_lower(args):
@@ -48,6 +61,7 @@ def main():
 
     sub = sub_parsers.add_parser('ext', help='change extension')
     sub.add_argument('extension', help="the new extension")
+    sub.add_argument('--glob', action='store_true', help="use glob to match files")
     sub.add_argument('files', nargs='+', help="the files to change")
     sub.set_defaults(func=handle_ext)
 
