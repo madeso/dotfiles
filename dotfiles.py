@@ -67,7 +67,11 @@ def get_data():
 
     # on linux this should be ~/.local/share/nvim/
     data.add_dir(dotlib.Dir(general, 'nvim', '.config/nvim', win_where=dotlib.PathType.APPDATA_LOCAL, win_home='nvim')
-                 .file('init.lua'))
+                 .file('init.lua')
+                 .set_dir('lua/madeso')
+                 .file('colorscheme.lua')
+                 .file('statusline.lua')
+                 )
 
     data.add_file(general, 'vimrc', '.vimrc')
     data.add_file(zsh, 'zshrc', '.zshrc')
