@@ -126,7 +126,7 @@ alias open='xdg-open'
 # pipe to this command to be able to paste it
 alias clip='xclip -selection clipboard'
 
-alias wb='~/dev/euphoria/tools/buildtools/Workbench/bin/Debug/net7.0/wb'
+alias wb='~/dev/euphoria/tools/buildtools/Workbench/bin/Debug/net8.0/wb'
 
 alias icat="kitty +kitten icat --align=left"
 
