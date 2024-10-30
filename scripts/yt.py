@@ -37,10 +37,12 @@ def handle_channel(args):
     # todo(Gustav): handle channel
     # youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' -i -o '%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s' --restrict-filenames --write-sub --sub-lang en --convert-subs srt --playlist-reverse --download-archive dan-root.txt https://www.youtube.com/user/rootay/videos
 
+    video_format = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
+    audio_format = 'bestaudio[ext=mp4]'
     params = [
         YOUTUBE_DL,
         "-f",
-        'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+        audio_format if args.audio else video_format,
         "-i",
         "-o", '%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s',
         "--restrict-filenames"
@@ -77,6 +79,7 @@ def main():
     sub.add_argument('channel', help='the url of the video')
     sub.add_argument('--archive', help='archive file')
     sub.add_argument('--srt', action='store_true', help='add subtitles')
+    sub.add_argument('--audio', action='store_true', help='audio only')
     sub.add_argument('--reverse', action='store_true', help='process it in reverse')
     sub.set_defaults(func=handle_channel)
 
