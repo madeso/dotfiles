@@ -24,7 +24,7 @@ def exec(cmd):
 def handle_single(args):
     for v in args.video:
         # youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' -i -o '%(title)s.%(ext)s' --restrict-filenames https://www.youtube.com/watch?v=vWaY7TqRzlg
-        params = [YOUTUBE_DL, "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best", "--ignore-errors", "--output", "'%(title)s.%(ext)s'", "--restrict-filenames"]
+        params = [YOUTUBE_DL, "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best", "--ignore-errors", "--output", "'%(title)s.%(ext)s'", "--restrict-filenames", "--cookies-from-browser", "firefox"]
 
         if args.keep:
             params += ['-k']
