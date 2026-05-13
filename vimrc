@@ -64,7 +64,12 @@ hi WildMenu ctermfg=9 ctermbg=15
 " highlight current line
 set cursorline
 highlight clear CursorLine
-highlight CursorLine ctermbg=5
+
+" windows
+highlight CursorLine ctermbg=14
+
+" linux
+" highlight CursorLine ctermbg=5
 
 " cursor style
 " Set IBeam shape in insert mode, underline shape in replace mode and block shape in normal mode. 

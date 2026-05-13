@@ -1,8 +1,10 @@
 {
     // osx doesnt like the default option, there is toggle too, but not so sure about that one...
     "window.menuBarVisibility": "toggle",
-    "explorer.openEditors.visible": 0,
+    "window.title": "${dirty}${rootName}${separator}${profileName}${separator}${activeEditorShort}${separator}${appName}",
+    "explorer.openEditors.visible": 1,
     "workbench.statusBar.visible": true,
+    "chat.agent.maxRequests": 60,
     "editor.minimap.enabled": false,
     "window.titleBarStyle": "custom",
     "workbench.editor.highlightModifiedTabs": true,
@@ -24,26 +26,42 @@
     "editor.matchBrackets": "always",
     "editor.guides.bracketPairs": true,
     "editor.bracketPairColorization.enabled": true,
-    "editor.stickyScroll.enabled": false,
+    "editor.stickyScroll.enabled": true,
+    "editor.stickyScroll.scrollWithEditor": true,
+    "editor.stickyScroll.maxLineCount": 5,
+    "workbench.colorCustomizations": {
+        "editorStickyScroll.shadow": "#93a1a1",
+        "editorStickyScroll.border": "#eee8d5",
+        "editorStickyScroll.background": "#fdf6e3",
+        "editorStickyScrollHover.background": "#fdf6e3",
+        "editor.background": "#fdf6e3"
+    },
+    "editor.formatOnSave": false,
     "explorer.fileNesting.enabled": false,
+    // fira code
     // disable ligatures, traditional & @ rounder () {} longer |
-    "editor.fontLigatures": "'calt' off, 'ss03', 'ss05', 'cv31', 'cv29', 'cv30'",
+    // "editor.fontLigatures": "'calt' off, 'ss03', 'ss05', 'cv31', 'cv29', 'cv30'",
     // with ligatures: "editor.fontLigatures": "'ss02', 'ss03', 'ss05', 'cv31', 'cv29', 'cv30', 'ss08'",
+    // https://github.com/tonsky/FiraCode/issues/1479
+    // julia mono:
+    // slashed zero 0
+    // alternate g
+    // alternate ASCII tilde ~
+    // keep default: @ * -> ()[]{} f r
+    "editor.fontLigatures": "'calt' off, 'zero', 'ss01', 'cv03'",
     // references:
     // https://developer.mozilla.org/en-US/docs/Web/CSS/font-feature-settings
     // https://learn.microsoft.com/en-us/typography/opentype/spec/features_ae
-    // https://github.com/tonsky/FiraCode/issues/1479
-    "editor.fontFamily": "Fira Code, Consolas, 'Courier New', monospace",
+    "editor.fontFamily": "'JuliaMono', Consolas, 'Courier New', monospace",
     "[plaintext]": {
         "editor.minimap.enabled": true,
-        "editor.wordBasedSuggestions": false,
+        "editor.wordBasedSuggestions": "off",
         "editor.quickSuggestions": {
             "other": false,
             "comments": false,
             "strings": false
         }
     },
-    "python.linting.pylintEnabled": true,
     "todohighlight.isEnable": true,
     "todohighlight.include": [
         "**/*.cpp",
@@ -86,6 +104,20 @@
                     "fontStyle": "",
                     "foreground": "#657b83"
                 }
+            },
+            {
+                "scope": "source.uiua",
+                "settings": {
+                    "foreground": "#586e75",
+                    "fontStyle": "bold"
+                }
+            },
+            {
+                "scope": "constant.numeric.uiua",
+                "settings": {
+                    "foreground": "#586e75",
+                    "fontStyle": "bold"
+                }
             }
         ]
     },
@@ -111,5 +143,55 @@
     },
     "[typescriptreact]": {
         "editor.defaultFormatter": "vscode.typescript-language-features"
-    }
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "cmake.showOptionsMovedNotification": false,
+    "javascript.updateImportsOnFileMove.enabled": "never",
+    "typescript.updateImportsOnFileMove.enabled": "never",
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "uiua.semanticHighlighting.customTokenTypes": false,
+    "uiua.inlayHints.inlineSignatureHints": false,
+    "uiua.inlayHints.values": false,
+    "uiua.inlayHints.bindingSignatureHints": false,
+    "errorLens.enabled": false,
+    // copilot settings
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
+    },
+    "github.copilot.nextEditSuggestions.enabled": false,
+    "editor.inlineSuggest.edits.renderSideBySide": "never",
+    "git.openRepositoryInParentFolders": "never",
+    "redhat.telemetry.enabled": false,
+    "docker.extension.enableComposeLanguageServer": false,
+    "[dockercompose]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.autoIndent": "advanced",
+        "editor.quickSuggestions": {
+            "other": true,
+            "comments": false,
+            "strings": true
+        },
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "[github-actions-workflow]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "terminal.integrated.stickyScroll.enabled": false,
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "git.blame.editorDecoration.enabled": false,
+    "svg.preview.mode": "svg",
+    "files.associations": {
+        ".prettierrc.json5": "jsonc"
+    },
+    "chat.viewSessions.orientation": "stacked",
 }
